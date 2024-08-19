@@ -11,7 +11,7 @@ namespace Entities
     {        
         public int OrderId { get; set; }
         public int ProductId { get; set; }
-        public List<Product>? Products { get; set; }
-        public List<Order>? Orders { get; set; }
+        public virtual List<Product>? Products { get; set; }
+        public virtual List<Order>? Orders { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace Entities
         public int CategoryId { get; set; }
         public int OrderId { get; set; }
         public int BrandId { get; set; }
-        public bool IsActive { get; set; }        
+        public bool IsActive { get; set; }
+        public virtual List<Order>? Orders { get; set; }
     }
 }
