@@ -19,7 +19,10 @@ namespace DataAccess
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
         //protected readonly IConfiguration Configuration;
+        public ECommerceDbContext()
+        {
 
+        }
         public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
         {
             //Configuration = configuration;

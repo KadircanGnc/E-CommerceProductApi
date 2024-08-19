@@ -29,8 +29,6 @@ namespace E_CommerceApi
                 context.SaveChanges();
             }
 
-
-
             var brand = context.Brands.FirstOrDefault();
             if (brand == null)
             {
@@ -82,7 +80,19 @@ namespace E_CommerceApi
                     IsActive = true
                 });
                 context.SaveChanges();
-            }             
+            }
+
+           /* var orderProduct = context.OrderProducts.FirstOrDefault();
+            if (orderProduct == null)
+            {
+                context.OrderProducts.Add(new OrderProduct
+                {
+                    OrderId = 1,
+                    ProductId = 1
+                });
+                context.SaveChanges();
+            }
+           */
         }
     }
 }
