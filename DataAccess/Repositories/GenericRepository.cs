@@ -13,14 +13,17 @@ namespace DataAccess.Repositories
         where T : class
     {
         public ECommerceDbContext _context;
-        public DbSet<T> _dbSet;
+        
         public GenericRepository(ECommerceDbContext context)
         {
             _context = context;
         }
         public virtual T GetById(int id)
         {
-            return _context.Set<T>().Find(id);
+            var entity = _context.Set<T>().Find(id);
+            if (entity == null)
+                throw new Exception("Not Found");
+            return entity;
         }
         public virtual List<T> GetAll()
         {

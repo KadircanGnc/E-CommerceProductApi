@@ -42,7 +42,7 @@ namespace BusinessLogic.Services
             if (_orderRepository.GetById(id) is not null)
                 return _orderRepository.GetById(id);
 
-            return null;
+            throw new Exception("ID is not valid");
         }
 
         public List<Order> GetOrders()

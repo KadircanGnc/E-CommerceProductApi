@@ -20,6 +20,23 @@ namespace DataAccess.Repositories
         {
             return _context.Products.Where(p => p.CategoryId == categoryId).ToList();
         }
+
+        public override void Update(Product entity)
+        {
+            var product = _context.Products.SingleOrDefault(p => p.Id == entity.Id);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found.");
+            }
+
+            product.Name = !string.IsNullOrEmpty(entity.Name) ? entity.Name : product.Name;
+            product.Price = entity.Price != default ? entity.Price : product.Price;
+            product.StockCount = entity.StockCount != default ? entity.StockCount : product.StockCount;
+
+            _context.SaveChanges();
+        }
+
     }
 }
 

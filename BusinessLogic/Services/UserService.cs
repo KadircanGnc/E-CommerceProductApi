@@ -17,25 +17,32 @@ namespace BusinessLogic.Services
         }
         public void CreateUser(User entity)
         {
-            if (_userRepo.GetById(entity.Id) is null && entity.Id != 0)
-                _userRepo.Create(entity);
+            if (entity == null)
+                throw new ArgumentNullException("Value is Null!");
+
+            _userRepo.Create(entity);
         }
         public void UpdateUser(User entity)
         {
-            if (_userRepo.GetById(entity.Id) is not null)
-                _userRepo.Update(entity);
+            var user = _userRepo.GetById(entity.Id);
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
+            _userRepo.Update(entity);
         }
-        public void DeleteUser(User entity)
+        public void DeleteUser(int id)
         {
-            if (_userRepo.GetById(entity.Id) is not null)
-                _userRepo.Delete(entity.Id);
+            if (_userRepo.GetById(id) is not null)
+                _userRepo.Delete(id);
         }
         public User GetById(int id)
         {
             if (_userRepo.GetById(id) is not null)
                 return _userRepo.GetById(id);
 
-            return null;
+            throw new Exception("ID is not valid");
         }
         public List<User> GetUsers()
         {
@@ -46,7 +53,8 @@ namespace BusinessLogic.Services
         {
             if (userId != 0)
                 return _userRepo.GetOrdersByUserId(userId);
-            return null;
+
+            throw new Exception("ID is not valid");
         }
     }
 }

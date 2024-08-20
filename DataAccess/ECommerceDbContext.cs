@@ -18,15 +18,12 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
-
         public ECommerceDbContext(DbContextOptions options) : base(options)
         {
 
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<OrderProduct>().HasNoKey();
+        {            
             modelBuilder.Entity<OrderProduct>()
             .HasKey(op => new { op.OrderId, op.ProductId });
             modelBuilder.UseSerialColumns();

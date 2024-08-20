@@ -35,7 +35,7 @@ namespace BusinessLogic.Services
             if (_brandRepo.GetById(id) is not null)
                 _brandRepo.GetById(id);
 
-            return null;
+            throw new Exception("ID is not valid");
         }
         public List<Brand> GetBrands()
         {
@@ -45,7 +45,8 @@ namespace BusinessLogic.Services
         {
             if (brandId != 0)
                 return _brandRepo.GetProductsByBrandId(brandId);
-            return null;
+
+            throw new Exception("ID is not valid");
         }
     }
 }

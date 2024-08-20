@@ -25,5 +25,22 @@ namespace DataAccess.Repositories
             return orderedProducts;
         }
 
+        public override void Update(User entity)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Id == entity.Id);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
+            user.Name = !string.IsNullOrEmpty(entity.Name) ? entity.Name : user.Name;
+            user.Email = !string.IsNullOrEmpty(entity.Email) ? entity.Email : user.Email;
+            user.Password = !string.IsNullOrEmpty(entity.Password) ? entity.Password : user.Password;
+            user.Address = !string.IsNullOrEmpty(entity.Address) ? entity.Address : user.Address;
+
+            _context.SaveChanges();
+        }
+
     }
 }

@@ -40,6 +40,26 @@ namespace E_CommerceApi.Controllers
             }
         }
 
+        [HttpPut]
+        public IActionResult UpdateProduct(int id, [FromBody] Product entity)
+        {
+            if (id != entity.Id)
+            {
+                return BadRequest("ID mismatch.");
+            }
+
+            try
+            {
+                _service.UpdateProduct(entity);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpGet("{id}")]
         public Product GetProductById(int id)
         {

@@ -23,8 +23,7 @@ namespace E_CommerceApi
                     Name = "Kadir Can",
                     Email = "kdrcng@gmail.com",
                     Password = "111",
-                    Address = "Antalya",
-                    IsActive = true
+                    Address = "Antalya"                    
                 });
                 context.SaveChanges();
             }
@@ -37,8 +36,7 @@ namespace E_CommerceApi
                     Name = "Nike",
                     Email = "nike.gmail.com",
                     PhoneNumber = "1234567890",
-                    Address = "istanbul",
-                    IsActive = true
+                    Address = "istanbul"                    
                 });
                 context.SaveChanges();
             }
@@ -48,8 +46,7 @@ namespace E_CommerceApi
             {
                 context.Categories.Add(new Category
                 {
-                    Name = "Clothing",                    
-                    IsActive = true
+                    Name = "Clothing"                   
                 });
                 context.SaveChanges();
             }
@@ -61,8 +58,7 @@ namespace E_CommerceApi
                 {
                     CreateDate = Convert.ToDateTime("16/08/2024"),
                     TotalAmount = 2050.50,
-                    UserId = 1,
-                    IsActive = true
+                    UserId = 1                    
                 });
                 context.SaveChanges();
             }
@@ -76,8 +72,7 @@ namespace E_CommerceApi
                     Price = 2050.50,
                     StockCount = 42,
                     CategoryId = 1,
-                    BrandId = 1,
-                    IsActive = true
+                    BrandId = 1                    
                 });
                 context.SaveChanges();
             }

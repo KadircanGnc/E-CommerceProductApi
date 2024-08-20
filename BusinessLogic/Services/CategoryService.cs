@@ -38,7 +38,8 @@ namespace BusinessLogic.Services
         {
             if (_categoryRepo.GetById(entity.Id) is not null)
                 return _categoryRepo.GetById(entity.Id);
-            return null;
+
+            throw new Exception("Value is null");
         }
 
         public List<Category> GetCategories()

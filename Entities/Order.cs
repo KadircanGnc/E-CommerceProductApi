@@ -13,8 +13,7 @@ namespace Entities
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
         public double TotalAmount { get; set; }
-        public int UserId { get; set; }
-        public bool IsActive { get; set; }
+        public int UserId { get; set; }        
         public virtual User? User { get; set; }
         public virtual List<OrderProduct>? OrderProducts { get; set; }
 
