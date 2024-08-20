@@ -18,33 +18,49 @@ namespace BusinessLogic.Services
 
         public void CreateCategory(Category entity)
         {
-            if (_categoryRepo.GetById(entity.Id) is null && !entity.Id.Equals(null))
-                _categoryRepo.Create(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _categoryRepo.Create(entity);
         }
 
         public void UpdateCategory(Category entity)
         {
-            if (_categoryRepo.GetById(entity.Id) is not null)
-                _categoryRepo.Update(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _categoryRepo.Update(entity);
         }
 
-        public void DeleteCategory(Category entity)
+        public void DeleteCategory(int id)
         {
-            if (_categoryRepo.GetById(entity.Id) is not null)
-                _categoryRepo.Delete(entity.Id);
+            if (id <= 0)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _categoryRepo.Delete(id);
         }
 
-        public Category GetCategoryById(Category entity)
+        public Category GetCategoryById(int id)
         {
-            if (_categoryRepo.GetById(entity.Id) is not null)
-                return _categoryRepo.GetById(entity.Id);
-
-            throw new Exception("Value is null");
+            var result = _categoryRepo.GetById(id);
+            if (result == null)
+            {
+                throw new Exception("Value is null");
+            }
+            return result;            
         }
 
         public List<Category> GetCategories()
         {
-            return _categoryRepo.GetAll();
+            var result = _categoryRepo.GetAll();
+            if (result == null)
+            {
+                throw new ArgumentNullException("Value is Null!");
+            }
+            return result;
         }
     }
 }

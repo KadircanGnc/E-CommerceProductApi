@@ -17,8 +17,11 @@ namespace BusinessLogic.Services
         }
         public void CreateProduct(Product entity)
         {
-            if (entity != null && entity.Id != 0 && entity.BrandId != 0 && entity.CategoryId != 0)
-                _productRepo.Create(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _productRepo.Create(entity);
         }
         public void UpdateProduct(Product entity)
         {
@@ -27,31 +30,43 @@ namespace BusinessLogic.Services
             {
                 throw new InvalidOperationException("Product not found.");
             }
-
             _productRepo.Update(entity);
         }
 
         public void DeleteProduct(int id)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException("Invalid Value");
+            }
             _productRepo.Delete(id);
         }
         public Product GetById(int productId)
         {
-            if (productId != 0)
-                return _productRepo.GetById(productId);
-
-            throw new Exception("ID is not valid");
+            var result = _productRepo.GetById(productId);
+            if (result == null)
+            {
+                throw new Exception("Invalid Value");
+            }
+            return result;
         }
         public List<Product> GetProducts()
         {
-            return _productRepo.GetAll();
+            var result = _productRepo.GetAll();
+            if (result == null)
+            {
+                throw new Exception("Invalid Value");
+            }
+            return result;
         }
         public List<Product> GetProductsByCategoryId(int categoryId)
         {
-            if (categoryId != 0)
-                return _productRepo.GetByCategoryId(categoryId).ToList();
-
-            throw new Exception("ID is not valid");
+            var result = _productRepo.GetByCategoryId(categoryId).ToList();
+            if (result == null)
+            {
+                throw new Exception("Invalid Value");
+            }
+            return result;
         }
     }
 }

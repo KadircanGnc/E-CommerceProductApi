@@ -19,35 +19,49 @@ namespace BusinessLogic.Services
         // EKSİK
         public void CreateOrder(Order entity, OrderProduct orderProduct)
         {
-            if (_orderRepository.GetById(entity.Id) is null)
+            if (entity == null)
             {
-                _orderRepository.Create(entity);
-                orderProduct.OrderId = entity.Id;
+                throw new ArgumentNullException("Invalid Value!");
             }
+            _orderRepository.Create(entity);
+            orderProduct.OrderId = entity.Id;            
         }
 
         public void UpdateOrder(Order entity)
         {
-            if (_orderRepository.GetById(entity.Id) is not null)
-                _orderRepository.Update(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Value is Null!");
+            }
+            _orderRepository.Update(entity);
         }
 
         public void DeleteOrder(int id)
         {
-            if (_orderRepository.GetById(id) is not null)
-                _orderRepository.Delete(id);
+            if (id <= 0)
+            {
+                throw new ArgumentNullException("Value is Invalid!");
+            }
+            _orderRepository.Delete(id);
         }
         public Order GetOrderById(int id)
         {
-            if (_orderRepository.GetById(id) is not null)
-                return _orderRepository.GetById(id);
-
-            throw new Exception("ID is not valid");
+            var result = _orderRepository.GetById(id);
+            if (result == null)
+            {
+                throw new ArgumentNullException("Value is Null!");
+            }
+            return result;          
         }
 
         public List<Order> GetOrders()
         {
-            return _orderRepository.GetAll();
+            var result = _orderRepository.GetAll();
+            if (result == null)
+            {
+                throw new ArgumentNullException("Value is Null!");
+            }
+            return result;
         }
     }
 }

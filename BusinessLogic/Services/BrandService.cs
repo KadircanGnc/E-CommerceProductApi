@@ -17,36 +17,53 @@ namespace BusinessLogic.Services
         }
         public void CreateBrand(Brand entity)
         {
-            if (_brandRepo.GetById(entity.Id) is null && !entity.Id.Equals(null))
-                _brandRepo.Create(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _brandRepo.Create(entity);
         }
         public void UpdateBrand(Brand entity)
         {
-            if (_brandRepo.GetById(entity.Id) is not null)
-                _brandRepo.Update(entity);
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
+            _brandRepo.Update(entity);
         }
         public void DeleteBrand(Brand entity)
         {
-            if (_brandRepo.GetById(entity.Id) is not null)
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }            
                 _brandRepo.Delete(entity.Id);
         }
         public Brand GetBrand(int id)
         {
-            if (_brandRepo.GetById(id) is not null)
-                _brandRepo.GetById(id);
-
-            throw new Exception("ID is not valid");
+            if (id <= 0)
+            {
+                throw new ArgumentNullException("Invalid ID!");
+            }
+            return(_brandRepo.GetById(id));            
         }
         public List<Brand> GetBrands()
         {
-            return _brandRepo.GetAll();
+            var allBrands = _brandRepo.GetAll();
+            if (allBrands == null)
+            {
+                throw new ArgumentNullException("No Brand Found!");
+            }
+            return allBrands;
         }
         public List<Product> GetProductsByBrandId(int brandId)
         {
-            if (brandId != 0)
-                return _brandRepo.GetProductsByBrandId(brandId);
-
-            throw new Exception("ID is not valid");
+            var products = _brandRepo.GetProductsByBrandId(brandId);
+            if (products == null)
+            {
+                throw new ArgumentNullException("No Product Found!");
+            }
+            return products;
         }
     }
 }
