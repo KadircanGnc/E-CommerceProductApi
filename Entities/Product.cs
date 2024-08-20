@@ -19,8 +19,8 @@ namespace Entities
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public bool IsActive { get; set; }
-        public Category? Category { get; set; }
-        public Brand? Brand { get; set; }
-        public List<OrderProduct>? OrderProducts { get; set; }
+        public virtual Category? Category { get; set; }
+        public virtual Brand? Brand { get; set; }
+        public virtual List<OrderProduct>? OrderProducts { get; set; }
     }
 }

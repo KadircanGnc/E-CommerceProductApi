@@ -16,7 +16,7 @@ namespace Entities
         public string? Password { get; set; }
         public string? Address { get; set; }
         public bool IsActive { get; set; }
-        public List<Order>? Orders { get; set; }
+        public virtual List<Order>? Orders { get; set; }
 
     }
 }
