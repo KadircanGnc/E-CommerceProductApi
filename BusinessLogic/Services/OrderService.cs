@@ -19,28 +19,28 @@ namespace BusinessLogic.Services
         // EKSİK
         public void CreateOrder(Order entity, OrderProduct orderProduct)
         {
-            if (_orderRepository.GetById(entity.Id) is null && entity.Products.Count(x => x.StockCount > 0 ) > 0)
+            if (_orderRepository.GetById(entity.Id) is null)
             {
                 _orderRepository.Create(entity);
-                orderProduct.OrderId = entity.Id;                
+                orderProduct.OrderId = entity.Id;
             }
         }
 
         public void UpdateOrder(Order entity)
         {
-            if (_orderRepository.GetById(entity.Id) is not null)            
-                _orderRepository.Update(entity);            
+            if (_orderRepository.GetById(entity.Id) is not null)
+                _orderRepository.Update(entity);
         }
 
-        public void DeleteOrder(Order entity)
+        public void DeleteOrder(int id)
         {
-            if (_orderRepository.GetById(entity.Id) is not null)
-                _orderRepository.Delete(entity.Id);
+            if (_orderRepository.GetById(id) is not null)
+                _orderRepository.Delete(id);
         }
-        public Order GetOrderById(Order entity)
+        public Order GetOrderById(int id)
         {
-            if (_orderRepository.GetById(entity.Id) is not null)
-                return _orderRepository.GetById(entity.Id);
+            if (_orderRepository.GetById(id) is not null)
+                return _orderRepository.GetById(id);
 
             return null;
         }

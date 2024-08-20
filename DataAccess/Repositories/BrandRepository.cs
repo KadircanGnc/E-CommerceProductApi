@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class BrandRepository : GenericRepository<Brand, ECommerceDbContext>
+    public class BrandRepository : GenericRepository<Brand>
     {
-        
+        public BrandRepository(ECommerceDbContext context) : base(context)
+        {
+
+        }
+        public List<Product> GetProductsByBrandId(int brandId)
+        {
+            var brandProducts = _context.Products
+                .Where(p => p.BrandId == brandId)
+                .ToList();
+            return brandProducts;
+        }
     }
 }

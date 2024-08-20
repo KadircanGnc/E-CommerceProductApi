@@ -9,48 +9,38 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class GenericRepository<T, TContext> : IRepository<T>
+    public class GenericRepository<T> : IRepository<T>
         where T : class
-        where TContext : ECommerceDbContext, new()
     {
+        public ECommerceDbContext _context;
+        public DbSet<T> _dbSet;
+        public GenericRepository(ECommerceDbContext context)
+        {
+            _context = context;
+        }
         public virtual T GetById(int id)
         {
-            using (var context = new TContext())
-            {
-                return context.Set<T>().Find(id);
-            }
+            return _context.Set<T>().Find(id);
         }
         public virtual List<T> GetAll()
         {
-            using (var context = new TContext())
-            {
-                return context.Set<T>().ToList();
-            }
+            return _context.Set<T>().ToList();
         }
         public virtual void Create(T entity)
         {
-            using( var context = new TContext())
-            {
-                context.Set<T>().Add(entity);
-                context.SaveChanges();
-            }
+            _context.Set<T>().Add(entity);
+            _context.SaveChanges();
         }
 
         public virtual void Delete(int id)
         {
-            using (var context = new TContext())
-            {
-                context.Set<T>().Remove(GetById(id));
-                context.SaveChanges();
-            }
+            _context.Set<T>().Remove(GetById(id));
+            _context.SaveChanges();
         }
         public virtual void Update(T entity)
         {
-            using (var context = new TContext())
-            {
-                context.Set<T>().Update(entity);
-                context.SaveChanges();
-            }
+            _context.Set<T>().Update(entity);
+            _context.SaveChanges();
         }
     }
 }

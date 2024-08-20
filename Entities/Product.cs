@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
+
+
     public class Product
     {
         [Key]
@@ -15,9 +17,10 @@ namespace Entities
         public double Price { get; set; }
         public int StockCount { get; set; }
         public int CategoryId { get; set; }
-        public int OrderId { get; set; }
         public int BrandId { get; set; }
         public bool IsActive { get; set; }
-        public virtual List<Order>? Orders { get; set; }
+        public Category? Category { get; set; }
+        public Brand? Brand { get; set; }
+        public List<OrderProduct>? OrderProducts { get; set; }
     }
 }

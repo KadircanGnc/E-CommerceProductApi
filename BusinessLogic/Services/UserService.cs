@@ -17,7 +17,7 @@ namespace BusinessLogic.Services
         }
         public void CreateUser(User entity)
         {
-            if (_userRepo.GetById(entity.Id) is null && !entity.Id.Equals(null))
+            if (_userRepo.GetById(entity.Id) is null && entity.Id != 0)
                 _userRepo.Create(entity);
         }
         public void UpdateUser(User entity)
@@ -40,6 +40,13 @@ namespace BusinessLogic.Services
         public List<User> GetUsers()
         {
             return _userRepo.GetAll();
+        }
+
+        public List<Product> GetOrdersByUserId(int userId)
+        {
+            if (userId != 0)
+                return _userRepo.GetOrdersByUserId(userId);
+            return null;
         }
     }
 }

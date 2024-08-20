@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 namespace Entities
 {
     public class OrderProduct
-    {        
+    {
+
+        [ForeignKey("Order")]
         public int OrderId { get; set; }
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public virtual List<Product>? Products { get; set; }
-        public virtual List<Order>? Orders { get; set; }
+        public Order? Order { get; set; }
+        public Product? Product { get; set; }
     }
 }

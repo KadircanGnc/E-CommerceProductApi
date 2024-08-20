@@ -16,6 +16,6 @@ namespace Entities
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
         public bool IsActive { get; set; }
-        public virtual List<Product>? Products { get; set; }
+        public List<Product>? Products { get; set; }
     }
 }

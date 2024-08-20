@@ -13,25 +13,24 @@ namespace DataAccess
     {
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Order> Orders { get; set; }        
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
-        //protected readonly IConfiguration Configuration;
-        public ECommerceDbContext()
+
+        public ECommerceDbContext(DbContextOptions options) : base(options)
         {
 
         }
-        public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
-        {
-            //Configuration = configuration;
-        }        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrderProduct>().HasNoKey();
+            //modelBuilder.Entity<OrderProduct>().HasNoKey();
+            modelBuilder.Entity<OrderProduct>()
+            .HasKey(op => new { op.OrderId, op.ProductId });
             modelBuilder.UseSerialColumns();
+            base.OnModelCreating(modelBuilder);
         }
-    }    
+    }
 }

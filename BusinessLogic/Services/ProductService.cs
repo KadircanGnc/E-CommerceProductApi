@@ -17,29 +17,35 @@ namespace BusinessLogic.Services
         }
         public void CreateProduct(Product entity)
         {
-            if (_productRepo.GetById(entity.Id) is null && !entity.Id.Equals(null) && !entity.BrandId.Equals(null) && !entity.CategoryId.Equals(null))
-                _productRepo.Create(entity);
+            // if (entity != null && entity.Id != 0 && entity.BrandId != 0 && entity.CategoryId != 0)
+            _productRepo.Create(entity);
         }
         public void UpdateProduct(Product entity)
         {
             if (_productRepo.GetById(entity.Id) is not null)
                 _productRepo.Update(entity);
         }
-        public void DeleteProduct(Product entity)
+        public void DeleteProduct(int id)
         {
-            if (_productRepo.GetById(entity.Id) is not null)
-                _productRepo.Delete(entity.Id);
+            _productRepo.Delete(id);
         }
-        public Product GetById(Product entity)
+        public Product GetById(int productId)
         {
-            if (_productRepo.GetById(entity.Id) is not null)
-                return _productRepo.GetById(entity.Id);
+            if (productId != 0)
+                return _productRepo.GetById(productId);
 
             return null;
         }
         public List<Product> GetProducts()
         {
             return _productRepo.GetAll();
-        }       
+        }
+
+        public List<Product> GetProductsByCategoryId(int categoryId)
+        {
+            if (categoryId != 0)
+                return _productRepo.GetByCategoryId(categoryId).ToList();
+            return null;
+        }
     }
 }

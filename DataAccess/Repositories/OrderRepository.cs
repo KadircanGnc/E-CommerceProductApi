@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class OrderRepository : GenericRepository<Order, ECommerceDbContext>
+    public class OrderRepository : GenericRepository<Order>
     {
-       
+        public OrderRepository(ECommerceDbContext context) : base(context)
+        {
+
+        }
     }
 }

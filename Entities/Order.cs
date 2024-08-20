@@ -15,7 +15,8 @@ namespace Entities
         public double TotalAmount { get; set; }
         public int UserId { get; set; }
         public bool IsActive { get; set; }
-        public virtual List<Product>? Products { get; set; }
+        public User? User { get; set; }
+        public List<OrderProduct>? OrderProducts { get; set; }
 
     }
 }

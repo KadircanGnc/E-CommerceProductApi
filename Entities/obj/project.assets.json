@@ -721,11 +721,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj",
+      "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj",
       "projectName": "Entities",
-      "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj",
+      "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj",
       "packagesPath": "C:\\Users\\arge.stajyer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\obj\\",
+      "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\arge.stajyer\\AppData\\Roaming\\NuGet\\NuGet.Config",

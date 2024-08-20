@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\BusinessLogic\\BusinessLogic.csproj": {}
+    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\BusinessLogic\\BusinessLogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\BusinessLogic\\BusinessLogic.csproj": {
+    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\BusinessLogic\\BusinessLogic.csproj",
+        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\BusinessLogic\\BusinessLogic.csproj",
         "packagesPath": "C:\\Users\\arge.stajyer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\BusinessLogic\\obj\\",
+        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arge.stajyer\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -29,11 +29,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\DataAccess.csproj"
+              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\DataAccess.csproj"
               },
-              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj"
+              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj"
               }
             }
           }
@@ -72,14 +72,14 @@
         }
       }
     },
-    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\DataAccess.csproj": {
+    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\DataAccess.csproj",
+        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\DataAccess.csproj",
         "packagesPath": "C:\\Users\\arge.stajyer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\DataAccess\\obj\\",
+        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arge.stajyer\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -97,8 +97,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj"
+              "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj"
               }
             }
           }
@@ -159,14 +159,14 @@
         }
       }
     },
-    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj": {
+    "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\Entities.csproj",
+        "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\arge.stajyer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arge.stajyer\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Authentication\\Authentication.csproj",
+      "projectUniqueName": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Authentication\\Authentication.csproj",
       "projectName": "Authentication",
-      "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Authentication\\Authentication.csproj",
+      "projectPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Authentication\\Authentication.csproj",
       "packagesPath": "C:\\Users\\arge.stajyer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\E-CommerceApi\\Authentication\\obj\\",
+      "outputPath": "C:\\Users\\arge.stajyer\\Desktop\\kadir\\ECommerce\\Authentication\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\arge.stajyer\\AppData\\Roaming\\NuGet\\NuGet.Config",
