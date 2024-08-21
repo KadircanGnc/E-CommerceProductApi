@@ -1,10 +1,11 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
+using BusinessLogic.DTOs;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]s")]
+    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private UserService _userService;
@@ -13,8 +14,18 @@ namespace E_CommerceApi.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        public List<UserDTO> GetAllUsers()
+        {
+            var allUsers = _userService.GetUsers();
+            if (allUsers == null)
+                throw new ArgumentNullException("No User Found");
+
+            return allUsers;
+        }
+
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User entity)
+        public IActionResult CreateUser([FromBody] UserDTO entity)
         {
             try
             {
@@ -28,7 +39,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User entity)
+        public IActionResult UpdateUser(int id, [FromBody] UserDTO entity)
         {
             if (id != entity.Id)
             {
@@ -59,32 +70,22 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public User GetUserById(int id)
+        public UserDTO GetUserById(int id)
         {
             if (id == 0)
                 throw new ArgumentNullException("id");
 
             return(_userService.GetById(id));            
-        }
+        }        
 
-        [HttpGet]
-        public List<User> GetAllUsers()
-        {
-            var allUsers = _userService.GetUsers();
-            if (allUsers == null)
-                throw new ArgumentNullException("No User Found");
-
-            return allUsers;            
-        }
-
-        [HttpGet("/orders/{id}")]
-        public List<Product> GetUserOrdersById(int id)
+      /*  [HttpGet("/orders/{id}")]
+        public List<ProductDTO> GetUserOrdersById(int id)
         {
             var userOrders = _userService.GetOrdersByUserId(id);
             if (userOrders == null)
                 throw new ArgumentNullException("No Orders Found");
 
             return userOrders;            
-        }
+        } */
     }
 }

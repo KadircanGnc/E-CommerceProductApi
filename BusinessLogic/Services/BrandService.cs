@@ -5,65 +5,87 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLogic.DTOs;
 
 namespace BusinessLogic.Services
 {
     public class BrandService
     {
         private readonly BrandRepository _brandRepo;
-        public BrandService(BrandRepository brandRepo)
+        private readonly IMapper _mapper;
+
+        public BrandService(BrandRepository brandRepo, IMapper mapper)
         {
             _brandRepo = brandRepo;
+            _mapper = mapper;
         }
-        public void CreateBrand(Brand entity)
+
+        public void CreateBrand(BrandDTO brandDTO)
         {
-            if (entity == null)
+            if (brandDTO == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                throw new ArgumentNullException(nameof(brandDTO), "Invalid Value!");
             }
-            _brandRepo.Create(entity);
+            var brand = _mapper.Map<Brand>(brandDTO);
+            _brandRepo.Create(brand);
         }
-        public void UpdateBrand(Brand entity)
+
+        public void UpdateBrand(BrandDTO brandDTO)
         {
-            if (entity == null)
+            if (brandDTO == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                throw new ArgumentNullException(nameof(brandDTO), "Invalid Value!");
             }
-            _brandRepo.Update(entity);
+            var brand = _mapper.Map<Brand>(brandDTO);
+            _brandRepo.Update(brand);
         }
-        public void DeleteBrand(Brand entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("Invalid Value!");
-            }            
-                _brandRepo.Delete(entity.Id);
-        }
-        public Brand GetBrand(int id)
+
+        public void DeleteBrand(int id)
         {
             if (id <= 0)
             {
-                throw new ArgumentNullException("Invalid ID!");
+                throw new ArgumentException("Invalid ID!", nameof(id));
             }
-            return(_brandRepo.GetById(id));            
+            _brandRepo.Delete(id);
         }
-        public List<Brand> GetBrands()
+
+        public BrandDTO GetById(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid ID!", nameof(id));
+            }
+            var brand = _brandRepo.GetById(id);
+            if (brand == null)
+            {
+                throw new KeyNotFoundException("Brand not found.");
+            }
+            return _mapper.Map<BrandDTO>(brand);
+        }
+
+        public List<BrandDTO> GetBrands()
         {
             var allBrands = _brandRepo.GetAll();
-            if (allBrands == null)
+            if (allBrands == null || !allBrands.Any())
             {
-                throw new ArgumentNullException("No Brand Found!");
+                throw new KeyNotFoundException("No brands found.");
             }
-            return allBrands;
+            return _mapper.Map<List<BrandDTO>>(allBrands);
         }
-        public List<Product> GetProductsByBrandId(int brandId)
+
+        public List<ProductDTO> GetProductsByBrandId(int brandId)
         {
-            var products = _brandRepo.GetProductsByBrandId(brandId);
-            if (products == null)
+            if (brandId <= 0)
             {
-                throw new ArgumentNullException("No Product Found!");
+                throw new ArgumentException("Invalid Brand ID!", nameof(brandId));
             }
-            return products;
+            var products = _brandRepo.GetProductsByBrandId(brandId);
+            if (products == null || !products.Any())
+            {
+                throw new KeyNotFoundException("No products found for this brand.");
+            }
+            return _mapper.Map<List<ProductDTO>>(products);
         }
     }
 }

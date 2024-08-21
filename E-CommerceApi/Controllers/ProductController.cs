@@ -1,10 +1,11 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
+using BusinessLogic.DTOs;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]s")]
+    [Route("[controller]")]
     public class ProductController : ControllerBase
     {
         private readonly ProductService _service;
@@ -14,20 +15,18 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProducts()
+        public List<ProductDTO> GetAllProducts()
         {
-            try
+            var result = _service.GetProducts();
+            if (result == null)
             {
-                return Ok(_service.GetProducts());
+                throw new ArgumentNullException("Invalid value!");
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return result;
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] Product entity)
+        public IActionResult CreateProduct([FromBody] ProductDTO entity)
         {
             try
             {
@@ -40,8 +39,8 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult UpdateProduct(int id, [FromBody] Product entity)
+        [HttpPut("{id}")]
+        public IActionResult UpdateProduct(int id, [FromBody] ProductDTO entity)
         {
             if (id != entity.Id)
             {
@@ -59,13 +58,6 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-
-        [HttpGet("{id}")]
-        public Product GetProductById(int id)
-        {
-            return _service.GetById(id);
-        }
-
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
@@ -80,10 +72,37 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/category/{categoryId}")]
-        public List<Product> GetProductsByCategoryId(int categoryId)
+        [HttpGet("{id}")]
+        public ProductDTO GetProductById(int id)
         {
-            return _service.GetProductsByCategoryId(categoryId);
+            var result = _service.GetById(id);
+            if (result == null)
+            {
+                throw new ArgumentNullException("Invalid Value");
+            }
+            return result;
+        }
+
+        [HttpGet("/ProductCategory/{categoryId}")]
+        public List<ProductDTO> GetProductsByCategoryId(int categoryId)
+        {
+            var result = _service.GetProductsByCategoryId(categoryId);
+            if (result == null)
+            {
+                throw new ArgumentNullException("Invalid Value");
+            }
+            return result;
+        }
+
+        [HttpGet("/ByRange/")]
+        public List<ProductDTO> GetProductsByRange(double minValue, double maxValue)
+        {
+            var result = _service.GetProductsByRange(minValue, maxValue);
+            if (result == null)
+            {
+                throw new ArgumentNullException("Invalid Value");
+            }
+            return result;
         }
     }
 }

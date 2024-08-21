@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace Entities
 {
     public class OrderProduct
     {
-
+        [Key]
+        public int Id { get; set; }
         [ForeignKey("Order")]
         public int OrderId { get; set; }
         [ForeignKey("Product")]

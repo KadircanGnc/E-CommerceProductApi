@@ -76,18 +76,7 @@ namespace E_CommerceApi
                 });
                 context.SaveChanges();
             }
-
-           /* var orderProduct = context.OrderProducts.FirstOrDefault();
-            if (orderProduct == null)
-            {
-                context.OrderProducts.Add(new OrderProduct
-                {
-                    OrderId = 1,
-                    ProductId = 1
-                });
-                context.SaveChanges();
-            }
-           */
+           
         }
     }
 }

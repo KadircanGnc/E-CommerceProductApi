@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace BusinessLogic.DTOs
 {
-    public class Order
+    public class GetOrderDTO
     {
-        [Key]
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
         public double TotalAmount { get; set; }
-        public int UserId { get; set; } = 1;
-        public virtual User? User { get; set; }
-        public virtual List<OrderProduct>? OrderProducts { get; set; }
+        public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     }
 }

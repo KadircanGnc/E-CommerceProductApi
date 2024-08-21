@@ -3,64 +3,73 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLogic.DTOs;
 
 namespace BusinessLogic.Services
 {
     public class CategoryService
     {
         private readonly CategoryRepository _categoryRepo;
-        public CategoryService(CategoryRepository categoryRepo)
+        private readonly IMapper _mapper;
+
+        public CategoryService(CategoryRepository categoryRepo, IMapper mapper)
         {
             _categoryRepo = categoryRepo;
+            _mapper = mapper;
         }
 
-        public void CreateCategory(Category entity)
+        public void CreateCategory(CategoryDTO categoryDTO)
         {
-            if (entity == null)
+            if (categoryDTO == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                throw new ArgumentNullException(nameof(categoryDTO), "Invalid Value!");
             }
-            _categoryRepo.Create(entity);
+            var category = _mapper.Map<Category>(categoryDTO);
+            _categoryRepo.Create(category);
         }
 
-        public void UpdateCategory(Category entity)
+        public void UpdateCategory(CategoryDTO categoryDTO)
         {
-            if (entity == null)
+            if (categoryDTO == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                throw new ArgumentNullException(nameof(categoryDTO), "Invalid Value!");
             }
-            _categoryRepo.Update(entity);
+            var category = _mapper.Map<Category>(categoryDTO);
+            _categoryRepo.Update(category);
         }
 
         public void DeleteCategory(int id)
         {
             if (id <= 0)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                throw new ArgumentException("Invalid ID!", nameof(id));
             }
             _categoryRepo.Delete(id);
         }
 
-        public Category GetCategoryById(int id)
+        public CategoryDTO GetCategoryById(int id)
         {
-            var result = _categoryRepo.GetById(id);
-            if (result == null)
+            if (id <= 0)
             {
-                throw new Exception("Value is null");
+                throw new ArgumentException("Invalid ID!", nameof(id));
             }
-            return result;            
+            var category = _categoryRepo.GetById(id);
+            if (category == null)
+            {
+                throw new KeyNotFoundException("Category not found.");
+            }
+            return _mapper.Map<CategoryDTO>(category);
         }
 
-        public List<Category> GetCategories()
+        public List<CategoryDTO> GetCategories()
         {
-            var result = _categoryRepo.GetAll();
-            if (result == null)
+            var categories = _categoryRepo.GetAll();
+            if (categories == null || !categories.Any())
             {
-                throw new ArgumentNullException("Value is Null!");
+                throw new KeyNotFoundException("No categories found.");
             }
-            return result;
+            return _mapper.Map<List<CategoryDTO>>(categories);
         }
     }
 }

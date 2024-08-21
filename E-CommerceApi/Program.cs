@@ -23,6 +23,7 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<BrandRepository>();
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<OrderRepository>();
+
 //Services
 builder.Services.AddScoped<BrandService>();
 builder.Services.AddScoped<CategoryService>();
@@ -30,6 +31,7 @@ builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDb")));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

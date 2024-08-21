@@ -14,7 +14,7 @@ namespace DataAccess.Repositories
         {
 
         }
-        public List<Product> GetOrdersByUserId(int userId)
+      /*  public List<Product> GetOrdersByUserId(int userId)
         {
             var orderedProducts = _context.Orders
                 .Where(o => o.UserId == userId)
@@ -22,8 +22,12 @@ namespace DataAccess.Repositories
                 .Select(op => op.Product)
                 .Distinct().ToList();
 
+            if (orderedProducts == null)
+            {
+                throw new ArgumentNullException("Invalid Value!");
+            }
             return orderedProducts;
-        }
+        }*/
 
         public override void Update(User entity)
         {

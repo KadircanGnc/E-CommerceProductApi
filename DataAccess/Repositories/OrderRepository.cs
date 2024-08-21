@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,12 @@ namespace DataAccess.Repositories
         {
 
         }
+
+      /*  public override List<Order> GetAll()
+        {
+            return _context.Orders
+            .Include(o => o.Products) 
+            .ToList();
+        } */
     }
 }

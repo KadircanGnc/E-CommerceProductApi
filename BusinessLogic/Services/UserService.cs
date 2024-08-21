@@ -2,59 +2,96 @@
 using Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLogic.DTOs;
 
 namespace BusinessLogic.Services
 {
     public class UserService
     {
         private readonly UserRepository _userRepo;
-        public UserService(UserRepository userRepo)
+        private readonly IMapper _mapper;
+
+        public UserService(UserRepository userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
+            _mapper = mapper;
         }
-        public void CreateUser(User entity)
-        {
-            if (entity == null)
-                throw new ArgumentNullException("Value is Null!");
 
-            _userRepo.Create(entity);
-        }
-        public void UpdateUser(User entity)
+        public void CreateUser(UserDTO userDTO)
         {
-            var user = _userRepo.GetById(entity.Id);
-            if (user == null)
+            if (userDTO == null)
+                throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
+
+            var user = _mapper.Map<User>(userDTO);
+            _userRepo.Create(user);
+        }
+
+        public void UpdateUser(UserDTO userDTO)
+        {
+            if (userDTO == null)
+                throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
+
+            var existingUser = _userRepo.GetById(userDTO.Id);
+            if (existingUser == null)
             {
                 throw new InvalidOperationException("User not found.");
             }
 
-            _userRepo.Update(entity);
+            var user = _mapper.Map<User>(userDTO);
+            _userRepo.Update(user);
         }
+
         public void DeleteUser(int id)
         {
-            if (_userRepo.GetById(id) is not null)
-                _userRepo.Delete(id);
-        }
-        public User GetById(int id)
-        {
-            if (_userRepo.GetById(id) is not null)
-                return _userRepo.GetById(id);
-
-            throw new Exception("ID is not valid");
-        }
-        public List<User> GetUsers()
-        {
-            return _userRepo.GetAll();
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid ID!", nameof(id));
+            }
+            _userRepo.Delete(id);
         }
 
-        public List<Product> GetOrdersByUserId(int userId)
+        public UserDTO GetById(int id)
         {
-            if (userId != 0)
-                return _userRepo.GetOrdersByUserId(userId);
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid ID!", nameof(id));
+            }
 
-            throw new Exception("ID is not valid");
+            var user = _userRepo.GetById(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+
+            return _mapper.Map<UserDTO>(user);
         }
+
+        public List<UserDTO> GetUsers()
+        {
+            var users = _userRepo.GetAll();
+            if (users == null || !users.Any())
+            {
+                throw new KeyNotFoundException("No users found.");
+            }
+
+            return _mapper.Map<List<UserDTO>>(users);
+        }
+
+      /*  public List<ProductDTO> GetOrdersByUserId(int userId)
+        {
+            if (userId <= 0)
+            {
+                throw new ArgumentException("Invalid User ID!", nameof(userId));
+            }
+
+            var products = _userRepo.GetOrdersByUserId(userId);
+            if (products == null || !products.Any())
+            {
+                throw new KeyNotFoundException("No products found for this user.");
+            }
+
+            return _mapper.Map<List<ProductDTO>>(products);
+        } */
     }
 }
