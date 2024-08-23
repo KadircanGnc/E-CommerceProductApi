@@ -2,19 +2,23 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
+using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/User")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private UserService _userService;
-        public UserController(UserService userService)
+        private readonly IValidator<UserDTO> _validator;
+        public UserController(UserService userService, IValidator<UserDTO> validator)
         {
             _userService = userService;
+            _validator = validator;
         }
 
-        [HttpGet]
+        [HttpGet("AllUsers")]
         public List<UserDTO> GetAllUsers()
         {
             var allUsers = _userService.GetUsers();
@@ -24,7 +28,7 @@ namespace E_CommerceApi.Controllers
             return allUsers;
         }
 
-        [HttpPost]
+        [HttpPost("User")]
         public IActionResult CreateUser([FromBody] UserDTO entity)
         {
             try
@@ -38,7 +42,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/ByUser{id}")]
         public IActionResult UpdateUser(int id, [FromBody] UserDTO entity)
         {
             if (id != entity.Id)
@@ -56,7 +60,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/ByUser{id}")]
         public IActionResult DeleteUser(int id)
         {
             try
@@ -69,7 +73,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/ByUser{id}")]
         public UserDTO GetUserById(int id)
         {
             if (id == 0)
@@ -78,7 +82,7 @@ namespace E_CommerceApi.Controllers
             return(_userService.GetById(id));            
         }        
 
-      /*  [HttpGet("/orders/{id}")]
+        [HttpGet("/OrdersByUser{id}")]
         public List<ProductDTO> GetUserOrdersById(int id)
         {
             var userOrders = _userService.GetOrdersByUserId(id);
@@ -86,6 +90,6 @@ namespace E_CommerceApi.Controllers
                 throw new ArgumentNullException("No Orders Found");
 
             return userOrders;            
-        } */
+        } 
     }
 }

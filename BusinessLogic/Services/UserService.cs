@@ -78,7 +78,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<UserDTO>>(users);
         }
 
-      /*  public List<ProductDTO> GetOrdersByUserId(int userId)
+        public List<ProductDTO> GetOrdersByUserId(int userId)
         {
             if (userId <= 0)
             {
@@ -92,6 +92,6 @@ namespace BusinessLogic.Services
             }
 
             return _mapper.Map<List<ProductDTO>>(products);
-        } */
+        } 
     }
 }

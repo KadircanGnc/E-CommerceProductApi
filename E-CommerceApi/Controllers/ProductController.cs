@@ -2,19 +2,23 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
+using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/product")]
+    [ApiController]
     public class ProductController : ControllerBase
     {
         private readonly ProductService _service;
-        public ProductController(ProductService service)
+        private readonly IValidator<ProductDTO> _validator;
+        public ProductController(ProductService service, IValidator<ProductDTO> validator)
         {
             _service = service;
+            _validator = validator;
         }
 
-        [HttpGet]
+        [HttpGet("AllProducts")]
         public List<ProductDTO> GetAllProducts()
         {
             var result = _service.GetProducts();
@@ -25,7 +29,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("Product")]
         public IActionResult CreateProduct([FromBody] ProductDTO entity)
         {
             try
@@ -39,7 +43,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/ByProduct{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] ProductDTO entity)
         {
             if (id != entity.Id)
@@ -58,7 +62,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/ByProduct{id}")]
         public IActionResult DeleteProduct(int id)
         {
             try
@@ -72,7 +76,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/ByProduct{id}")]
         public ProductDTO GetProductById(int id)
         {
             var result = _service.GetById(id);
@@ -83,7 +87,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpGet("/ProductCategory/{categoryId}")]
+        [HttpGet("/ProductByCategory{categoryId}")]
         public List<ProductDTO> GetProductsByCategoryId(int categoryId)
         {
             var result = _service.GetProductsByCategoryId(categoryId);
@@ -94,7 +98,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpGet("/ByRange/")]
+        [HttpGet("/ProductByPriceRange")]
         public List<ProductDTO> GetProductsByRange(double minValue, double maxValue)
         {
             var result = _service.GetProductsByRange(minValue, maxValue);

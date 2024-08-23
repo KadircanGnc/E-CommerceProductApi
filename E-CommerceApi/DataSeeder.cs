@@ -25,6 +25,20 @@ namespace E_CommerceApi
                     Password = "111",
                     Address = "Antalya"                    
                 });
+                context.Users.Add(new User
+                {
+                    Name = "Hüseyin",
+                    Email = "hüseyin@gmail.com",
+                    Password = "111",
+                    Address = "Antalya"
+                });
+                context.Users.Add(new User
+                {
+                    Name = "Alihan",
+                    Email = "alihan@gmail.com",
+                    Password = "111",
+                    Address = "Antalya"
+                });
                 context.SaveChanges();
             }
 
@@ -38,6 +52,20 @@ namespace E_CommerceApi
                     PhoneNumber = "1234567890",
                     Address = "istanbul"                    
                 });
+                context.Brands.Add(new Brand
+                {
+                    Name = "Adidas",
+                    Email = "adidas.gmail.com",
+                    PhoneNumber = "1234567890",
+                    Address = "istanbul"
+                });
+                context.Brands.Add(new Brand
+                {
+                    Name = "Under Armour",
+                    Email = "ua.gmail.com",
+                    PhoneNumber = "1234567890",
+                    Address = "istanbul"
+                });
                 context.SaveChanges();
             }
 
@@ -48,20 +76,16 @@ namespace E_CommerceApi
                 {
                     Name = "Clothing"                   
                 });
-                context.SaveChanges();
-            }
-
-            var order = context.Orders.FirstOrDefault();
-            if (order == null)
-            {
-                context.Orders.Add(new Order
+                context.Categories.Add(new Category
                 {
-                    CreateDate = Convert.ToDateTime("16/08/2024"),
-                    TotalAmount = 2050.50,
-                    UserId = 1                    
+                    Name = "Sports"
+                });
+                context.Categories.Add(new Category
+                {
+                    Name = "Eye-wear"
                 });
                 context.SaveChanges();
-            }
+            }            
 
             var product = context.Products.FirstOrDefault();
             if (product == null)
@@ -73,6 +97,46 @@ namespace E_CommerceApi
                     StockCount = 42,
                     CategoryId = 1,
                     BrandId = 1                    
+                });
+                context.Products.Add(new Product
+                {
+                    Name = "ski glasses",
+                    Price = 1025,
+                    StockCount = 30,
+                    CategoryId = 3,
+                    BrandId = 3
+                });
+                context.Products.Add(new Product
+                {
+                    Name = "shorts",
+                    Price = 500,
+                    StockCount = 50,
+                    CategoryId = 1,
+                    BrandId = 2
+                });
+                context.Products.Add(new Product
+                {
+                    Name = "ball",
+                    Price = 750,
+                    StockCount = 75,
+                    CategoryId = 2,
+                    BrandId = 3
+                });
+                context.Products.Add(new Product
+                {
+                    Name = "cap",
+                    Price = 225,
+                    StockCount = 15,
+                    CategoryId = 1,
+                    BrandId = 2
+                });
+                context.Products.Add(new Product
+                {
+                    Name = "baseball bat",
+                    Price = 999,
+                    StockCount = 32,
+                    CategoryId = 2,
+                    BrandId = 3
                 });
                 context.SaveChanges();
             }

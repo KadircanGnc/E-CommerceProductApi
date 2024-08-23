@@ -2,19 +2,23 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
+using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/category")]
+    [ApiController]
     public class CategoryController : ControllerBase
     {
         private readonly CategoryService _categoryService;
-        public CategoryController(CategoryService categoryService)
+        private readonly IValidator<CategoryDTO> _validator;
+        public CategoryController(CategoryService categoryService, IValidator<CategoryDTO> validator)
         {
             _categoryService = categoryService;
+            _validator = validator;
         }
 
-        [HttpGet]
+        [HttpGet("AllCategories")]
         public List<CategoryDTO> GetAllCategories()
         {
             var result = _categoryService.GetCategories();
@@ -25,7 +29,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("Category")]
         public IActionResult CreateCategory([FromBody] CategoryDTO entity)
         {
             try
@@ -39,7 +43,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/ByCategory{id}")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO entity)
         {
             if (id != entity.Id)
@@ -58,7 +62,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/ByCategory{id}")]
         public IActionResult DeleteCategory(int id)
         {
             try
@@ -72,7 +76,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/ByCategory{id}")]
         public CategoryDTO GetCategoryById(int id)
         {
             var result = _categoryService.GetCategoryById(id);

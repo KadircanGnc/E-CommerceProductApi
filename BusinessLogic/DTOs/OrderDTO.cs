@@ -11,8 +11,7 @@ namespace BusinessLogic.DTOs
     {
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
-        public double TotalAmount { get; set; }
-        public List<int> ProductIds { get; set; } = new List<int>();
+        public double TotalAmount { get; set; }        
         public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     }
 }

@@ -2,20 +2,24 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
+using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/order")]
+    [ApiController]
     public class OrderController : ControllerBase
     {
         private readonly OrderService _orderService;
-        public OrderController(OrderService orderService)
+        private readonly IValidator<OrderDTO> _validator;
+        public OrderController(OrderService orderService, IValidator<OrderDTO> validator)
         { 
                _orderService = orderService;
+               _validator = validator;
         }
 
-        [HttpGet]
-        public List<GetOrderDTO> GetAllOrders()
+        [HttpGet("AllOrders")]
+        public List<OrderDTO> GetAllOrders()
         {
             var result = _orderService.GetOrders();
             if (result == null)
@@ -25,8 +29,8 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost]
-     /*   public IActionResult CreateOrder([FromBody] List<int> productIds)
+        [HttpPost("Order")]
+        public IActionResult CreateOrder([FromBody] List<int> productIds)
         {
             if (productIds == null || productIds.Count == 0)
             {
@@ -42,16 +46,16 @@ namespace E_CommerceApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        } */
+        } 
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateOrder(int id,[FromBody] OrderDTO order)
+        [HttpPut("/AddProductToOrder")]
+        public IActionResult AddProductToOrder(int orderId,[FromBody] List<int> productIds)
         {
-            if (id <= 0)
+            if (orderId <= 0)
                 return BadRequest("Invalid ID!");
             try
             {
-                _orderService.UpdateOrder(order);
+                _orderService.AddProductsToOrder(orderId, productIds);
                 return Ok();
             }
             catch (Exception ex)
@@ -60,7 +64,23 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("/RemoveProductFromOrder")]
+        public IActionResult RemoveProductFromOrder(int orderId, [FromBody] List<int> productIds)
+        {
+            if (orderId <= 0)
+                return BadRequest("Invalid ID!");
+            try
+            {
+                _orderService.RemoveProductsFromOrder(orderId, productIds);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("/ByOrder{id}")]
         public IActionResult DeleteOrder(int id)
         {
             try
@@ -74,8 +94,8 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public GetOrderDTO GetOrderById(int id)
+        [HttpGet("/ByOrder{id}")]
+        public OrderDTO GetOrderById(int id)
         {
             var result = _orderService.GetOrderById(id);
             if (result == null)

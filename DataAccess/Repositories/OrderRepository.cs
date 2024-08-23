@@ -16,11 +16,21 @@ namespace DataAccess.Repositories
 
         }
 
-      /*  public override List<Order> GetAll()
+        public override Order GetById(int id)
         {
             return _context.Orders
-            .Include(o => o.Products) 
-            .ToList();
-        } */
+                .Include(o => o.OrderProducts)  
+                    .ThenInclude(op => op.Product)  
+                .FirstOrDefault(o => o.Id == id);
+
+        }
+        public override List<Order> GetAll()
+        {
+            return _context.Orders
+                .Include(o => o.OrderProducts!)
+                    .ThenInclude(op => op.Product)
+                .ToList();
+        }
+        
     }
 }

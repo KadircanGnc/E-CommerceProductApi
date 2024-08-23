@@ -39,7 +39,9 @@ namespace DataAccess.Repositories
 
         public List<Product> GetProductsByIds(List<int> productIds)
         {
-            return _context.Products.Where(p => productIds.Contains(p.Id)).ToList();
+            return _context.Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToList();
         }
 
     }

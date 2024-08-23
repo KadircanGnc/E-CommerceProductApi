@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20240821124929_newVersion")]
-    partial class newVersion
+    [Migration("20240823104217_v1.2")]
+    partial class v12
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,29 @@ namespace DataAccess.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Entities.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -107,9 +130,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<double>("Price")
                         .HasColumnType("double precision");
 
@@ -121,8 +141,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -163,6 +181,25 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Entities.OrderProduct", b =>
+                {
+                    b.HasOne("Entities.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Product", "Product")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.HasOne("Entities.Brand", "Brand")
@@ -176,10 +213,6 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Entities.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
 
                     b.Navigation("Brand");
 
@@ -198,7 +231,12 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Order", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("Entities.Product", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("Entities.User", b =>

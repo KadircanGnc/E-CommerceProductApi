@@ -47,6 +47,18 @@ namespace BusinessLogic.Services
             // Add products to the newly created order through OrderProduct
             foreach (var product in products)
             {
+                // Check if there is enough stock
+                if (product.StockCount <= 0)
+                {
+                    throw new InvalidOperationException($"Product '{product.Name}' is out of stock.");
+                }
+
+                // Decrease the stock count
+                product.StockCount -= 1;
+
+                // Update the product in the repository
+                _productRepository.Update(product);
+
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
@@ -64,16 +76,93 @@ namespace BusinessLogic.Services
         }
         
 
-        public void UpdateOrder(OrderDTO orderDTO)
+        public void AddProductsToOrder(int orderId, List<int> productIds)
         {
-            if (orderDTO == null)
+            if (orderId <= 0)
             {
-                throw new ArgumentNullException("Value is Null!");
+                throw new ArgumentException("Invalid order ID.");
             }
-            
-            var order = _mapper.Map<Order>(orderDTO);
+
+            if (productIds == null || productIds.Count == 0)
+            {
+                throw new ArgumentException("Product IDs cannot be null or empty.");
+            }
+
+            // Fetch the existing order
+            var order = _orderRepository.GetById(orderId);
+            if (order == null)
+            {
+                throw new InvalidOperationException("Order not found.");
+            }
+
+            // Fetch the products to add
+            var products = _productRepository.GetProductsByIds(productIds);
+            if (products == null || products.Count == 0)
+            {
+                throw new InvalidOperationException("No products found for the given IDs.");
+            }
+
+            // Add products to the existing order
+            foreach (var product in products)
+            {
+                // Check if the product is already associated with the order
+                if (!order.OrderProducts.Any(op => op.ProductId == product.Id))
+                {
+                    var orderProduct = new OrderProduct
+                    {
+                        OrderId = order.Id,
+                        ProductId = product.Id
+                    };
+
+                    _opRepository.Create(orderProduct);
+                }
+            }
+
+            // Optionally, recalculate the total amount of the order
+            order.TotalAmount = order.OrderProducts.Sum(op => op.Product!.Price);
             _orderRepository.Update(order);
         }
+
+        public void RemoveProductsFromOrder(int orderId, List<int> productIds)
+        {
+            if (orderId <= 0)
+            {
+                throw new ArgumentException("Invalid order ID.");
+            }
+
+            if (productIds == null || productIds.Count == 0)
+            {
+                throw new ArgumentException("Product IDs cannot be null or empty.");
+            }
+
+            // Fetch the existing order
+            var order = _orderRepository.GetById(orderId);
+            if (order == null)
+            {
+                throw new InvalidOperationException("Order not found.");
+            }
+
+            // Fetch the order products to be removed
+            var orderProductsToRemove = order.OrderProducts
+                .Where(op => productIds.Contains(op.ProductId))
+                .ToList();
+
+            if (orderProductsToRemove.Count == 0)
+            {
+                throw new InvalidOperationException("No products found to remove.");
+            }
+
+            // Remove the products from the order
+            foreach (var orderProduct in orderProductsToRemove)
+            {
+                _opRepository.Delete(orderProduct.Id); // Assume this method exists
+            }
+
+            // Optionally, recalculate the total amount of the order
+            order.TotalAmount = order.OrderProducts.Sum(op => op.Product!.Price);
+            _orderRepository.Update(order);
+        }
+
 
         public void DeleteOrder(int id)
         {
@@ -84,7 +173,7 @@ namespace BusinessLogic.Services
             _orderRepository.Delete(id);
         }
 
-        public GetOrderDTO GetOrderById(int id)
+        public OrderDTO GetOrderById(int id)
         {
             if (id <= 0)
             {
@@ -97,10 +186,10 @@ namespace BusinessLogic.Services
                 throw new ArgumentNullException("Value is Null!");
             }
             
-            return _mapper.Map<GetOrderDTO>(result);
+            return _mapper.Map<OrderDTO>(result);
         }
 
-        public List<GetOrderDTO> GetOrders()
+        public List<OrderDTO> GetOrders()
         {
             var result = _orderRepository.GetAll();
             if (result == null)
@@ -108,7 +197,7 @@ namespace BusinessLogic.Services
                 throw new ArgumentNullException("Value is Null!");
             }
             
-            return _mapper.Map<List<GetOrderDTO>>(result);
+            return _mapper.Map<List<OrderDTO>>(result);
         }
     }
 }

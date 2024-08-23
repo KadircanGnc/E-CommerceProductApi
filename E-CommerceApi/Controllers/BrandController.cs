@@ -2,19 +2,25 @@
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("[controller]s")]
+    [Route("api/brand")]
+    [ApiController]
     public class BrandController : ControllerBase
     {
         private readonly BrandService _brandService;
-        public BrandController(BrandService brandService)
+        private readonly IValidator<BrandDTO> _brandValidator;
+        public BrandController(BrandService brandService, IValidator<BrandDTO> validator)
         {
             _brandService = brandService;
+            _brandValidator = validator;
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet("AllBrands")]
         public List<BrandDTO> GetAllBrands()
         {
             var result = _brandService.GetBrands();
@@ -25,7 +31,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("Brand")]        
         public IActionResult CreateBrand([FromBody] BrandDTO entity)
         {
             try
@@ -39,7 +45,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("/ByBrand{id}")]
         public IActionResult UpdateBrand(int id, [FromBody] BrandDTO entity)
         {
             if (id != entity.Id)
@@ -58,7 +64,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/ByBrand{id}")]
         public IActionResult DeleteBrand(int id)
         {
             try
@@ -72,7 +78,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/ByBrand{id}")]
         public BrandDTO GetBrandById(int id)
         {
             var result = _brandService.GetById(id);
