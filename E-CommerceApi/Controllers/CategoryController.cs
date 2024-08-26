@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("api/category")]
+    [Route("categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace E_CommerceApi.Controllers
             _validator = validator;
         }
 
-        [HttpGet("AllCategories")]
+        [HttpGet]
         public List<CategoryDTO> GetAllCategories()
         {
             var result = _categoryService.GetCategories();
@@ -29,7 +29,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost("Category")]
+        [HttpPost]
         public IActionResult CreateCategory([FromBody] CategoryDTO entity)
         {
             try
@@ -43,7 +43,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("/ByCategory{id}")]
+        [HttpPut("/byCategory{id}")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO entity)
         {
             if (id != entity.Id)
@@ -62,7 +62,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("/ByCategory{id}")]
+        [HttpDelete("/byCategory{id}")]
         public IActionResult DeleteCategory(int id)
         {
             try
@@ -76,7 +76,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/ByCategory{id}")]
+        [HttpGet("/byCategory{id}")]
         public CategoryDTO GetCategoryById(int id)
         {
             var result = _categoryService.GetCategoryById(id);

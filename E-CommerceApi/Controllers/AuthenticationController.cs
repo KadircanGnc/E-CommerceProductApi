@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-[Route("api/Authentication")]
+[Route("login")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
@@ -16,7 +16,7 @@ public class AuthenticationController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [HttpPost("login")]
+    [HttpPost]
     public IActionResult Login(string userName, string password)
     {
         // Replace with your own user validation logic

@@ -9,10 +9,7 @@ namespace DataAccess.Repositories
     {
         
 
-        public OrderProductRepository(ECommerceDbContext context) : base(context)
-        {
-
-        }
+        public OrderProductRepository(ECommerceDbContext context) : base(context) { }       
 
         public void AddOrderProduct(OrderProduct orderProduct)
         {

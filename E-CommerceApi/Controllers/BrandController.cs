@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("api/brand")]
+    [Route("brands")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("AllBrands")]
+        [HttpGet]
         public List<BrandDTO> GetAllBrands()
         {
             var result = _brandService.GetBrands();
@@ -31,7 +31,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost("Brand")]        
+        [HttpPost]        
         public IActionResult CreateBrand([FromBody] BrandDTO entity)
         {
             try
@@ -45,7 +45,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("/ByBrand{id}")]
+        [HttpPut("/byBrand{id}")]
         public IActionResult UpdateBrand(int id, [FromBody] BrandDTO entity)
         {
             if (id != entity.Id)
@@ -64,7 +64,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("/ByBrand{id}")]
+        [HttpDelete("/byBrand{id}")]
         public IActionResult DeleteBrand(int id)
         {
             try
@@ -78,7 +78,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/ByBrand{id}")]
+        [HttpGet("/byBrand{id}")]
         public BrandDTO GetBrandById(int id)
         {
             var result = _brandService.GetById(id);

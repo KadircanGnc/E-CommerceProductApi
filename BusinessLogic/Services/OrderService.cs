@@ -9,159 +9,73 @@ namespace BusinessLogic.Services
 {
     public class OrderService
     {
-        private readonly OrderRepository _orderRepository;  
+        private readonly OrderRepository _orderRepository;
+        private readonly CartRepository _cartRepository;
         private readonly ProductRepository _productRepository;
         private readonly OrderProductRepository _opRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(OrderRepository orderRepository, IMapper mapper, ProductRepository productRepository, OrderProductRepository op)
+        public OrderService(OrderRepository orderRepository, IMapper mapper, ProductRepository productRepository, OrderProductRepository op, CartRepository cartRepository)
         {
             _orderRepository = orderRepository;         
             _productRepository = productRepository;
+            _cartRepository = cartRepository;
             _opRepository = op;
             _mapper = mapper;
         }
 
-        public void CreateOrderWithProducts(List<int> productIds)
+        public void PlaceOrder(int cartId)
         {
-            if (productIds == null || productIds.Count == 0)
+            if (cartId <= 0)
             {
-                throw new ArgumentException("Product IDs cannot be null or empty!");
+                throw new ArgumentException("Invalid cart ID.");
             }
 
-            // Create a new order with the current date
+            // Fetch the cart
+            var cart = _cartRepository.GetById(cartId);
+            if (cart == null)
+            {
+                throw new InvalidOperationException("Cart not found.");
+            }
+
+            // Create a new order
             var order = new Order
             {
-                CreateDate = DateTime.UtcNow
+                CreateDate = DateTime.UtcNow,
+                UserId = cart.UserId,
+                TotalAmount = cart.TotalPrice // Assuming cart has the total price calculated
             };
 
             _orderRepository.Create(order);
 
-            // Fetch products based on IDs
-            var products = _productRepository.GetProductsByIds(productIds);
-            if (products == null || products.Count == 0)
-            {
-                throw new InvalidOperationException("No products found for the given IDs.");
-            }
-
-            // Add products to the newly created order through OrderProduct
-            foreach (var product in products)
+            // Add cart items to the order through OrderProduct
+            foreach (var cartItem in cart.CartItems!)
             {
                 // Check if there is enough stock
-                if (product.StockCount <= 0)
+                var product = _productRepository.GetById(cartItem.ProductId);
+                if (product == null || product.StockCount < cartItem.Quantity)
                 {
-                    throw new InvalidOperationException($"Product '{product.Name}' is out of stock.");
+                    throw new InvalidOperationException($"Product '{product?.Name}' is out of stock.");
                 }
 
                 // Decrease the stock count
-                product.StockCount -= 1;
-
-                // Update the product in the repository
+                product.StockCount -= cartItem.Quantity;
                 _productRepository.Update(product);
 
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
-                    ProductId = product.Id
+                    ProductId = cartItem.ProductId                    
                 };
 
                 _opRepository.Create(orderProduct);
             }
 
-            // Calculate the total amount of the order
-            order.TotalAmount = products.Sum(p => p.Price);
-
-            // Update the order with the total amount
-            _orderRepository.Update(order);
-        }
-        
-
-        public void AddProductsToOrder(int orderId, List<int> productIds)
-        {
-            if (orderId <= 0)
-            {
-                throw new ArgumentException("Invalid order ID.");
-            }
-
-            if (productIds == null || productIds.Count == 0)
-            {
-                throw new ArgumentException("Product IDs cannot be null or empty.");
-            }
-
-            // Fetch the existing order
-            var order = _orderRepository.GetById(orderId);
-            if (order == null)
-            {
-                throw new InvalidOperationException("Order not found.");
-            }
-
-            // Fetch the products to add
-            var products = _productRepository.GetProductsByIds(productIds);
-            if (products == null || products.Count == 0)
-            {
-                throw new InvalidOperationException("No products found for the given IDs.");
-            }
-
-            // Add products to the existing order
-            foreach (var product in products)
-            {
-                // Check if the product is already associated with the order
-                if (!order.OrderProducts.Any(op => op.ProductId == product.Id))
-                {
-                    var orderProduct = new OrderProduct
-                    {
-                        OrderId = order.Id,
-                        ProductId = product.Id
-                    };
-
-                    _opRepository.Create(orderProduct);
-                }
-            }
-
-            // Optionally, recalculate the total amount of the order
-            order.TotalAmount = order.OrderProducts.Sum(op => op.Product!.Price);
-            _orderRepository.Update(order);
-        }
-
-        public void RemoveProductsFromOrder(int orderId, List<int> productIds)
-        {
-            if (orderId <= 0)
-            {
-                throw new ArgumentException("Invalid order ID.");
-            }
-
-            if (productIds == null || productIds.Count == 0)
-            {
-                throw new ArgumentException("Product IDs cannot be null or empty.");
-            }
-
-            // Fetch the existing order
-            var order = _orderRepository.GetById(orderId);
-            if (order == null)
-            {
-                throw new InvalidOperationException("Order not found.");
-            }
-
-            // Fetch the order products to be removed
-            var orderProductsToRemove = order.OrderProducts
-                .Where(op => productIds.Contains(op.ProductId))
-                .ToList();
-
-            if (orderProductsToRemove.Count == 0)
-            {
-                throw new InvalidOperationException("No products found to remove.");
-            }
-
-            // Remove the products from the order
-            foreach (var orderProduct in orderProductsToRemove)
-            {
-                _opRepository.Delete(orderProduct.Id); // Assume this method exists
-            }
-
-            // Optionally, recalculate the total amount of the order
-            order.TotalAmount = order.OrderProducts.Sum(op => op.Product!.Price);
-            _orderRepository.Update(order);
-        }
+            // Clear the cart
+            cart.CartItems.Clear();
+            cart.TotalPrice = 0;
+            _cartRepository.Update(cart);
+        }              
 
 
         public void DeleteOrder(int id)

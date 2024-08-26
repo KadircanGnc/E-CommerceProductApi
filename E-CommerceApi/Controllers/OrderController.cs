@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("api/order")]
+    [Route("orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace E_CommerceApi.Controllers
                _validator = validator;
         }
 
-        [HttpGet("AllOrders")]
+        [HttpGet]
         public List<OrderDTO> GetAllOrders()
         {
             var result = _orderService.GetOrders();
@@ -29,58 +29,26 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost("Order")]
-        public IActionResult CreateOrder([FromBody] List<int> productIds)
+        [HttpPost]
+        public IActionResult PlaceOrder([FromBody] int cartId)
         {
-            if (productIds == null || productIds.Count == 0)
+            if (cartId <= 0)
             {
-                return BadRequest("Product IDs cannot be null or empty.");
+                return BadRequest("Cart ID cannot be null or empty.");
             }
 
             try
             {
-                _orderService.CreateOrderWithProducts(productIds);
-                return Ok("Order created and products added successfully.");
+                _orderService.PlaceOrder(cartId);
+                return Ok("Order created successfully.");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        } 
+        }               
 
-        [HttpPut("/AddProductToOrder")]
-        public IActionResult AddProductToOrder(int orderId,[FromBody] List<int> productIds)
-        {
-            if (orderId <= 0)
-                return BadRequest("Invalid ID!");
-            try
-            {
-                _orderService.AddProductsToOrder(orderId, productIds);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut("/RemoveProductFromOrder")]
-        public IActionResult RemoveProductFromOrder(int orderId, [FromBody] List<int> productIds)
-        {
-            if (orderId <= 0)
-                return BadRequest("Invalid ID!");
-            try
-            {
-                _orderService.RemoveProductsFromOrder(orderId, productIds);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpDelete("/ByOrder{id}")]
+        [HttpDelete("/byOrder{id}")]
         public IActionResult DeleteOrder(int id)
         {
             try
@@ -94,7 +62,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/ByOrder{id}")]
+        [HttpGet("/byOrder{id}")]
         public OrderDTO GetOrderById(int id)
         {
             var result = _orderService.GetOrderById(id);

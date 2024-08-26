@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("api/User")]
+    [Route("users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace E_CommerceApi.Controllers
             _validator = validator;
         }
 
-        [HttpGet("AllUsers")]
+        [HttpGet]
         public List<UserDTO> GetAllUsers()
         {
             var allUsers = _userService.GetUsers();
@@ -28,7 +28,7 @@ namespace E_CommerceApi.Controllers
             return allUsers;
         }
 
-        [HttpPost("User")]
+        [HttpPost]
         public IActionResult CreateUser([FromBody] UserDTO entity)
         {
             try
@@ -42,7 +42,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("/ByUser{id}")]
+        [HttpPut("/byUser{id}")]
         public IActionResult UpdateUser(int id, [FromBody] UserDTO entity)
         {
             if (id != entity.Id)
@@ -60,7 +60,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("/ByUser{id}")]
+        [HttpDelete("/byUser{id}")]
         public IActionResult DeleteUser(int id)
         {
             try
@@ -73,7 +73,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/ByUser{id}")]
+        [HttpGet("/byUser{id}")]
         public UserDTO GetUserById(int id)
         {
             if (id == 0)
@@ -82,7 +82,7 @@ namespace E_CommerceApi.Controllers
             return(_userService.GetById(id));            
         }        
 
-        [HttpGet("/OrdersByUser{id}")]
+        [HttpGet("/ordersByUser{id}")]
         public List<ProductDTO> GetUserOrdersById(int id)
         {
             var userOrders = _userService.GetOrdersByUserId(id);

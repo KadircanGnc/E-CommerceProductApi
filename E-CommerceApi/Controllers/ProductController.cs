@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("api/product")]
+    [Route("products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace E_CommerceApi.Controllers
             _validator = validator;
         }
 
-        [HttpGet("AllProducts")]
+        [HttpGet]
         public List<ProductDTO> GetAllProducts()
         {
             var result = _service.GetProducts();
@@ -29,7 +29,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpPost("Product")]
+        [HttpPost]
         public IActionResult CreateProduct([FromBody] ProductDTO entity)
         {
             try
@@ -43,7 +43,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpPut("/ByProduct{id}")]
+        [HttpPut("/byProduct{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] ProductDTO entity)
         {
             if (id != entity.Id)
@@ -62,7 +62,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpDelete("/ByProduct{id}")]
+        [HttpDelete("/byProduct{id}")]
         public IActionResult DeleteProduct(int id)
         {
             try
@@ -76,7 +76,7 @@ namespace E_CommerceApi.Controllers
             }
         }
 
-        [HttpGet("/ByProduct{id}")]
+        [HttpGet("/byProduct{id}")]
         public ProductDTO GetProductById(int id)
         {
             var result = _service.GetById(id);
@@ -87,7 +87,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpGet("/ProductByCategory{categoryId}")]
+        [HttpGet("/productByCategory{categoryId}")]
         public List<ProductDTO> GetProductsByCategoryId(int categoryId)
         {
             var result = _service.GetProductsByCategoryId(categoryId);
@@ -98,7 +98,7 @@ namespace E_CommerceApi.Controllers
             return result;
         }
 
-        [HttpGet("/ProductByPriceRange")]
+        [HttpGet("/productByPriceRange")]
         public List<ProductDTO> GetProductsByRange(double minValue, double maxValue)
         {
             var result = _service.GetProductsByRange(minValue, maxValue);
