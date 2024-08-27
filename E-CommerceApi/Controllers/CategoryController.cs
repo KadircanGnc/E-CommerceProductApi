@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("categories")]
+    [Route("[Controller]s")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -19,72 +19,51 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet]
-        public List<CategoryDTO> GetAllCategories()
+        public IActionResult GetAll()
         {
-            var result = _categoryService.GetCategories();
+            var result = _categoryService.GetAll();
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                return BadRequest("Invalid Value!");
             }
-            return result;
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult CreateCategory([FromBody] CategoryDTO entity)
+        public IActionResult Create([FromBody] CategoryDTO entity)
         {
-            try
-            {
-                _categoryService.CreateCategory(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _categoryService.Create(entity);
+            return Ok();
         }
 
-        [HttpPut("/byCategory{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO entity)
+        [HttpPut(("by-id"))]
+        public IActionResult Update(int id, [FromBody] CategoryDTO entity)
         {
             if (id != entity.Id)
             {
                 return BadRequest("ID mismatch.");
             }
 
-            try
-            {
-                _categoryService.UpdateCategory(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _categoryService.Update(entity);
+            return Ok();
         }
 
-        [HttpDelete("/byCategory{id}")]
-        public IActionResult DeleteCategory(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                _categoryService.DeleteCategory(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _categoryService.Delete(id);
+            return Ok();
         }
 
-        [HttpGet("/byCategory{id}")]
-        public CategoryDTO GetCategoryById(int id)
+        [HttpGet("by-id{id}")]
+        public IActionResult GetById(int id)
         {
-            var result = _categoryService.GetCategoryById(id);
+            var result = _categoryService.GetById(id);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
     }
 }

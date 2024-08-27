@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("products")]
+    [Route("[Controller]s")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -19,94 +19,73 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet]
-        public List<ProductDTO> GetAllProducts()
+        public IActionResult GetAll()
         {
-            var result = _service.GetProducts();
+            var result = _service.GetAll();
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid value!");
+                return BadRequest("Invalid value!");
             }
-            return result;
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] ProductDTO entity)
+        public IActionResult Create([FromBody] ProductDTO entity)
         {
-            try
-            {
-                _service.CreateProduct(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _service.Create(entity);
+            return Ok();
         }
 
-        [HttpPut("/byProduct{id}")]
-        public IActionResult UpdateProduct(int id, [FromBody] ProductDTO entity)
+        [HttpPut("by-id")]
+        public IActionResult Update(int id, [FromBody] ProductDTO entity)
         {
             if (id != entity.Id)
             {
                 return BadRequest("ID mismatch.");
             }
 
-            try
-            {
-                _service.UpdateProduct(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _service.Update(entity);
+            return Ok();
         }
 
-        [HttpDelete("/byProduct{id}")]
-        public IActionResult DeleteProduct(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                _service.DeleteProduct(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _service.Delete(id);
+            return Ok();
         }
 
-        [HttpGet("/byProduct{id}")]
-        public ProductDTO GetProductById(int id)
+        [HttpGet("by-id{id}")]
+        public IActionResult GetById(int id)
         {
             var result = _service.GetById(id);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
 
-        [HttpGet("/productByCategory{categoryId}")]
-        public List<ProductDTO> GetProductsByCategoryId(int categoryId)
+        [HttpGet("by-category-id{categoryId}")]
+        public IActionResult GetByCategoryId(int categoryId)
         {
-            var result = _service.GetProductsByCategoryId(categoryId);
+            var result = _service.GetByCategoryId(categoryId);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
 
-        [HttpGet("/productByPriceRange")]
-        public List<ProductDTO> GetProductsByRange(double minValue, double maxValue)
+        [HttpGet("by-price-range")]
+        public IActionResult GetByRange(double minValue, double maxValue)
         {
-            var result = _service.GetProductsByRange(minValue, maxValue);
+            var result = _service.GetByRange(minValue, maxValue);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
     }
 }

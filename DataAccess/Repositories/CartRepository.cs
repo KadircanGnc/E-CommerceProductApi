@@ -24,10 +24,12 @@ namespace DataAccess.Repositories
 
         public override Cart GetById(int id)
         {
-            return _context.Carts
-                .Include(c => c.CartItems)  
-                .ThenInclude(ci => ci.Product)  
+            var result = _context.Carts
+                .Include(c => c.CartItems!)
+                .ThenInclude(ci => ci.Product)
                 .FirstOrDefault(c => c.Id == id);
+
+            return result!;
         }
     }
 }

@@ -17,9 +17,11 @@ namespace DataAccess.Repositories
         }
         public override Brand GetById(int id)
         {
-            return _context.Brands
+            var result = _context.Brands
                 .Include(b => b.Products)
                 .FirstOrDefault(b => b.Id == id);
+
+            return result!;
         }
         public override List<Brand> GetAll()
         {

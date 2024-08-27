@@ -18,7 +18,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void CreateUser(UserDTO userDTO)
+        public void Create(UserDTO userDTO)
         {
             if (userDTO == null)
                 throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
@@ -27,7 +27,7 @@ namespace BusinessLogic.Services
             _userRepo.Create(user);
         }
 
-        public void UpdateUser(UserDTO userDTO)
+        public void Update(UserDTO userDTO)
         {
             if (userDTO == null)
                 throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
@@ -42,7 +42,7 @@ namespace BusinessLogic.Services
             _userRepo.Update(user);
         }
 
-        public void DeleteUser(int id)
+        public void Delete(int id)
         {
             if (id <= 0)
             {
@@ -67,7 +67,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public List<UserDTO> GetUsers()
+        public List<UserDTO> GetAll()
         {
             var users = _userRepo.GetAll();
             if (users == null || !users.Any())

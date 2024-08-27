@@ -24,7 +24,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void PlaceOrder(int cartId)
+        public void Create(int cartId)
         {
             if (cartId <= 0)
             {
@@ -78,7 +78,7 @@ namespace BusinessLogic.Services
         }              
 
 
-        public void DeleteOrder(int id)
+        public void Delete(int id)
         {
             if (id <= 0)
             {
@@ -87,7 +87,7 @@ namespace BusinessLogic.Services
             _orderRepository.Delete(id);
         }
 
-        public OrderDTO GetOrderById(int id)
+        public OrderDTO GetById(int id)
         {
             if (id <= 0)
             {
@@ -103,7 +103,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<OrderDTO>(result);
         }
 
-        public List<OrderDTO> GetOrders()
+        public List<OrderDTO> GetAll()
         {
             var result = _orderRepository.GetAll();
             if (result == null)

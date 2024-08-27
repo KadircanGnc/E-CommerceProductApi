@@ -19,7 +19,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void CreateProduct(ProductDTO productDTO)
+        public void Create(ProductDTO productDTO)
         {
             if (productDTO == null)
             {
@@ -30,7 +30,7 @@ namespace BusinessLogic.Services
             _productRepo.Create(product);
         }
 
-        public void UpdateProduct(ProductDTO productDTO)
+        public void Update(ProductDTO productDTO)
         {
             if (productDTO == null)
             {
@@ -47,7 +47,7 @@ namespace BusinessLogic.Services
             _productRepo.Update(product);
         }
 
-        public void DeleteProduct(int id)
+        public void Delete(int id)
         {
             if (id <= 0)
             {
@@ -72,7 +72,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<ProductDTO>(product);
         }
 
-        public List<ProductDTO> GetProducts()
+        public List<ProductDTO> GetAll()
         {
             var products = _productRepo.GetAll();
             if (products == null || !products.Any())
@@ -83,7 +83,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<ProductDTO>>(products);
         }
 
-        public List<ProductDTO> GetProductsByCategoryId(int categoryId)
+        public List<ProductDTO> GetByCategoryId(int categoryId)
         {
             if (categoryId <= 0)
             {
@@ -99,7 +99,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<ProductDTO>>(products);
         }
 
-        public List<ProductDTO> GetProductsByRange(double minValue, double maxValue)
+        public List<ProductDTO> GetByRange(double minValue, double maxValue)
         {
             if (minValue < 0 || maxValue < minValue)
             {

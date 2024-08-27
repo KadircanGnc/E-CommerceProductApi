@@ -19,7 +19,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void CreateCategory(CategoryDTO categoryDTO)
+        public void Create(CategoryDTO categoryDTO)
         {
             if (categoryDTO == null)
             {
@@ -29,7 +29,7 @@ namespace BusinessLogic.Services
             _categoryRepo.Create(category);
         }
 
-        public void UpdateCategory(CategoryDTO categoryDTO)
+        public void Update(CategoryDTO categoryDTO)
         {
             if (categoryDTO == null)
             {
@@ -39,7 +39,7 @@ namespace BusinessLogic.Services
             _categoryRepo.Update(category);
         }
 
-        public void DeleteCategory(int id)
+        public void Delete(int id)
         {
             if (id <= 0)
             {
@@ -48,7 +48,7 @@ namespace BusinessLogic.Services
             _categoryRepo.Delete(id);
         }
 
-        public CategoryDTO GetCategoryById(int id)
+        public CategoryDTO GetById(int id)
         {
             if (id <= 0)
             {
@@ -62,7 +62,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<CategoryDTO>(category);
         }
 
-        public List<CategoryDTO> GetCategories()
+        public List<CategoryDTO> GetAll()
         {
             var categories = _categoryRepo.GetAll();
             if (categories == null || !categories.Any())

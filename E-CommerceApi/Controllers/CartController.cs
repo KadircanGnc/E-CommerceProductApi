@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("carts")]
+    [Route("[Controller]s")]
     [ApiController]
     public class CartController : ControllerBase
     {
@@ -14,99 +14,59 @@ namespace E_CommerceApi.Controllers
             _cartService = cartService;
         }
 
-        [HttpPost("addItems")]
-        public IActionResult AddItemsToCart(int userId,[FromBody] List<int> productIds)
+        [HttpPost("add-items")]
+        public IActionResult AddItems(int userId,[FromBody] List<int> productIds)
         {
             if (userId <= 0 || productIds.Count <= 0)
             {
                 return BadRequest("Product IDs cannot be null or empty.");
             }
 
-            try
-            {
-                _cartService.AddItemToCart(userId, productIds);
-                return Ok("Items added to cart successfully.");
-            }            
-            catch (Exception ex)
-            {                
-                return BadRequest(ex.Message);
-            }
+            _cartService.AddItems(userId, productIds);
+            return Ok("Items added to cart successfully.");
         }
 
-        [HttpPost("removeItems")]
-        public IActionResult RemoveItemsFromCart(int cartId, [FromBody] List<int> productIds)
+        [HttpPost("remove-items")]
+        public IActionResult RemoveItems(int cartId, [FromBody] List<int> productIds)
         {
             if (cartId <= 0 || productIds.Count <= 0)
             {
                 return BadRequest("Product IDs cannot be null or empty.");
             }
 
-            try
-            {
-                _cartService.RemoveItemFromCart(cartId, productIds);
-                return Ok("Items removed from cart successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _cartService.RemoveItems(cartId, productIds);
+            return Ok("Items removed from cart successfully.");
         }
 
         [HttpPost("clear{cartId}")]
-        public IActionResult ClearCart(int cartId)
+        public IActionResult Clear(int cartId)
         {
             if (cartId <= 0)
             {
                 return BadRequest("Invalid cart ID.");
             }
 
-            try
-            {
-                _cartService.ClearCart(cartId);
-                return Ok("Cart cleared successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
+            _cartService.Clear(cartId);
+            return Ok("Cart cleared successfully.");
         }
 
-        [HttpGet("{cartId}")]
-        public IActionResult GetCart(int cartId)
+        [HttpGet]
+        public IActionResult GetById(int cartId)
         {
-            if (cartId <= 0)
+            var cart = _cartService.GetById(cartId);
+            if (cart == null)
             {
-                return BadRequest("Invalid cart ID.");
+                return NotFound("Cart not found.");
             }
 
-            try
-            {
-                var cart = _cartService.GetCartById(cartId);
-                if (cart == null)
-                {
-                    return NotFound("Cart not found.");
-                }
-
-                return Ok(cart);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
+            return Ok(cart);
         }
 
-        [HttpGet("user/{userId}")]
-        public ActionResult<CartDTO> GetCartByUserId(int userId)
+        [HttpGet("get-by-user-id{userId}")]
+        public IActionResult GetByUserId(int userId)
         {
-            try
-            {
-                var cart = _cartService.GetCartByUserId(userId);
-                return Ok(cart);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }            
+            var cart = _cartService.GetByUserId(userId);
+            return Ok(cart);
         }
     }
 }

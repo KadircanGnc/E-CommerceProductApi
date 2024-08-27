@@ -18,10 +18,12 @@ namespace DataAccess.Repositories
 
         public override Order GetById(int id)
         {
-            return _context.Orders
-                .Include(o => o.OrderProducts)  
-                    .ThenInclude(op => op.Product)  
+            var result = _context.Orders
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
                 .FirstOrDefault(o => o.Id == id);
+
+            return result!;
 
         }
         public override List<Order> GetAll()

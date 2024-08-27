@@ -19,7 +19,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void AddOrderProduct(OrderProductDTO orderProductDTO)
+        public void Add(OrderProductDTO orderProductDTO)
         {
             if (orderProductDTO == null)
             {
@@ -27,10 +27,10 @@ namespace BusinessLogic.Services
             }
 
             var orderProduct = _mapper.Map<OrderProduct>(orderProductDTO);
-            _orderProductRepo.AddOrderProduct(orderProduct);
+            _orderProductRepo.Add(orderProduct);
         }
 
-        public void UpdateOrderProducts(int orderId, List<OrderProductDTO> orderProductDTOs)
+        public void Update(int orderId, List<OrderProductDTO> orderProductDTOs)
         {
             if (orderId <= 0)
             {
@@ -38,7 +38,7 @@ namespace BusinessLogic.Services
             }
 
             // Remove existing order-product associations
-            _orderProductRepo.RemoveOrderProductsByOrderId(orderId);
+            _orderProductRepo.RemoveByOrderId(orderId);
 
             // Add new order-product associations
             foreach (var dto in orderProductDTOs)
@@ -49,11 +49,11 @@ namespace BusinessLogic.Services
                 }
 
                 var orderProduct = _mapper.Map<OrderProduct>(dto);
-                _orderProductRepo.AddOrderProduct(orderProduct);
+                _orderProductRepo.Add(orderProduct);
             }
         }
 
-        public List<OrderProductDTO> GetOrderProductsByOrderId(int orderId)
+        public List<OrderProductDTO> GetByOrderId(int orderId)
         {
             if (orderId <= 0)
             {
@@ -64,7 +64,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<OrderProductDTO>>(orderProducts);
         }
 
-        public List<OrderProductDTO> GetOrderProductsByProductId(int productId)
+        public List<OrderProductDTO> GetByProductId(int productId)
         {
             if (productId <= 0)
             {

@@ -21,7 +21,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void CreateBrand(BrandDTO brandDTO)
+        public void Create(BrandDTO brandDTO)
         {
             if (brandDTO == null)
             {
@@ -31,7 +31,7 @@ namespace BusinessLogic.Services
             _brandRepo.Create(brand);
         }
 
-        public void UpdateBrand(BrandDTO brandDTO)
+        public void Update(BrandDTO brandDTO)
         {
             if (brandDTO == null)
             {
@@ -41,7 +41,7 @@ namespace BusinessLogic.Services
             _brandRepo.Update(brand);
         }
 
-        public void DeleteBrand(int id)
+        public void Delete(int id)
         {
             if (id <= 0)
             {
@@ -64,7 +64,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<BrandDTO>(brand);
         }
 
-        public List<BrandDTO> GetBrands()
+        public List<BrandDTO> GetAll()
         {
             var allBrands = _brandRepo.GetAll();
             if (allBrands == null || !allBrands.Any())

@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Authentication.Services;
 using Microsoft.OpenApi.Models;
+using E_CommerceApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,6 +125,8 @@ builder.Logging.AddConsole();
 
 var app = builder.Build();
 
+//Middleware
+app.UseMiddleware<ExceptionHandler>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

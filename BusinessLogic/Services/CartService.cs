@@ -22,7 +22,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void AddItemToCart(int userId, List<int> productIds)
+        public void AddItems(int userId, List<int> productIds)
         {
             if (productIds == null || productIds.Count == 0)
             {
@@ -52,7 +52,7 @@ namespace BusinessLogic.Services
             }
 
             // Fetch products based on IDs
-            var products = _productRepo.GetProductsByIds(productIds);
+            var products = _productRepo.GetByIds(productIds);
             if (products == null || products.Count == 0)
             {
                 throw new InvalidOperationException("No products found for the given IDs.");
@@ -82,14 +82,14 @@ namespace BusinessLogic.Services
                 else
                 {
                     cartItem.Quantity++;
-                    cartItem.Price = product.Price; // Update price if needed
+                    cartItem.Price = product.Price; // Update price
                 }
             }
 
             // Recalculate the total amount of the cart
             cart.TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity);
 
-            // Save the cart (create or update)
+            // Save the cart
             if (cart.Id <= 0)
             {
                 _cartRepo.Create(cart);
@@ -101,7 +101,7 @@ namespace BusinessLogic.Services
         }
 
 
-        public void RemoveItemFromCart(int cartId, List<int> productIds)
+        public void RemoveItems(int cartId, List<int> productIds)
         {
             if (cartId <= 0)
             {
@@ -134,7 +134,7 @@ namespace BusinessLogic.Services
             _cartRepo.Update(cart);
         }
 
-        public void ClearCart(int cartId)
+        public void Clear(int cartId)
         {
             if (cartId <= 0)
             {
@@ -154,7 +154,7 @@ namespace BusinessLogic.Services
             _cartRepo.Update(cart);
         }
 
-        public CartDTO GetCartById(int cartId)
+        public CartDTO GetById(int cartId)
         {
             if (cartId <= 0)
             {
@@ -172,7 +172,7 @@ namespace BusinessLogic.Services
             return cartDto;
         }
 
-        public CartDTO GetCartByUserId(int userId)
+        public CartDTO GetByUserId(int userId)
         {
             if (userId <= 0)
             {

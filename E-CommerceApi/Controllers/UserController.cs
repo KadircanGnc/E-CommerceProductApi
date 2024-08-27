@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("users")]
+    [Route("[Controller]s")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -19,77 +19,65 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet]
-        public List<UserDTO> GetAllUsers()
+        public IActionResult GetAll()
         {
-            var allUsers = _userService.GetUsers();
+            var allUsers = _userService.GetAll();
             if (allUsers == null)
-                throw new ArgumentNullException("No User Found");
+            {
+                return BadRequest("No User Found");
+            }               
 
-            return allUsers;
+            return Ok(allUsers);
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] UserDTO entity)
+        public IActionResult Create([FromBody] UserDTO entity)
         {
-            try
-            {
-                _userService.CreateUser(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _userService.Create(entity);
+            return Ok();
         }
 
-        [HttpPut("/byUser{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] UserDTO entity)
+        [HttpPut("by-id")]
+        public IActionResult Update(int id, [FromBody] UserDTO entity)
         {
             if (id != entity.Id)
             {
                 return BadRequest("ID mismatch!");
             }
-            try
-            {
-                _userService.UpdateUser(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            _userService.Update(entity);
+            return Ok();
         }
 
-        [HttpDelete("/byUser{id}")]
-        public IActionResult DeleteUser(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                _userService.DeleteUser(id);
-                return Ok();
-            } catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _userService.Delete(id);
+            return Ok();
         }
 
-        [HttpGet("/byUser{id}")]
-        public UserDTO GetUserById(int id)
+        [HttpGet("by-id{id}")]
+        public IActionResult GetById(int id)
         {
-            if (id == 0)
-                throw new ArgumentNullException("id");
+            var result = _userService.GetById(id);
+            if (result == null)
+            {
+                return BadRequest("Invalid value");
+            }                
 
-            return(_userService.GetById(id));            
+            return Ok(result);            
         }        
 
-        [HttpGet("/ordersByUser{id}")]
-        public List<ProductDTO> GetUserOrdersById(int id)
+        [HttpGet("orders-by-user-id")]
+        public IActionResult GetOrdersByUserId(int id)
         {
             var userOrders = _userService.GetOrdersByUserId(id);
             if (userOrders == null)
-                throw new ArgumentNullException("No Orders Found");
+            {
+                return BadRequest("No Orders Found");
+            }                
 
-            return userOrders;            
+            return Ok(userOrders);            
         } 
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("brands")]
+    [Route("[Controller]s")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -21,72 +21,51 @@ namespace E_CommerceApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public List<BrandDTO> GetAllBrands()
+        public IActionResult GetAll()
         {
-            var result = _brandService.GetBrands();
+            var result = _brandService.GetAll();
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                return BadRequest("Invalid Value!");
             }
-            return result;
+            return Ok(result);
         }
 
         [HttpPost]        
-        public IActionResult CreateBrand([FromBody] BrandDTO entity)
-        {
-            try
-            {
-                _brandService.CreateBrand(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        public IActionResult Create([FromBody] BrandDTO entity)
+        {            
+            _brandService.Create(entity);
+            return Ok();            
         }
 
-        [HttpPut("/byBrand{id}")]
-        public IActionResult UpdateBrand(int id, [FromBody] BrandDTO entity)
+        [HttpPut("by-id")]
+        public IActionResult Update(int id, [FromBody] BrandDTO entity)
         {
             if (id != entity.Id)
             {
                 return BadRequest("ID mismatch.");
             }
-
-            try
-            {
-                _brandService.UpdateBrand(entity);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            
+             _brandService.Update(entity);
+             return Ok();            
         }
 
-        [HttpDelete("/byBrand{id}")]
-        public IActionResult DeleteBrand(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                _brandService.DeleteBrand(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _brandService.Delete(id);
+            return Ok();
         }
 
-        [HttpGet("/byBrand{id}")]
-        public BrandDTO GetBrandById(int id)
+        [HttpGet("by-id{id}")]
+        public IActionResult GetById(int id)
         {
             var result = _brandService.GetById(id);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
     }
 }

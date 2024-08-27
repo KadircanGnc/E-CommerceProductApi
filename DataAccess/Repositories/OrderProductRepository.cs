@@ -11,13 +11,13 @@ namespace DataAccess.Repositories
 
         public OrderProductRepository(ECommerceDbContext context) : base(context) { }       
 
-        public void AddOrderProduct(OrderProduct orderProduct)
+        public void Add(OrderProduct orderProduct)
         {
             _context.OrderProducts.Add(orderProduct);
             _context.SaveChanges();
         }
 
-        public void RemoveOrderProductsByOrderId(int orderId)
+        public void RemoveByOrderId(int orderId)
         {
             var orderProducts = _context.OrderProducts.Where(op => op.OrderId == orderId).ToList();
             _context.OrderProducts.RemoveRange(orderProducts);

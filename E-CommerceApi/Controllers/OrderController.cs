@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace E_CommerceApi.Controllers
 {
-    [Route("orders")]
+    [Route("[Controller]s")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -19,58 +19,44 @@ namespace E_CommerceApi.Controllers
         }
 
         [HttpGet]
-        public List<OrderDTO> GetAllOrders()
+        public IActionResult GetAll()
         {
-            var result = _orderService.GetOrders();
+            var result = _orderService.GetAll();
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value!");
+                return BadRequest("Invalid Value!");
             }
-            return result;
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult PlaceOrder([FromBody] int cartId)
+        public IActionResult Create([FromBody] int cartId)
         {
             if (cartId <= 0)
             {
                 return BadRequest("Cart ID cannot be null or empty.");
             }
 
-            try
-            {
-                _orderService.PlaceOrder(cartId);
-                return Ok("Order created successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _orderService.Create(cartId);
+            return Ok("Order created successfully.");
         }               
 
-        [HttpDelete("/byOrder{id}")]
-        public IActionResult DeleteOrder(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                _orderService.DeleteOrder(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _orderService.Delete(id);
+            return Ok();
         }
 
-        [HttpGet("/byOrder{id}")]
-        public OrderDTO GetOrderById(int id)
+        [HttpGet("by-id{id}")]
+        public IActionResult GetById(int id)
         {
-            var result = _orderService.GetOrderById(id);
+            var result = _orderService.GetById(id);
             if (result == null)
             {
-                throw new ArgumentNullException("Invalid Value");
+                return BadRequest("Invalid Value");
             }
-            return result;
+            return Ok(result);
         }
     }
 }
