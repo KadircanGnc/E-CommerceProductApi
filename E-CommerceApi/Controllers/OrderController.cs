@@ -3,6 +3,7 @@ using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_CommerceApi.Controllers
 {
@@ -18,6 +19,7 @@ namespace E_CommerceApi.Controllers
                _validator = validator;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -29,6 +31,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Create([FromBody] int cartId)
         {
@@ -39,8 +42,9 @@ namespace E_CommerceApi.Controllers
 
             _orderService.Create(cartId);
             return Ok("Order created successfully.");
-        }               
+        }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -48,6 +52,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("by-id{id}")]
         public IActionResult GetById(int id)
         {

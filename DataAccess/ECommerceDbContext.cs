@@ -21,7 +21,7 @@ namespace DataAccess
 
         public ECommerceDbContext(DbContextOptions options) : base(options)
         {
-
+            
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            

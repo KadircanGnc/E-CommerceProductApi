@@ -58,6 +58,7 @@ namespace E_CommerceApi.Middlewares
                     message = exception.Message;
                     break;                
                 default:
+                    statusCode = HttpStatusCode.BadRequest;
                     message = "An unexpected error occurred.";
                     break;
             }

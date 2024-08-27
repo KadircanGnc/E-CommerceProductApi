@@ -120,13 +120,15 @@ builder.Services.AddScoped<OrderProductService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDb")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//For accessing jwts
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Logging.AddConsole();
 
 var app = builder.Build();
 
-//Middleware
-app.UseMiddleware<ExceptionHandler>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -138,11 +140,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // Date time config for postresql
 
+/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-}
-
+}*/
+//Middleware
+app.UseMiddleware<ExceptionHandler>();
 
 app.UseRouting();
 // Use authentication and authorization

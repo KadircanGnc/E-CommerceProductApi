@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_CommerceApi.Controllers
@@ -14,46 +15,45 @@ namespace E_CommerceApi.Controllers
             _cartService = cartService;
         }
 
+        [Authorize(Roles = "admin,user")]
         [HttpPost("add-items")]
-        public IActionResult AddItems(int userId,[FromBody] List<int> productIds)
+        public IActionResult AddItems([FromBody] List<int> productIds)
         {
-            if (userId <= 0 || productIds.Count <= 0)
+            if (productIds.Count <= 0)
             {
                 return BadRequest("Product IDs cannot be null or empty.");
             }
 
-            _cartService.AddItems(userId, productIds);
+            _cartService.AddItems(productIds);
             return Ok("Items added to cart successfully.");
         }
 
+        [Authorize(Roles = "admin,user")]
         [HttpPost("remove-items")]
-        public IActionResult RemoveItems(int cartId, [FromBody] List<int> productIds)
+        public IActionResult RemoveItems([FromBody] List<int> productIds)
         {
-            if (cartId <= 0 || productIds.Count <= 0)
+            if (productIds.Count <= 0)
             {
                 return BadRequest("Product IDs cannot be null or empty.");
             }
 
-            _cartService.RemoveItems(cartId, productIds);
+            _cartService.RemoveItems(productIds);
             return Ok("Items removed from cart successfully.");
         }
 
+        [Authorize(Roles = "admin,user")]
         [HttpPost("clear{cartId}")]
-        public IActionResult Clear(int cartId)
-        {
-            if (cartId <= 0)
-            {
-                return BadRequest("Invalid cart ID.");
-            }
-
-            _cartService.Clear(cartId);
+        public IActionResult Clear()
+        {           
+            _cartService.Clear();
             return Ok("Cart cleared successfully.");
         }
 
+        [Authorize(Roles = "admin,user")]
         [HttpGet]
-        public IActionResult GetById(int cartId)
+        public IActionResult Get()
         {
-            var cart = _cartService.GetById(cartId);
+            var cart = _cartService.Get();
             if (cart == null)
             {
                 return NotFound("Cart not found.");
@@ -62,6 +62,7 @@ namespace E_CommerceApi.Controllers
             return Ok(cart);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("get-by-user-id{userId}")]
         public IActionResult GetByUserId(int userId)
         {

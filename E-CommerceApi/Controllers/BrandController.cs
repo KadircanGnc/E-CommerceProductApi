@@ -10,7 +10,7 @@ namespace E_CommerceApi.Controllers
     [Route("[Controller]s")]
     [ApiController]
     public class BrandController : ControllerBase
-    {
+    {        
         private readonly BrandService _brandService;
         private readonly IValidator<BrandDTO> _brandValidator;
         public BrandController(BrandService brandService, IValidator<BrandDTO> validator)
@@ -19,7 +19,7 @@ namespace E_CommerceApi.Controllers
             _brandValidator = validator;
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin,user")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -31,6 +31,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]        
         public IActionResult Create([FromBody] BrandDTO entity)
         {            
@@ -38,6 +39,7 @@ namespace E_CommerceApi.Controllers
             return Ok();            
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("by-id")]
         public IActionResult Update(int id, [FromBody] BrandDTO entity)
         {
@@ -50,6 +52,7 @@ namespace E_CommerceApi.Controllers
              return Ok();            
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -57,6 +60,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "admin,user")]
         [HttpGet("by-id{id}")]
         public IActionResult GetById(int id)
         {

@@ -23,6 +23,7 @@ namespace E_CommerceApi
                     Name = "Kadir Can",
                     Email = "kdrcng@gmail.com",
                     Password = "111",
+                    Role = "admin",
                     Address = "Antalya"                    
                 });
                 context.Users.Add(new User
@@ -30,6 +31,7 @@ namespace E_CommerceApi
                     Name = "Hüseyin",
                     Email = "hüseyin@gmail.com",
                     Password = "111",
+                    Role = "user",
                     Address = "Antalya"
                 });
                 context.Users.Add(new User
@@ -37,6 +39,7 @@ namespace E_CommerceApi
                     Name = "Alihan",
                     Email = "alihan@gmail.com",
                     Password = "111",
+                    Role = "user",
                     Address = "Antalya"
                 });
                 context.SaveChanges();

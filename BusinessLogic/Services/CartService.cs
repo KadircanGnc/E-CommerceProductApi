@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BusinessLogic.Services
 {
@@ -15,15 +18,32 @@ namespace BusinessLogic.Services
         private readonly CartRepository _cartRepo;
         private readonly ProductRepository _productRepo;
         private readonly IMapper _mapper;
-        public CartService(CartRepository cartRepo, ProductRepository productRepo, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private int userId;
+
+        public CartService(CartRepository cartRepo, ProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _cartRepo = cartRepo;
             _productRepo = productRepo;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public void AddItems(int userId, List<int> productIds)
+        private int? GetUserIdFromToken()
         {
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.TryParse(userIdClaim, out var userId) ? userId : (int?)null;
+        }
+
+        public void AddItems(List<int> productIds)
+        {            
+            userId = GetUserIdFromToken()!.Value;
+
+            if (userId <= 0)
+            {
+                throw new UnauthorizedAccessException("User ID could not be retrieved from the token.");
+            }
+
             if (productIds == null || productIds.Count == 0)
             {
                 throw new ArgumentException("Product IDs cannot be null or empty!");
@@ -101,19 +121,14 @@ namespace BusinessLogic.Services
         }
 
 
-        public void RemoveItems(int cartId, List<int> productIds)
-        {
-            if (cartId <= 0)
-            {
-                throw new ArgumentException("Invalid cart ID.");
-            }
-
+        public void RemoveItems(List<int> productIds)
+        {            
             if (productIds == null || productIds.Count == 0)
             {
                 throw new ArgumentException("Product IDs cannot be null or empty.");
             }
             
-            var cart = _cartRepo.GetById(cartId);
+            var cart = _cartRepo.GetByUserId(userId);
             if (cart == null)
             {
                 throw new InvalidOperationException("Cart not found.");
@@ -134,8 +149,10 @@ namespace BusinessLogic.Services
             _cartRepo.Update(cart);
         }
 
-        public void Clear(int cartId)
+        public void Clear()
         {
+            var cartId = _cartRepo.GetByUserId(userId).Id;
+
             if (cartId <= 0)
             {
                 throw new ArgumentException("Invalid cart ID.");
@@ -154,8 +171,10 @@ namespace BusinessLogic.Services
             _cartRepo.Update(cart);
         }
 
-        public CartDTO GetById(int cartId)
+        public CartDTO Get()
         {
+            var cartId = _cartRepo.GetByUserId(userId).Id;
+
             if (cartId <= 0)
             {
                 throw new ArgumentException("Invalid cart ID.");

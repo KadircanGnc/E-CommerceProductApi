@@ -27,6 +27,7 @@ namespace E_CommerceApi.MappingProfiles
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product!.Price))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
+            
         }
     }
 }
