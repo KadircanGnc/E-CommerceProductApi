@@ -120,7 +120,7 @@ builder.Services.AddScoped<OrderProductService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDb")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//For accessing jwts
+
 builder.Services.AddHttpContextAccessor();
 
 

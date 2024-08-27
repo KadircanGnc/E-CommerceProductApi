@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Category : BaseModel
+    public abstract class BaseModel
     {
-        public string? Name { get; set; }        
-        public virtual List<Product> Products { get; set; } = new List<Product>();
+        [Key]
+        public int Id { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

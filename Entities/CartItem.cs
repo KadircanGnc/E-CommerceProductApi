@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class CartItem
-    {
-        public int Id { get; set; }
+    public class CartItem : BaseModel
+    {        
         public int Quantity { get; set; }    // Quantity of the product in the cart
         public double Price { get; set; }
         public int CartId { get; set; }      

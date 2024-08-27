@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Order
+    public class Order : BaseModel
     {
-        [Key]
-        public int Id { get; set; }
-        public DateTime CreateDate { get; set; }
         public double TotalAmount { get; set; }
         public int UserId { get; set; } = 1;
         public virtual User? User { get; set; }

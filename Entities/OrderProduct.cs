@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class OrderProduct
+    public class OrderProduct : BaseModel
     {
-        [Key]
-        public int Id { get; set; }
         [ForeignKey("Order")]
         public int OrderId { get; set; }
         [ForeignKey("Product")]
