@@ -3,7 +3,8 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using AutoMapper;
-using BusinessLogic.DTOs;
+using BusinessLogic.DTOs.Product;
+using BusinessLogic.DTOs.User;
 
 namespace BusinessLogic.Services
 {
@@ -18,27 +19,27 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void Create(UserDTO userDTO)
+        public void Create(CreateUserDTO createUserDTO)
         {
-            if (userDTO == null)
-                throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
+            if (createUserDTO == null)
+                throw new ArgumentNullException(nameof(createUserDTO), "Value is Null!");
 
-            var user = _mapper.Map<User>(userDTO);
+            var user = _mapper.Map<User>(createUserDTO);
             _userRepo.Create(user);
         }
 
-        public void Update(UserDTO userDTO)
+        public void Update(UpdateUserDTO updateUserDTO)
         {
-            if (userDTO == null)
-                throw new ArgumentNullException(nameof(userDTO), "Value is Null!");
+            if (updateUserDTO.Id <= 0)
+                throw new ArgumentNullException(nameof(updateUserDTO), "Value is Null!");
 
-            var existingUser = _userRepo.GetById(userDTO.Id);
+            var existingUser = _userRepo.GetById(updateUserDTO.Id);
             if (existingUser == null)
             {
                 throw new InvalidOperationException("User not found.");
             }
 
-            var user = _mapper.Map<User>(userDTO);
+            var user = _mapper.Map<User>(updateUserDTO);
             _userRepo.Update(user);
         }
 
@@ -51,7 +52,7 @@ namespace BusinessLogic.Services
             _userRepo.Delete(id);
         }
 
-        public UserDTO GetById(int id)
+        public GetUserDTO GetById(int id)
         {
             if (id <= 0)
             {
@@ -64,10 +65,10 @@ namespace BusinessLogic.Services
                 throw new KeyNotFoundException("User not found.");
             }
 
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<GetUserDTO>(user);
         }
 
-        public List<UserDTO> GetAll()
+        public List<GetUserDTO> GetAll()
         {
             var users = _userRepo.GetAll();
             if (users == null || !users.Any())
@@ -75,10 +76,10 @@ namespace BusinessLogic.Services
                 throw new KeyNotFoundException("No users found.");
             }
 
-            return _mapper.Map<List<UserDTO>>(users);
+            return _mapper.Map<List<GetUserDTO>>(users);
         }
 
-        public List<ProductDTO> GetOrdersByUserId(int userId)
+        public List<GetProductDTO> GetOrdersByUserId(int userId)
         {
             if (userId <= 0)
             {
@@ -91,7 +92,7 @@ namespace BusinessLogic.Services
                 throw new KeyNotFoundException("No products found for this user.");
             }
 
-            return _mapper.Map<List<ProductDTO>>(products);
+            return _mapper.Map<List<GetProductDTO>>(products);
         } 
     }
 }

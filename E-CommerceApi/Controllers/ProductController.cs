@@ -1,9 +1,9 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic.DTOs.Product;
 
 namespace E_CommerceApi.Controllers
 {
@@ -12,14 +12,14 @@ namespace E_CommerceApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductService _service;
-        private readonly IValidator<ProductDTO> _validator;
-        public ProductController(ProductService service, IValidator<ProductDTO> validator)
+        private readonly IValidator<GetProductDTO> _validator;
+        public ProductController(ProductService service, IValidator<GetProductDTO> validator)
         {
             _service = service;
             _validator = validator;
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -31,19 +31,31 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpGet("paged")]
+        public IActionResult GetAllPaged()
+        {
+            var result = _service.GetAllPaged(1, 5);
+            if (result == null)
+            {
+                return BadRequest("Invalid value!");
+            }
+            return Ok(result);
+        }
+
         [Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult Create([FromBody] ProductDTO entity)
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CreateProductDTO entity)
         {
             _service.Create(entity);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("by-id")]
-        public IActionResult Update(int id, [FromBody] ProductDTO entity)
+        [HttpPut("update-by-id")]
+        public IActionResult Update([FromBody] UpdateProductDTO entity)
         {
-            if (id != entity.Id)
+            if (entity.Id <= 0)
             {
                 return BadRequest("ID mismatch.");
             }
@@ -53,15 +65,15 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
             _service.Delete(id);
             return Ok();
         }
 
-        [Authorize(Roles = "admin,user")]
-        [HttpGet("by-id{id}")]
+        [Authorize]
+        [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
             var result = _service.GetById(id);
@@ -72,8 +84,8 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "admin,user")]
-        [HttpGet("by-category-id{categoryId}")]
+        [Authorize]
+        [HttpGet("by-category-id")]
         public IActionResult GetByCategoryId(int categoryId)
         {
             var result = _service.GetByCategoryId(categoryId);
@@ -84,11 +96,47 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpGet("by-price-range")]
         public IActionResult GetByRange(double minValue, double maxValue)
         {
             var result = _service.GetByRange(minValue, maxValue);
+            if (result == null)
+            {
+                return BadRequest("Invalid Value");
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("order-by-price-ascending")]
+        public IActionResult OrderByPriceAscending()
+        {
+            var result = _service.OrderByPriceAscending();
+            if (result == null)
+            {
+                return BadRequest("Invalid Value");
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("order-by-price-descending")]
+        public IActionResult OrderByPriceDescending()
+        {
+            var result = _service.OrderByPriceDescending();
+            if (result == null)
+            {
+                return BadRequest("Invalid Value");
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("order-by-date")]
+        public IActionResult OrderByDate()
+        {
+            var result = _service.OrderByDate();
             if (result == null)
             {
                 return BadRequest("Invalid Value");

@@ -1,9 +1,9 @@
-﻿using BusinessLogic.DTOs;
+﻿using BusinessLogic.DTOs.Category;
 using FluentValidation;
 
 namespace E_CommerceApi.Validators
 {
-    public class CategoryDTOValidator : AbstractValidator<CategoryDTO>
+    public class CategoryDTOValidator : AbstractValidator<UpdateCategoryDTO>
     {
         public CategoryDTOValidator()
         {

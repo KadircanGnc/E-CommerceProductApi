@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BusinessLogic.DTOs;
+using BusinessLogic.DTOs.Category;
 
 namespace BusinessLogic.Services
 {
@@ -19,23 +19,23 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void Create(CategoryDTO categoryDTO)
+        public void Create(CreateCategoryDTO createCategoryDTO)
         {
-            if (categoryDTO == null)
+            if (createCategoryDTO == null)
             {
-                throw new ArgumentNullException(nameof(categoryDTO), "Invalid Value!");
+                throw new ArgumentNullException(nameof(createCategoryDTO), "Invalid Value!");
             }
-            var category = _mapper.Map<Category>(categoryDTO);
+            var category = _mapper.Map<Category>(createCategoryDTO);
             _categoryRepo.Create(category);
         }
 
-        public void Update(CategoryDTO categoryDTO)
+        public void Update(UpdateCategoryDTO updateCategoryDTO)
         {
-            if (categoryDTO == null)
+            if (updateCategoryDTO == null)
             {
-                throw new ArgumentNullException(nameof(categoryDTO), "Invalid Value!");
+                throw new ArgumentNullException(nameof(updateCategoryDTO), "Invalid Value!");
             }
-            var category = _mapper.Map<Category>(categoryDTO);
+            var category = _mapper.Map<Category>(updateCategoryDTO);
             _categoryRepo.Update(category);
         }
 
@@ -48,7 +48,7 @@ namespace BusinessLogic.Services
             _categoryRepo.Delete(id);
         }
 
-        public CategoryDTO GetById(int id)
+        public GetCategoryDTO GetById(int id)
         {
             if (id <= 0)
             {
@@ -59,17 +59,17 @@ namespace BusinessLogic.Services
             {
                 throw new KeyNotFoundException("Category not found.");
             }
-            return _mapper.Map<CategoryDTO>(category);
+            return _mapper.Map<GetCategoryDTO>(category);
         }
 
-        public List<CategoryDTO> GetAll()
+        public List<GetCategoryDTO> GetAll()
         {
             var categories = _categoryRepo.GetAll();
             if (categories == null || !categories.Any())
             {
                 throw new KeyNotFoundException("No categories found.");
             }
-            return _mapper.Map<List<CategoryDTO>>(categories);
+            return _mapper.Map<List<GetCategoryDTO>>(categories);
         }
     }
 }

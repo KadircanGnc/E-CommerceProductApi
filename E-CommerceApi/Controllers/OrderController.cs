@@ -32,7 +32,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult Create([FromBody] int cartId)
         {
             if (cartId <= 0)
@@ -45,7 +45,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
             _orderService.Delete(id);
@@ -53,7 +53,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("by-id{id}")]
+        [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
             var result = _orderService.GetById(id);

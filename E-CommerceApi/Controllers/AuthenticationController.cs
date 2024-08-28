@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-[Route("[Controller]s")]
+[Route("[Controller]")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {

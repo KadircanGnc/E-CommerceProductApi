@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using BusinessLogic.DTOs.Product;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace BusinessLogic.DTOs
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
         public double TotalAmount { get; set; }        
-        public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+        public List<GetProductDTO> Products { get; set; } = new List<GetProductDTO>();
     }
 }

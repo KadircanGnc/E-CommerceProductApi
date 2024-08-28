@@ -15,7 +15,7 @@ namespace E_CommerceApi.Controllers
             _cartService = cartService;
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpPost("add-items")]
         public IActionResult AddItems([FromBody] List<int> productIds)
         {
@@ -28,7 +28,7 @@ namespace E_CommerceApi.Controllers
             return Ok("Items added to cart successfully.");
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpPost("remove-items")]
         public IActionResult RemoveItems([FromBody] List<int> productIds)
         {
@@ -41,7 +41,7 @@ namespace E_CommerceApi.Controllers
             return Ok("Items removed from cart successfully.");
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpPost("clear")]
         public IActionResult Clear()
         {           
@@ -49,7 +49,7 @@ namespace E_CommerceApi.Controllers
             return Ok("Cart cleared successfully.");
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
@@ -63,7 +63,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("get-by-user-id{userId}")]
+        [HttpGet("get-by-user-id")]
         public IActionResult GetByUserId(int userId)
         {
             var cart = _cartService.GetByUserId(userId);

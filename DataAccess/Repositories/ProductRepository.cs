@@ -44,6 +44,25 @@ namespace DataAccess.Repositories
                 .ToList();
         }
 
+        public List<Product> OrderByPriceDescending()
+        {
+            return _context.Products
+                .OrderByDescending(p => p.Price)
+                .ToList();
+        }
+
+        public List<Product> OrderByPriceAscending()
+        {
+            return _context.Products
+                .OrderBy(p => p.Price)
+                .ToList();
+        }
+        public List<Product> OrderByDate()
+        {
+            return _context.Products
+                .OrderByDescending(p => p.CreatedDate)
+                .ToList();
+        }
     }
 }
 

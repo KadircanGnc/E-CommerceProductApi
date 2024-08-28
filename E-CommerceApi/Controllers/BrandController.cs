@@ -1,9 +1,9 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic.DTOs.Brand;
 
 namespace E_CommerceApi.Controllers
 {
@@ -12,14 +12,14 @@ namespace E_CommerceApi.Controllers
     public class BrandController : ControllerBase
     {        
         private readonly BrandService _brandService;
-        private readonly IValidator<BrandDTO> _brandValidator;
-        public BrandController(BrandService brandService, IValidator<BrandDTO> validator)
+        private readonly IValidator<GetBrandDTO> _brandValidator;
+        public BrandController(BrandService brandService, IValidator<GetBrandDTO> validator)
         {
             _brandService = brandService;
             _brandValidator = validator;
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -32,18 +32,18 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost]        
-        public IActionResult Create([FromBody] BrandDTO entity)
+        [HttpPost("create")]        
+        public IActionResult Create([FromBody] CreateBrandDTO entity)
         {            
             _brandService.Create(entity);
             return Ok();            
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("by-id")]
-        public IActionResult Update(int id, [FromBody] BrandDTO entity)
+        [HttpPut("update-by-id")]
+        public IActionResult Update([FromBody] UpdateBrandDTO entity)
         {
-            if (id != entity.Id)
+            if (entity.Name == null)
             {
                 return BadRequest("ID mismatch.");
             }
@@ -53,15 +53,15 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
             _brandService.Delete(id);
             return Ok();
         }
 
-        [Authorize(Roles = "admin,user")]
-        [HttpGet("by-id{id}")]
+        [Authorize]
+        [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
             var result = _brandService.GetById(id);

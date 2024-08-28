@@ -1,9 +1,9 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic.DTOs.Category;
 
 namespace E_CommerceApi.Controllers
 {
@@ -12,14 +12,14 @@ namespace E_CommerceApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly CategoryService _categoryService;
-        private readonly IValidator<CategoryDTO> _validator;
-        public CategoryController(CategoryService categoryService, IValidator<CategoryDTO> validator)
+        private readonly IValidator<UpdateCategoryDTO> _validator;
+        public CategoryController(CategoryService categoryService, IValidator<UpdateCategoryDTO> validator)
         {
             _categoryService = categoryService;
             _validator = validator;
         }
 
-        [Authorize(Roles = "admin,user")]
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -32,18 +32,18 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult Create([FromBody] CategoryDTO entity)
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CreateCategoryDTO entity)
         {
             _categoryService.Create(entity);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut(("by-id"))]
-        public IActionResult Update(int id, [FromBody] CategoryDTO entity)
+        [HttpPut("update-by-id")]
+        public IActionResult Update([FromBody] UpdateCategoryDTO entity)
         {
-            if (id != entity.Id)
+            if (entity.Id <= 0)
             {
                 return BadRequest("ID mismatch.");
             }
@@ -53,15 +53,15 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
             _categoryService.Delete(id);
             return Ok();
         }
 
-        [Authorize(Roles = "admin,user")]
-        [HttpGet("by-id{id}")]
+        [Authorize]
+        [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
             var result = _categoryService.GetById(id);

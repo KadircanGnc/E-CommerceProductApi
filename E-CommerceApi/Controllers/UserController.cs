@@ -1,9 +1,9 @@
 ﻿using BusinessLogic.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic.DTOs.User;
 
 namespace E_CommerceApi.Controllers
 {
@@ -12,8 +12,8 @@ namespace E_CommerceApi.Controllers
     public class UserController : ControllerBase
     {
         private UserService _userService;
-        private readonly IValidator<UserDTO> _validator;
-        public UserController(UserService userService, IValidator<UserDTO> validator)
+        private readonly IValidator<UpdateUserDTO> _validator;
+        public UserController(UserService userService, IValidator<UpdateUserDTO> validator)
         {
             _userService = userService;
             _validator = validator;
@@ -33,18 +33,18 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult Create([FromBody] UserDTO entity)
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CreateUserDTO entity)
         {
             _userService.Create(entity);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("by-id")]
-        public IActionResult Update(int id, [FromBody] UserDTO entity)
+        [HttpPut("update-by-id")]
+        public IActionResult Update([FromBody] UpdateUserDTO entity)
         {
-            if (id != entity.Id)
+            if (entity.Id <= 0)
             {
                 return BadRequest("ID mismatch!");
             }
@@ -54,7 +54,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete]
+        [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);
@@ -62,7 +62,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("by-id{id}")]
+        [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
             var result = _userService.GetById(id);

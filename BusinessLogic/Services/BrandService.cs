@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.DTOs;
+using BusinessLogic.DTOs.Brand;
+using BusinessLogic.DTOs.Product;
 
 namespace BusinessLogic.Services
 {
@@ -21,23 +22,23 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public void Create(BrandDTO brandDTO)
+        public void Create(CreateBrandDTO createBrandDTO)
         {
-            if (brandDTO == null)
+            if (createBrandDTO == null)
             {
-                throw new ArgumentNullException(nameof(brandDTO), "Invalid Value!");
+                throw new ArgumentNullException(nameof(createBrandDTO), "Invalid Value!");
             }
-            var brand = _mapper.Map<Brand>(brandDTO);
+            var brand = _mapper.Map<Brand>(createBrandDTO);
             _brandRepo.Create(brand);
         }
 
-        public void Update(BrandDTO brandDTO)
+        public void Update(UpdateBrandDTO updateBrandDTO)
         {
-            if (brandDTO == null)
+            if (updateBrandDTO.Id <= 0)
             {
-                throw new ArgumentNullException(nameof(brandDTO), "Invalid Value!");
+                throw new ArgumentNullException(nameof(updateBrandDTO), "Invalid Value!");
             }
-            var brand = _mapper.Map<Brand>(brandDTO);
+            var brand = _mapper.Map<Brand>(updateBrandDTO);
             _brandRepo.Update(brand);
         }
 
@@ -50,7 +51,7 @@ namespace BusinessLogic.Services
             _brandRepo.Delete(id);
         }
 
-        public BrandDTO GetById(int id)
+        public GetBrandDTO GetById(int id)
         {
             if (id <= 0)
             {
@@ -61,20 +62,20 @@ namespace BusinessLogic.Services
             {
                 throw new KeyNotFoundException("Brand not found.");
             }
-            return _mapper.Map<BrandDTO>(brand);
+            return _mapper.Map<GetBrandDTO>(brand);
         }
 
-        public List<BrandDTO> GetAll()
+        public List<GetBrandDTO> GetAll()
         {
             var allBrands = _brandRepo.GetAll();
             if (allBrands == null || !allBrands.Any())
             {
                 throw new KeyNotFoundException("No brands found.");
             }
-            return _mapper.Map<List<BrandDTO>>(allBrands);
+            return _mapper.Map<List<GetBrandDTO>>(allBrands);
         }
 
-        public List<ProductDTO> GetProductsByBrandId(int brandId)
+        public List<GetProductDTO> GetProductsByBrandId(int brandId)
         {
             if (brandId <= 0)
             {
@@ -85,7 +86,7 @@ namespace BusinessLogic.Services
             {
                 throw new KeyNotFoundException("No products found for this brand.");
             }
-            return _mapper.Map<List<ProductDTO>>(products);
+            return _mapper.Map<List<GetProductDTO>>(products);
         }
     }
 }

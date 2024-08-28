@@ -30,6 +30,7 @@ namespace BusinessLogic.Services
             userId = GetUserIdFromToken()!.Value;
         }
 
+        //Converts user id to integer from token value
         private int? GetUserIdFromToken()
         {
             var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

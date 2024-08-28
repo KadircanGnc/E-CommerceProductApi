@@ -1,19 +1,19 @@
-﻿using Entities;
+﻿using BusinessLogic.DTOs.Product;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.DTOs
+namespace BusinessLogic.DTOs.Brand
 {
-    public class BrandDTO
+    public class GetBrandDTO
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public string? Name { get; set; }   
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
-        public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+        public List<GetProductDTO> Products { get; set; } = new List<GetProductDTO>();
     }
 }

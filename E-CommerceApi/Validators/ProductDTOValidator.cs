@@ -1,9 +1,9 @@
-﻿using BusinessLogic.DTOs;
+﻿using BusinessLogic.DTOs.Product;
 using FluentValidation;
 
 namespace E_CommerceApi.Validators
 {
-    public class ProductDTOValidator : AbstractValidator<ProductDTO>
+    public class ProductDTOValidator : AbstractValidator<GetProductDTO>
     {
         public ProductDTOValidator()
         {
