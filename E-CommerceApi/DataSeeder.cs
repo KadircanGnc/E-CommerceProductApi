@@ -24,7 +24,9 @@ namespace E_CommerceApi
                     Email = "kdrcng@gmail.com",
                     Password = "111",
                     Role = "admin",
-                    Address = "Antalya"                    
+                    CreatedBy = "dbAdmin",
+                    Address = "Antalya"
+                    
                 });
                 context.Users.Add(new User
                 {
@@ -32,7 +34,9 @@ namespace E_CommerceApi
                     Email = "hüseyin@gmail.com",
                     Password = "111",
                     Role = "user",
+                    CreatedBy = "dbAdmin",
                     Address = "Antalya"
+                    
                 });
                 context.Users.Add(new User
                 {
@@ -40,7 +44,9 @@ namespace E_CommerceApi
                     Email = "alihan@gmail.com",
                     Password = "111",
                     Role = "user",
+                    CreatedBy = "dbAdmin",
                     Address = "Antalya"
+                    
                 });
                 context.SaveChanges();
             }
@@ -53,6 +59,7 @@ namespace E_CommerceApi
                     Name = "Nike",
                     Email = "nike.gmail.com",
                     PhoneNumber = "1234567890",
+                    CreatedBy = "dbAdmin",
                     Address = "istanbul"                    
                 });
                 context.Brands.Add(new Brand
@@ -60,6 +67,7 @@ namespace E_CommerceApi
                     Name = "Adidas",
                     Email = "adidas.gmail.com",
                     PhoneNumber = "1234567890",
+                    CreatedBy = "dbAdmin",
                     Address = "istanbul"
                 });
                 context.Brands.Add(new Brand
@@ -67,6 +75,7 @@ namespace E_CommerceApi
                     Name = "Under Armour",
                     Email = "ua.gmail.com",
                     PhoneNumber = "1234567890",
+                    CreatedBy = "dbAdmin",
                     Address = "istanbul"
                 });
                 context.SaveChanges();
@@ -77,14 +86,17 @@ namespace E_CommerceApi
             {
                 context.Categories.Add(new Category
                 {
-                    Name = "Clothing"                   
+                    CreatedBy = "dbAdmin",
+                    Name = "Clothing"                    
                 });
                 context.Categories.Add(new Category
                 {
+                    CreatedBy = "dbAdmin",
                     Name = "Sports"
                 });
                 context.Categories.Add(new Category
                 {
+                    CreatedBy = "dbAdmin",
                     Name = "Eye-wear"
                 });
                 context.SaveChanges();
@@ -99,6 +111,7 @@ namespace E_CommerceApi
                     Price = 2050.50,
                     StockCount = 42,
                     CategoryId = 1,
+                    CreatedBy = "dbAdmin",
                     BrandId = 1                    
                 });
                 context.Products.Add(new Product
@@ -107,6 +120,7 @@ namespace E_CommerceApi
                     Price = 1025,
                     StockCount = 30,
                     CategoryId = 3,
+                    CreatedBy = "dbAdmin",
                     BrandId = 3
                 });
                 context.Products.Add(new Product
@@ -115,6 +129,7 @@ namespace E_CommerceApi
                     Price = 500,
                     StockCount = 50,
                     CategoryId = 1,
+                    CreatedBy = "dbAdmin",
                     BrandId = 2
                 });
                 context.Products.Add(new Product
@@ -123,6 +138,7 @@ namespace E_CommerceApi
                     Price = 750,
                     StockCount = 75,
                     CategoryId = 2,
+                    CreatedBy = "dbAdmin",
                     BrandId = 3
                 });
                 context.Products.Add(new Product
@@ -131,6 +147,7 @@ namespace E_CommerceApi
                     Price = 225,
                     StockCount = 15,
                     CategoryId = 1,
+                    CreatedBy = "dbAdmin",
                     BrandId = 2
                 });
                 context.Products.Add(new Product
@@ -139,6 +156,7 @@ namespace E_CommerceApi
                     Price = 999,
                     StockCount = 32,
                     CategoryId = 2,
+                    CreatedBy = "dbAdmin",
                     BrandId = 3
                 });
                 context.SaveChanges();

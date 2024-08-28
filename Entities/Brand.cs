@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Brand
-    {
-        [Key]
-        public int Id { get; set; }
+    public class Brand : BaseModel
+    {        
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }

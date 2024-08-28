@@ -42,7 +42,7 @@ namespace E_CommerceApi.Controllers
         }
 
         [Authorize(Roles = "admin,user")]
-        [HttpPost("clear{cartId}")]
+        [HttpPost("clear")]
         public IActionResult Clear()
         {           
             _cartService.Clear();

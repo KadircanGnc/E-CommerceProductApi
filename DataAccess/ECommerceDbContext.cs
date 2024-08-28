@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace DataAccess
 {
@@ -19,14 +21,32 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }        
         public DbSet<Cart> Carts { get; set; }
 
-        public ECommerceDbContext(DbContextOptions options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ECommerceDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-            
+            _httpContextAccessor = httpContextAccessor;
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
             modelBuilder.UseSerialColumns();
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker.Entries<BaseModel>()
+                .Where(m => m.State == EntityState.Added);
+
+            var currentUserName = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.CreatedDate = DateTime.UtcNow;
+                entry.Entity.CreatedBy = currentUserName ?? "Unknown";
+            }
+
+            return base.SaveChanges();
         }
     }
 }

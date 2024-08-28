@@ -27,6 +27,7 @@ namespace BusinessLogic.Services
             _productRepo = productRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            userId = GetUserIdFromToken()!.Value;
         }
 
         private int? GetUserIdFromToken()
@@ -36,8 +37,7 @@ namespace BusinessLogic.Services
         }
 
         public void AddItems(List<int> productIds)
-        {            
-            userId = GetUserIdFromToken()!.Value;
+        {                       
 
             if (userId <= 0)
             {
@@ -58,7 +58,7 @@ namespace BusinessLogic.Services
                 cart = new Cart
                 {
                     UserId = userId,
-                    createdDate = DateTime.UtcNow,
+                    CreatedDate = DateTime.UtcNow,
                     CartItems = new List<CartItem>()
                 };
             }

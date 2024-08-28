@@ -41,7 +41,7 @@ namespace BusinessLogic.Services
             // Create a new order
             var order = new Order
             {
-                CreateDate = DateTime.UtcNow,
+                CreatedDate = DateTime.UtcNow,
                 UserId = cart.UserId,
                 TotalAmount = cart.TotalPrice // Assuming cart has the total price calculated
             };
