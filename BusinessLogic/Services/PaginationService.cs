@@ -14,11 +14,11 @@ namespace BusinessLogic.Services
             Func<TEntity, T> selector)
         {
             var totalItems = query.Count();
-
+            
             var items = query.Skip((pageNumber - 1) * pageSize)
                              .Take(pageSize)
                              .Select(selector)
-                             .ToList();
+                             .ToList();                        
 
             return new PagedResult<T>(items, totalItems, pageNumber, pageSize);
         }

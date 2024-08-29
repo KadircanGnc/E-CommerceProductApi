@@ -5,6 +5,7 @@ using BusinessLogic.DTOs.Brand;
 using BusinessLogic.DTOs.Product;
 using BusinessLogic.DTOs.User;
 using BusinessLogic.DTOs.Category;
+using BusinessLogic.DTOs.Comment;
 
 namespace E_CommerceApi.MappingProfiles
 {
@@ -49,7 +50,13 @@ namespace E_CommerceApi.MappingProfiles
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product!.Price))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
-            
+
+            //Comment
+            CreateMap<Comment, CreateCommentDTO>().ReverseMap();
+            CreateMap<Comment, GetCommentDTO>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User!.Name))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.Name)).ReverseMap();
+
         }
     }
 }

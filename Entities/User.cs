@@ -14,8 +14,7 @@ namespace Entities
         public string? Password { get; set; }
         public string? Role { get; set; }
         public string? Address { get; set; }        
-        public virtual List<Order> Orders { get; set; } = new List<Order>();
-        public virtual List<UserComment> UserComments { get; set; } = new List<UserComment>();
+        public virtual List<Order> Orders { get; set; } = new List<Order>();        
 
     }
 }
