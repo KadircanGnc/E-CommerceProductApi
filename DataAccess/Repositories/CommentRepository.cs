@@ -12,12 +12,13 @@ namespace DataAccess.Repositories
     {
         public CommentRepository(ECommerceDbContext context) : base(context) { }
 
-        public Comment GetByProductId(int productId)
+        public List<Comment> GetByProductId(int productId)
         {
             var result = _context.Comments
                 .Include(c => c.Product)         //List
                 .Include(c => c.User)
-                .FirstOrDefault(c => c.ProductId == productId); 
+                .Where(c => c.ProductId == productId)
+                .ToList(); 
 
             return result!;
         }

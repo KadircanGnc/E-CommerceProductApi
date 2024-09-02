@@ -63,9 +63,8 @@ namespace BusinessLogic.Services
             if (comments == null)
             {
                 throw new Exception("No Comments Found for the given Product ID");
-            }
-            var res = _mapper.Map<GetCommentDTO>(comments);
-            return new();
+            }            
+            return _mapper.Map<List<GetCommentDTO>>(comments);
         }
 
         public List<GetCommentDTO> GetByUserId(int userId)
