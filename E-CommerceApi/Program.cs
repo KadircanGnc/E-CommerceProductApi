@@ -2,7 +2,6 @@ using BusinessLogic.Services;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
-using E_CommerceApi;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.Validators;
 using E_CommerceApi.Validators;
@@ -16,6 +15,7 @@ using System.Text;
 using Authentication.Services;
 using Microsoft.OpenApi.Models;
 using E_CommerceApi.Middlewares;
+using E_CommerceApi.MockData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -156,7 +156,7 @@ app.UseRouting();
 // Use authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
-//Data Seed
+//Data Seeds
 app.Seed();
 
 app.MapControllers();
