@@ -12,28 +12,24 @@ using System.Text;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly TokenService _tokenService;
-    private readonly ECommerceDbContext _context;
-
-    public AuthenticationController(TokenService tokenService, ECommerceDbContext context)
+    private readonly TokenService _tokenService;    
+    public AuthenticationController(TokenService tokenService)
     {
-        _tokenService = tokenService;
-        _context = context;
+        _tokenService = tokenService;        
     }
 
     [HttpPost]
     public IActionResult Login(string email, string password)
     {
         //Check the user credentials
-        var user = _context.Users.SingleOrDefault(u => u.Email == email && u.Password == password);
+        var user = _tokenService.GetUser(email, password);
         if (user == null)
         {
             return Unauthorized();
         }
 
         var token = _tokenService.GenerateToken(user.Id.ToString(), email, user.Role!);
-        return Ok(new { token });
-        
+        return Ok(new { token });        
     }
     
 }

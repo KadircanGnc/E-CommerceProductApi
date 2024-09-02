@@ -11,12 +11,10 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;
-        private readonly IValidator<OrderDTO> _validator;
-        public OrderController(OrderService orderService, IValidator<OrderDTO> validator)
+        private readonly OrderService _orderService;        
+        public OrderController(OrderService orderService)
         { 
-               _orderService = orderService;
-               _validator = validator;
+               _orderService = orderService;               
         }
 
         [Authorize(Roles = "admin")]

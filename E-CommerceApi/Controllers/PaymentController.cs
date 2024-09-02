@@ -15,12 +15,12 @@ namespace E_CommerceApi.Controllers
         [HttpGet]
         public IActionResult Pay()
         {
-            Options options = new ()
+            Options options = new()
             {
                 ApiKey = "sandbox-VhLjQwwqW7VcHiviaOTcQgvHTk0Lg19c",
                 SecretKey = "sandbox-3Op2Bsj0R5T7k4I4D6BPakDTGKGTHHYS",
                 BaseUrl = "https://sandbox-api.iyzipay.com"
-            };            
+            };
 
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
@@ -106,6 +106,8 @@ namespace E_CommerceApi.Controllers
             Payment payment = Payment.Create(request, options);
 
             return Ok(payment);
+
+
         }
     }
 }

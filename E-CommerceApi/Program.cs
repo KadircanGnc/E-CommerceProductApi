@@ -109,6 +109,7 @@ builder.Services.AddScoped<CommentRepository>();
 
 //Validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 //Services
 builder.Services.AddScoped<TokenService>();

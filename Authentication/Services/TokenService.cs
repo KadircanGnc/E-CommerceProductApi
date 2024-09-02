@@ -3,6 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BusinessLogic.Services;
+using DataAccess;
+using Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,11 +13,13 @@ namespace Authentication.Services
 {
     public class TokenService
     {
-        private readonly IConfiguration _configuration;        
+        private readonly IConfiguration _configuration;
+        private readonly ECommerceDbContext _context;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, ECommerceDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         public string GenerateToken(string userId, string userName, string role)
@@ -42,6 +47,12 @@ namespace Authentication.Services
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(securityToken);
+        }
+
+        public User GetUser(string email, string password)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Email == email && u.Password == password);
+            return user!;
         }
     }
 }

@@ -11,12 +11,10 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _service;
-        private readonly IValidator<GetProductDTO> _validator;
-        public ProductController(ProductService service, IValidator<GetProductDTO> validator)
+        private readonly ProductService _service;        
+        public ProductController(ProductService service)
         {
-            _service = service;
-            _validator = validator;
+            _service = service;            
         }
 
         [Authorize]

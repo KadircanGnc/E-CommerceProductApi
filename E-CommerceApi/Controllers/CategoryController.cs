@@ -11,12 +11,10 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryService _categoryService;
-        private readonly IValidator<UpdateCategoryDTO> _validator;
-        public CategoryController(CategoryService categoryService, IValidator<UpdateCategoryDTO> validator)
+        private readonly CategoryService _categoryService;        
+        public CategoryController(CategoryService categoryService)
         {
-            _categoryService = categoryService;
-            _validator = validator;
+            _categoryService = categoryService;            
         }
 
         [Authorize]

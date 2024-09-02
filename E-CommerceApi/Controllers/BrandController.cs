@@ -11,12 +11,10 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {        
-        private readonly BrandService _brandService;
-        private readonly IValidator<GetBrandDTO> _brandValidator;
-        public BrandController(BrandService brandService, IValidator<GetBrandDTO> validator)
+        private readonly BrandService _brandService;        
+        public BrandController(BrandService brandService)
         {
-            _brandService = brandService;
-            _brandValidator = validator;
+            _brandService = brandService;            
         }
 
         [Authorize]

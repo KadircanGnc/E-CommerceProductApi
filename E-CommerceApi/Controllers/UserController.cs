@@ -11,12 +11,10 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private UserService _userService;
-        private readonly IValidator<UpdateUserDTO> _validator;
-        public UserController(UserService userService, IValidator<UpdateUserDTO> validator)
+        private UserService _userService;        
+        public UserController(UserService userService)
         {
-            _userService = userService;
-            _validator = validator;
+            _userService = userService;            
         }
 
         [Authorize(Roles = "admin")]
