@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.Interfaces;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
@@ -11,8 +11,8 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private UserService _userService;        
-        public UserController(UserService userService)
+        private IUserService _userService;        
+        public UserController(IUserService userService)
         {
             _userService = userService;            
         }

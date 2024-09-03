@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DTOs.Comment;
-using BusinessLogic.Services;
+using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly CommentService _commentService;
+        private readonly ICommentService _commentService;
 
-        public CommentController(CommentService commentService)
+        public CommentController(ICommentService commentService)
         {
             _commentService = commentService;
         }

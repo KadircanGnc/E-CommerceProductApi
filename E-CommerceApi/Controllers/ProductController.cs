@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.Interfaces;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
@@ -11,8 +11,8 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _service;        
-        public ProductController(ProductService service)
+        private readonly IProductService _service;        
+        public ProductController(IProductService service)
         {
             _service = service;            
         }

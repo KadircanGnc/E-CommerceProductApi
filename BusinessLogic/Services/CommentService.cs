@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs.Comment;
-using DataAccess.Repositories;
+using BusinessLogic.Interfaces;
+using DataAccess.Interfaces;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class CommentService
+    public class CommentService : ICommentService
     {
-        private readonly CommentRepository _commentRepo;
+        private readonly ICommentRepository _commentRepo;
         private readonly IMapper _mapper;
-        public CommentService(CommentRepository commentRepository, IMapper mapper) 
+        public CommentService(ICommentRepository commentRepository, IMapper mapper) 
         {
             _commentRepo = commentRepository;
             _mapper = mapper;

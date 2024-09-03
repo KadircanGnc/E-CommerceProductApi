@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using DataAccess.Interfaces;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class CartRepository : GenericRepository<Cart>
+    public class CartRepository : GenericRepository<Cart>, ICartRepository
     {        
         public CartRepository(ECommerceDbContext context) : base(context) { }        
 

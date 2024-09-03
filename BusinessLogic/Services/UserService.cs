@@ -1,19 +1,19 @@
-﻿using DataAccess.Repositories;
+﻿using DataAccess.Interfaces;
 using Entities;
 using System;
-using System.Collections.Generic;
 using AutoMapper;
 using BusinessLogic.DTOs.Product;
 using BusinessLogic.DTOs.User;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserRepository _userRepo;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
 
-        public UserService(UserRepository userRepo, IMapper mapper)
+        public UserService(IUserRepository userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
             _mapper = mapper;

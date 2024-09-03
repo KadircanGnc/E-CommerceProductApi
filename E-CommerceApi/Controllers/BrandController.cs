@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.Interfaces;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
@@ -11,8 +11,8 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {        
-        private readonly BrandService _brandService;        
-        public BrandController(BrandService brandService)
+        private readonly IBrandService _brandService;        
+        public BrandController(IBrandService brandService)
         {
             _brandService = brandService;            
         }

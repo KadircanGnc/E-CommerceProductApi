@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class UserRepository : GenericRepository<User>
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
+        
         public UserRepository(ECommerceDbContext context) : base(context)
         {
-
+            
         }
         public List<Product> GetOrdersByUserId(int userId)
         {

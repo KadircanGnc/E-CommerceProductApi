@@ -1,19 +1,20 @@
-﻿using DataAccess.Repositories;
+﻿using DataAccess.Interfaces;
 using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BusinessLogic.DTOs.Category;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly CategoryRepository _categoryRepo;
+        private readonly ICategoryRepository _categoryRepo;
         private readonly IMapper _mapper;
 
-        public CategoryService(CategoryRepository categoryRepo, IMapper mapper)
+        public CategoryService(ICategoryRepository categoryRepo, IMapper mapper)
         {
             _categoryRepo = categoryRepo;
             _mapper = mapper;

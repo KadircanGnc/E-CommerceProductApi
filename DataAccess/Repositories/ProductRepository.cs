@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>
+    public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
 
         public ProductRepository(ECommerceDbContext context) : base(context)
@@ -62,6 +62,15 @@ namespace DataAccess.Repositories
             return _context.Products
                 .OrderByDescending(p => p.CreatedDate)
                 .ToList();
+        }
+
+        public List<Product> GetByRange(double minValue, double maxValue)
+        {
+            var result = _context.Products
+                .Where(p => p.Price >= minValue && p.Price <= maxValue)
+                .ToList();
+
+            return result;
         }
     }
 }

@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using DataAccess.Repositories;
+using DataAccess.Interfaces;
 using Entities;
 using BusinessLogic.DTOs.Product;
 using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private readonly ProductRepository _productRepo;
+        private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
         private readonly PaginationService _paginationService;
 
-        public ProductService(ProductRepository productRepository, IMapper mapper, PaginationService paginationService)
+        public ProductService(IProductRepository productRepository, IMapper mapper, PaginationService paginationService)
         {
             _productRepo = productRepository;
             _mapper = mapper;
@@ -75,16 +76,16 @@ namespace BusinessLogic.Services
             return _mapper.Map<GetProductDTO>(product);
         }
 
-          public List<GetProductDTO> GetAll()
-          {
-              var products = _productRepo.GetAll();
-              if (products == null || !products.Any())
-              {
-                  throw new Exception("No Products Found");
-              }
+        public List<GetProductDTO> GetAll()
+        {
+            var products = _productRepo.GetAll();
+            if (products == null || !products.Any())
+            {
+                throw new Exception("No Products Found");
+            }
 
-              return _mapper.Map<List<GetProductDTO>>(products);
-          }        
+            return _mapper.Map<List<GetProductDTO>>(products);
+        }        
 
         // Example usage of pagination
         public PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize)
@@ -121,9 +122,7 @@ namespace BusinessLogic.Services
                 throw new ArgumentException("Invalid range values.");
             }
 
-            var products = _productRepo._context.Products
-                .Where(p => p.Price >= minValue && p.Price <= maxValue)
-                .ToList();
+            var products = _productRepo.GetByRange(minValue, maxValue);
 
             if (products == null || !products.Any())
             {

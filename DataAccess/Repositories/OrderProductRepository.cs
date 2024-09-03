@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DataAccess;
+using DataAccess.Interfaces;
 using Entities;
 
 namespace DataAccess.Repositories
 {
-    public class OrderProductRepository : GenericRepository<OrderProduct>
-    {
-        
+    public class OrderProductRepository : GenericRepository<OrderProduct>, IOrderProductRepository
+    {       
 
         public OrderProductRepository(ECommerceDbContext context) : base(context) { }       
 

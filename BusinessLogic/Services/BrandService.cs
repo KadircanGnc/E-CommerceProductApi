@@ -1,4 +1,4 @@
-﻿using DataAccess.Repositories;
+﻿using DataAccess.Interfaces;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.DTOs.Brand;
 using BusinessLogic.DTOs.Product;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class BrandService
+    public class BrandService : IBrandService
     {
-        private readonly BrandRepository _brandRepo;
+        private readonly IBrandRepository _brandRepo;
         private readonly IMapper _mapper;
 
-        public BrandService(BrandRepository brandRepo, IMapper mapper)
+        public BrandService(IBrandRepository brandRepo, IMapper mapper)
         {
             _brandRepo = brandRepo;
             _mapper = mapper;

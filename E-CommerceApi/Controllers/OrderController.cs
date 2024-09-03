@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.Interfaces;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.DTOs;
@@ -11,8 +11,8 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;        
-        public OrderController(OrderService orderService)
+        private readonly IOrderService _orderService;        
+        public OrderController(IOrderService orderService)
         { 
                _orderService = orderService;               
         }

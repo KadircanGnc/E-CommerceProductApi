@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using DataAccess.Interfaces;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class CommentRepository : GenericRepository<Comment>
+    public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {
         public CommentRepository(ECommerceDbContext context) : base(context) { }
 
         public List<Comment> GetByProductId(int productId)
         {
             var result = _context.Comments
-                .Include(c => c.Product)         //List
+                .Include(c => c.Product)         
                 .Include(c => c.User)
                 .Where(c => c.ProductId == productId)
                 .ToList(); 
@@ -26,8 +27,8 @@ namespace DataAccess.Repositories
         public List<Comment> GetByUserId(int userId)
         {           
             var comments = _context.Comments
-                .Include(c => c.Product)  // Optionally include related Product
-                .Include(c => c.User)     // Optionally include related User
+                .Include(c => c.Product)              //related Product
+                .Include(c => c.User)                 //related User
                 .Where(c => c.UserId == userId)
                 .ToList();
 

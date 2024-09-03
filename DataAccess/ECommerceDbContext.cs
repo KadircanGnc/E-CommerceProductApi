@@ -26,7 +26,8 @@ namespace DataAccess
 
         public ECommerceDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;            
+            _httpContextAccessor = httpContextAccessor;
+            Database.Migrate();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
@@ -43,7 +44,9 @@ namespace DataAccess
 
             foreach (var entry in entries)
             {
-                entry.Entity.CreatedDate = DateTime.UtcNow;
+                //Date format to exclude time stamp
+                DateTime now = DateTime.UtcNow;
+                entry.Entity.CreatedDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
                 entry.Entity.CreatedBy = currentUserName ?? "seeder";
             }
 

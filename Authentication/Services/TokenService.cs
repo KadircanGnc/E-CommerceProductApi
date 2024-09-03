@@ -51,7 +51,7 @@ namespace Authentication.Services
 
         public User GetUser(string email, string password)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Email == email && u.Password == password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
             return user!;
         }
     }

@@ -8,7 +8,7 @@ using E_CommerceApi.Validators;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using System;
-using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -98,14 +98,14 @@ builder.Services.AddAuthentication(options =>
 //builder.Services.AddAuthorization();
 //Repos
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<ProductRepository>();
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<BrandRepository>();
-builder.Services.AddScoped<CategoryRepository>();
-builder.Services.AddScoped<OrderRepository>();
-builder.Services.AddScoped<OrderProductRepository>();
-builder.Services.AddScoped<CartRepository>();
-builder.Services.AddScoped<CommentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 //Validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
@@ -113,15 +113,15 @@ builder.Services.AddFluentValidationAutoValidation();
 
 //Services
 builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<BrandService>();
-builder.Services.AddScoped<CategoryService>();
-builder.Services.AddScoped<OrderService>();
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<OrderProductService>();
-builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrderProductService, OrderProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<PaginationService>();
-builder.Services.AddScoped<CommentService>();
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDb")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

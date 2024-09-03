@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DTOs;
-using BusinessLogic.Services;
+using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +9,8 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly CartService _cartService;
-        public CartController(CartService cartService)
+        private readonly ICartService _cartService;
+        public CartController(ICartService cartService)
         {
             _cartService = cartService;
         }

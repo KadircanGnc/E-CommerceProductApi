@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class BrandRepository : GenericRepository<Brand>
+    public class BrandRepository : GenericRepository<Brand>, IBrandRepository
     {
         public BrandRepository(ECommerceDbContext context) : base(context)
         {

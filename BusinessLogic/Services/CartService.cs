@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
-using DataAccess.Repositories;
+using DataAccess.Interfaces;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -10,18 +10,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class CartService
+    public class CartService : ICartService
     {
-        private readonly CartRepository _cartRepo;
-        private readonly ProductRepository _productRepo;
+        private readonly ICartRepository _cartRepo;
+        private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private int userId;
 
-        public CartService(CartRepository cartRepo, ProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CartService(ICartRepository cartRepo, IProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _cartRepo = cartRepo;
             _productRepo = productRepo;

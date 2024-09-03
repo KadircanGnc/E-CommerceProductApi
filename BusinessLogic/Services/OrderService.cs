@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using DataAccess.Repositories;
+using DataAccess.Interfaces;
 using BusinessLogic.DTOs;
 using Entities;
+using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
-        private readonly OrderRepository _orderRepository;
-        private readonly CartRepository _cartRepository;
-        private readonly ProductRepository _productRepository;
-        private readonly OrderProductRepository _opRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly ICartRepository _cartRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IOrderProductRepository _opRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(OrderRepository orderRepository, IMapper mapper, ProductRepository productRepository, OrderProductRepository op, CartRepository cartRepository)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IProductRepository productRepository, IOrderProductRepository op, ICartRepository cartRepository)
         {
             _orderRepository = orderRepository;         
             _productRepository = productRepository;
