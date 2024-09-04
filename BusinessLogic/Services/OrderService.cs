@@ -38,7 +38,7 @@ namespace BusinessLogic.Services
             {
                 throw new InvalidOperationException("Cart not found.");
             }
-
+            
             // Create a new order
             var order = new Order
             {
@@ -77,7 +77,6 @@ namespace BusinessLogic.Services
             cart.TotalPrice = 0;
             _cartRepository.Update(cart);
         }              
-
 
         public void Delete(int id)
         {

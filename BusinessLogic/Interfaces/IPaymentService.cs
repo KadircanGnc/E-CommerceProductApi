@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace BusinessLogic.Interfaces
     public interface IPaymentService
     {
         bool Pay();
+        Task<bool> IsPayCompleted(CreditCardDTO cardInfo);
     }
 }

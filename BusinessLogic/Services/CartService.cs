@@ -21,6 +21,7 @@ namespace BusinessLogic.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private int userId;
+        private int cartId;
 
         public CartService(ICartRepository cartRepo, IProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
@@ -29,6 +30,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             userId = GetUserIdFromToken()!.Value;
+            cartId = _cartRepo.GetByUserId(userId).Id;
         }
 
         //Converts user id to integer from token value
@@ -173,8 +175,7 @@ namespace BusinessLogic.Services
         }
 
         public CartDTO Get()
-        {
-            var cartId = _cartRepo.GetByUserId(userId).Id;
+        {            
 
             if (cartId <= 0)
             {
@@ -190,6 +191,7 @@ namespace BusinessLogic.Services
             var cartDto = _mapper.Map<CartDTO>(cart);
 
             return cartDto;
+            
         }
 
         public CartDTO GetByUserId(int userId)
@@ -213,6 +215,11 @@ namespace BusinessLogic.Services
         public int GetUserId()
         {
             return userId;
+        }
+
+        public int GetCartId()
+        {
+            return cartId;
         }
 
     }

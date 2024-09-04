@@ -32,5 +32,6 @@ namespace DataAccess.Repositories
 
             return result!;
         }
+
     }
 }

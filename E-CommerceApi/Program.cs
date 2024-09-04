@@ -108,10 +108,11 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 //Validators
-builder.Services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserDTOValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 //Services
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<Authentication.Services.TokenService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -121,6 +122,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderProductService, OrderProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<PaginationService>();
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDb")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

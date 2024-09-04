@@ -13,10 +13,12 @@ namespace E_CommerceApi.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IPaymentService _paymentService;
-        public OrderController(IOrderService orderService, IPaymentService paymentService)
+        private readonly ICartService _cartService;
+        public OrderController(IOrderService orderService, IPaymentService paymentService, ICartService cartService)
         {
             _orderService = orderService;   
             _paymentService = paymentService;
+            _cartService = cartService;
         }
 
         [Authorize(Roles = "admin")]
@@ -33,14 +35,17 @@ namespace E_CommerceApi.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public IActionResult Create([FromBody] int cartId)
+        public IActionResult Create([FromBody] CreditCardDTO creditCardDTO)
         {
-            if (cartId <= 0 && _paymentService.Pay() == false)
+            var userId = _cartService.GetUserId();
+            var cartId = _cartService.GetCartId();
+            if (cartId <= 0 && _paymentService.IsPayCompleted(creditCardDTO).Result == false)
             {
                 return BadRequest("You need to complete payment first.");
             }
 
             _orderService.Create(cartId);
+            _cartService.Clear();
             return Ok("Order created successfully.");
         }
 
