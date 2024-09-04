@@ -112,11 +112,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserDTOValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 //Services
-builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<Authentication.Services.TokenService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, BusinessLogic.Services.ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderProductService, OrderProductService>();
 builder.Services.AddScoped<ICartService, CartService>();

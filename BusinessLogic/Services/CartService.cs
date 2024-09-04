@@ -122,7 +122,6 @@ namespace BusinessLogic.Services
             }
         }
 
-
         public void RemoveItems(List<int> productIds)
         {            
             if (productIds == null || productIds.Count == 0)
@@ -209,6 +208,11 @@ namespace BusinessLogic.Services
             var cartDto = _mapper.Map<CartDTO>(cart);
 
             return cartDto;
+        }
+
+        public int GetUserId()
+        {
+            return userId;
         }
 
     }

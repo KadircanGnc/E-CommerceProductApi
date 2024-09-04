@@ -3,12 +3,25 @@ using FluentValidation;
 
 namespace E_CommerceApi.Validators
 {
-    public class UserDTOValidator : AbstractValidator<UpdateUserDTO>
+    public class CreateUserDTOValidator : AbstractValidator<CreateUserDTO>
     {
-        public UserDTOValidator()
+        public CreateUserDTOValidator()
         {
             RuleFor(u => u.Name).NotEmpty().WithMessage("Name can not be null!");
             RuleFor(u => u.Email).EmailAddress().WithMessage("Enter a valid email!");
+            RuleFor(u => u.Role).NotEmpty().WithMessage("Role can not be null!");
+            RuleFor(u => u.Password).NotEmpty().WithMessage("Password can not be null!");
+        }
+    }
+
+    public class UpdateUserDTOValidator : AbstractValidator<UpdateUserDTO>
+    {
+        public UpdateUserDTOValidator()
+        {
+            RuleFor(u => u.Name).NotEmpty().WithMessage("Name can not be null!");
+            RuleFor(u => u.Email).EmailAddress().WithMessage("Enter a valid email!");
+            RuleFor(u => u.Role).NotEmpty().WithMessage("Role can not be null!");
+            RuleFor(u => u.Password).NotEmpty().WithMessage("Password can not be null!");
         }
     }
 }

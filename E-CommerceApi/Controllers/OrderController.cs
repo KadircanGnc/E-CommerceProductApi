@@ -11,10 +11,12 @@ namespace E_CommerceApi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderService _orderService;        
-        public OrderController(IOrderService orderService)
-        { 
-               _orderService = orderService;               
+        private readonly IOrderService _orderService;
+        private readonly IPaymentService _paymentService;
+        public OrderController(IOrderService orderService, IPaymentService paymentService)
+        {
+            _orderService = orderService;   
+            _paymentService = paymentService;
         }
 
         [Authorize(Roles = "admin")]
@@ -33,9 +35,9 @@ namespace E_CommerceApi.Controllers
         [HttpPost("create")]
         public IActionResult Create([FromBody] int cartId)
         {
-            if (cartId <= 0)
+            if (cartId <= 0 && _paymentService.Pay() == false)
             {
-                return BadRequest("Cart ID cannot be null or empty.");
+                return BadRequest("You need to complete payment first.");
             }
 
             _orderService.Create(cartId);

@@ -14,5 +14,6 @@ namespace BusinessLogic.Interfaces
         void Clear();
         CartDTO Get();
         CartDTO GetByUserId(int userId);
+        int GetUserId();
     }
 }
