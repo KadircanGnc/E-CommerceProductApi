@@ -20,25 +20,23 @@ namespace BusinessLogic.Services
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserService _userService;
         private int userId;
         private int cartId;
 
-        public CartService(ICartRepository cartRepo, IProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CartService(ICartRepository cartRepo, IProductRepository productRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor
+, IUserService userService)
         {
+            _userService = userService;
             _cartRepo = cartRepo;
             _productRepo = productRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            userId = GetUserIdFromToken()!.Value;
-            cartId = _cartRepo.GetByUserId(userId).Id;
+            userId = _userService.GetCurrentUserId();
+            cartId = _cartRepo.GetByUserId(userId)?.Id ?? 0;
         }
 
-        //Converts user id to integer from token value
-        private int? GetUserIdFromToken()
-        {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return int.TryParse(userIdClaim, out var userId) ? userId : (int?)null;
-        }
+
 
         public void AddItems(List<int> productIds)
         {                       
@@ -65,6 +63,9 @@ namespace BusinessLogic.Services
                     CreatedDate = DateTime.UtcNow,
                     CartItems = new List<CartItem>()
                 };
+
+                //_cartRepo.Create(cart);
+                //cartId = cart.Id;
             }
             else
             {

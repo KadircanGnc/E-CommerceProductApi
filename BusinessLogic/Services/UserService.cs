@@ -5,6 +5,8 @@ using AutoMapper;
 using BusinessLogic.DTOs.Product;
 using BusinessLogic.DTOs.User;
 using BusinessLogic.Interfaces;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogic.Services
 {
@@ -12,11 +14,25 @@ namespace BusinessLogic.Services
     {
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(IUserRepository userRepo, IMapper mapper)
+        public UserService(IUserRepository userRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _userRepo = userRepo;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        //Converts user id to integer from token value
+        private int? GetUserIdFromToken()
+        {
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.TryParse(userIdClaim, out var userId) ? userId : (int?)null;
+        }
+
+        public int GetCurrentUserId()
+        {
+            return GetUserIdFromToken()!.Value;
         }
 
         public void Create(CreateUserDTO createUserDTO)

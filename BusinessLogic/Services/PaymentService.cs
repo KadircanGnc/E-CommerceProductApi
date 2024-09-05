@@ -163,11 +163,11 @@ namespace BusinessLogic.Services
             var cart = _cartService.Get();
             int userId = _cartService.GetUserId();
             var user = _userService.GetById(userId);
-            
+
             // Create a request object
-            var paymentRequest = new
+            var paymentRequest = new CreatePaymentRequest
             {
-                PaymentCard = new
+                PaymentCard = new()
                 {
                     CardHolderName = cardInfo.CardHolderName,
                     CardNumber = cardInfo.CardNumber,
@@ -176,44 +176,47 @@ namespace BusinessLogic.Services
                     Cvc = cardInfo.Cvc,
                     RegisterCard = cardInfo.RegisterCard
                 },
-                Cart = new
+
+                Buyer = new()
                 {
-                    cart.TotalPrice,
-                    CartItems = cart.CartItems!.Select(item => new
+                    Id = user.Id.ToString(),
+                    Name = user.Name,
+                    RegistrationAddress = user.Address,
+                    Email = user.Email,
+
+                },
+
+                BasketItems = cart.CartItems!
+                    .Select(item => new BasketItem
                     {
-                        item.Id,
-                        item.ProductName,
-                        item.Price
-                    })
-                },
-                User = new
-                {
-                    user.Id,
-                    user.Name,
-                    user.Email,
-                    user.Address
-                },
-                PaymentDetails = new
-                {
-                    Price = cart.TotalPrice,
-                    PaidPrice = cart.TotalPrice + 50,
-                    Currency = Currency.TRY.ToString(),
-                    Installment = 1,
-                    BasketId = "B67832"
-                }
+                        Id = item.Id.ToString(),
+                        Price = item.Price.ToString(),
+                        Name = item.ProductName
+                    }).ToList(),
+
+                Locale = Locale.TR.ToString(),
+                ConversationId = "123456789",
+                Price = cart.TotalPrice.ToString(),
+                PaidPrice = (cart.TotalPrice + 50).ToString(),
+                Currency = Currency.TRY.ToString(),
+                Installment = 1,
+                BasketId = new Random().Next(1000, 6000).ToString(),
+                PaymentChannel = PaymentChannel.WEB.ToString(),
+                PaymentGroup = PaymentGroup.PRODUCT.ToString()
             };
 
-            var jsonContent = new StringContent(JsonSerializer.Serialize(paymentRequest), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsJsonAsync("https://192.168.2.5/payments", jsonContent);
+            var response = await _httpClient.PostAsJsonAsync("http://192.168.2.5/payments/pay", paymentRequest);
 
             if (response.IsSuccessStatusCode)
             {
-                return true;
+                var payment = await response.Content.ReadFromJsonAsync<Payment>();
+                if (payment.Status == "success")
+                {
+                    return true;
+                }
             }
 
             return false;
-
         }
     
     }
