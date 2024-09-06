@@ -86,9 +86,10 @@ namespace E_CommerceApi.MockData
                 .RuleFor(p => p.Price, f => Convert.ToDecimal(f.Commerce.Price()))
                 .RuleFor(p => p.StockCount, f => f.Random.Int(10, 50))
                 .RuleFor(p => p.CategoryId, f => f.Random.Int(1, 10))
-                .RuleFor(p => p.BrandId, f => f.Random.Int(1, 10));
+                .RuleFor(p => p.BrandId, f => f.Random.Int(1, 10))
+			    .RuleFor(p => p.ImageUrl, f => f.Image.PicsumUrl());
 
-            var productCount = context.Products.Count();
+			var productCount = context.Products.Count();
             if (productCount < 50)
             {
                 List<Product> generatedProducts = productFaker.Generate(50);

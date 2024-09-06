@@ -5,9 +5,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<ProductService>(client =>
+builder.Services.AddHttpClient("WebApiClient", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5263/"); // Api Url
+});
+
+builder.Services.AddScoped(sp =>
+{
+    var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    return clientFactory.CreateClient("WebApiClient");
 });
 builder.Services.AddScoped<ProductService>();
 
