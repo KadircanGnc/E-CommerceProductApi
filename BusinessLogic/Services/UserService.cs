@@ -2,8 +2,8 @@
 using Entities;
 using System;
 using AutoMapper;
-using BusinessLogic.DTOs.Product;
-using BusinessLogic.DTOs.User;
+using Common.DTOs.Product;
+using Common.DTOs.User;
 using BusinessLogic.Interfaces;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;

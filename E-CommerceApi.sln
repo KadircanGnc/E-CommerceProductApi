@@ -5,13 +5,17 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-CommerceApi", "E-CommerceApi\E-CommerceApi.csproj", "{B1C50608-B32A-49A5-8AFB-9A12908EF302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{B18C7565-A44C-4991-A582-6731BAAA9444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{B18C7565-A44C-4991-A582-6731BAAA9444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{80DA74C1-E101-43CB-878F-C72D99CD2684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{80DA74C1-E101-43CB-878F-C72D99CD2684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{2EFADA60-9FCD-4848-B76C-260D1C5F13DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "Authentication\Authentication.csproj", "{2EFADA60-9FCD-4848-B76C-260D1C5F13DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{3984FAF6-8E97-429A-81B7-130E5D467DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{3984FAF6-8E97-429A-81B7-130E5D467DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceClient", "EcommerceClient\EcommerceClient.csproj", "{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{EEA1D547-35C0-46DA-B764-2D4EA173BC54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3984FAF6-8E97-429A-81B7-130E5D467DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3984FAF6-8E97-429A-81B7-130E5D467DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3984FAF6-8E97-429A-81B7-130E5D467DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA1D547-35C0-46DA-B764-2D4EA173BC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA1D547-35C0-46DA-B764-2D4EA173BC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA1D547-35C0-46DA-B764-2D4EA173BC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA1D547-35C0-46DA-B764-2D4EA173BC54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs.Category;
+﻿using Common.DTOs.Category;
 using FluentValidation;
 
 namespace E_CommerceApi.Validators

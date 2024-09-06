@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Entities;
-using BusinessLogic.DTOs;
-using BusinessLogic.DTOs.Brand;
-using BusinessLogic.DTOs.Product;
-using BusinessLogic.DTOs.User;
-using BusinessLogic.DTOs.Category;
-using BusinessLogic.DTOs.Comment;
+using Common.DTOs;
+using Common.DTOs.Brand;
+using Common.DTOs.Product;
+using Common.DTOs.User;
+using Common.DTOs.Category;
+using Common.DTOs.Comment;
 
 namespace E_CommerceApi.MappingProfiles
 {

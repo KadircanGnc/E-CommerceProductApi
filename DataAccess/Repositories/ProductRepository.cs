@@ -64,7 +64,7 @@ namespace DataAccess.Repositories
                 .ToList();
         }
 
-        public List<Product> GetByRange(double minValue, double maxValue)
+        public List<Product> GetByRange(decimal minValue, decimal maxValue)
         {
             var result = _context.Products
                 .Where(p => p.Price >= minValue && p.Price <= maxValue)

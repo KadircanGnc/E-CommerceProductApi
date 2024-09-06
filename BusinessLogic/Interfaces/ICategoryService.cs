@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs.Category;
+﻿using Common.DTOs.Category;
 using System;
 using System.Collections.Generic;
 using System.Linq;

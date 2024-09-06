@@ -67,8 +67,8 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -97,8 +97,8 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -186,8 +186,8 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -216,8 +216,8 @@ namespace DataAccess.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -254,8 +254,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("StockCount")
                         .HasColumnType("integer");

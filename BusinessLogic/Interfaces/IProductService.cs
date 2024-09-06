@@ -1,5 +1,5 @@
-﻿using BusinessLogic.DTOs;
-using BusinessLogic.DTOs.Product;
+﻿using Common.DTOs;
+using Common.DTOs.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace BusinessLogic.Interfaces
         List<GetProductDTO> GetAll();
         PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize);
         List<GetProductDTO> GetByCategoryId(int categoryId);
-        List<GetProductDTO> GetByRange(double minValue, double maxValue);
+        List<GetProductDTO> GetByRange(decimal minValue, decimal maxValue);
         List<GetProductDTO> OrderByPriceDescending();
         List<GetProductDTO> OrderByPriceAscending();
         List<GetProductDTO> OrderByDate();

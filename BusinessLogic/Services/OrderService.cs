@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using DataAccess.Interfaces;
-using BusinessLogic.DTOs;
+using Common.DTOs;
 using Entities;
 using BusinessLogic.Interfaces;
 

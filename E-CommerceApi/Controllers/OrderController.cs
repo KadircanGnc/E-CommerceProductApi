@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.DTOs;
+using Common.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 
@@ -35,11 +35,12 @@ namespace E_CommerceApi.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CreditCardDTO creditCardDTO)
+        public async Task<IActionResult> Create([FromBody] CreditCardDTO creditCardDTO)
         {
             var userId = _cartService.GetUserId();
             var cartId = _cartService.GetCartId();
-            if (cartId <= 0 && _paymentService.IsPayCompleted(creditCardDTO).Result == false)
+            var isPaymentSuccess = await _paymentService.IsPayCompleted(creditCardDTO);
+            if (isPaymentSuccess)
             {
                 return BadRequest("You need to complete payment first.");
             }

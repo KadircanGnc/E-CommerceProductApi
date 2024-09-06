@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.DTOs.Comment;
+using Common.DTOs.Comment;
 using BusinessLogic.Interfaces;
 using DataAccess.Interfaces;
 using Entities;

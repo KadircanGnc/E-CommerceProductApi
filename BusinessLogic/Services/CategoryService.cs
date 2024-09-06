@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BusinessLogic.DTOs.Category;
+using Common.DTOs.Category;
 using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services

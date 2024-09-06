@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs.Comment;
+﻿using Common.DTOs.Comment;
 using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -3,7 +3,7 @@ using Entities;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using BusinessLogic.DTOs.Product;
+using Common.DTOs.Product;
 
 namespace E_CommerceApi.Controllers
 {
@@ -17,7 +17,7 @@ namespace E_CommerceApi.Controllers
             _service = service;            
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -29,7 +29,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("paged")]
         public IActionResult GetAllPaged()
         {
@@ -41,7 +41,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateProductDTO entity)
         {
@@ -49,7 +49,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPut("update-by-id")]
         public IActionResult Update([FromBody] UpdateProductDTO entity)
         {
@@ -62,7 +62,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
@@ -70,7 +70,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {
@@ -82,7 +82,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-category-id")]
         public IActionResult GetByCategoryId(int categoryId)
         {
@@ -94,9 +94,9 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-price-range")]
-        public IActionResult GetByRange(double minValue, double maxValue)
+        public IActionResult GetByRange(decimal minValue, decimal maxValue)
         {
             var result = _service.GetByRange(minValue, maxValue);
             if (result == null)
@@ -106,7 +106,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("order-by-price-ascending")]
         public IActionResult OrderByPriceAscending()
         {
@@ -118,7 +118,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("order-by-price-descending")]
         public IActionResult OrderByPriceDescending()
         {
@@ -130,7 +130,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("order-by-date")]
         public IActionResult OrderByDate()
         {

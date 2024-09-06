@@ -3,7 +3,7 @@ using Entities;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using BusinessLogic.DTOs.User;
+using Common.DTOs.User;
 
 namespace E_CommerceApi.Controllers
 {

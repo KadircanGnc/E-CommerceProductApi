@@ -1,5 +1,5 @@
-﻿using BusinessLogic.DTOs.Brand;
-using BusinessLogic.DTOs.Product;
+﻿using Common.DTOs.Brand;
+using Common.DTOs.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;

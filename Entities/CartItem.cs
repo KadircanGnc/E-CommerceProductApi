@@ -9,7 +9,7 @@ namespace Entities
     public class CartItem : BaseModel
     {        
         public int Quantity { get; set; }    // Quantity of the product in the cart
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public int CartId { get; set; }      
         public Cart? Cart { get; set; }       
         public int ProductId { get; set; }   

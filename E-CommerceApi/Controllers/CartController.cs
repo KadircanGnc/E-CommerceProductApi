@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs;
+﻿using Common.DTOs;
 using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

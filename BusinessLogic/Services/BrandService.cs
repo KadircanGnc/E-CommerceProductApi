@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.DTOs.Brand;
-using BusinessLogic.DTOs.Product;
+using Common.DTOs.Brand;
+using Common.DTOs.Product;
 using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services

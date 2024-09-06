@@ -1,7 +1,7 @@
 ﻿using DataAccess;
 using Entities;
 using Bogus;
-using BusinessLogic.DTOs.User;
+using Common.DTOs.User;
 
 namespace E_CommerceApi.MockData
 {
@@ -83,7 +83,7 @@ namespace E_CommerceApi.MockData
             //product data
             var productFaker = new Faker<Product>()
                 .RuleFor(p => p.Name, f => f.Commerce.ProductName())
-                .RuleFor(p => p.Price, f => Convert.ToDouble(f.Commerce.Price()))
+                .RuleFor(p => p.Price, f => Convert.ToDecimal(f.Commerce.Price()))
                 .RuleFor(p => p.StockCount, f => f.Random.Int(10, 50))
                 .RuleFor(p => p.CategoryId, f => f.Random.Int(1, 10))
                 .RuleFor(p => p.BrandId, f => f.Random.Int(1, 10));

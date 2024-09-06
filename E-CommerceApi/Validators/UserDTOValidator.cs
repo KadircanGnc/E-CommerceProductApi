@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs.User;
+﻿using Common.DTOs.User;
 using FluentValidation;
 
 namespace E_CommerceApi.Validators

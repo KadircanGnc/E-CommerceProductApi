@@ -1,4 +1,4 @@
-﻿using BusinessLogic.DTOs.Comment;
+﻿using Common.DTOs.Comment;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

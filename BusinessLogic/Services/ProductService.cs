@@ -4,8 +4,8 @@ using System.Linq;
 using AutoMapper;
 using DataAccess.Interfaces;
 using Entities;
-using BusinessLogic.DTOs.Product;
-using BusinessLogic.DTOs;
+using Common.DTOs.Product;
+using Common.DTOs;
 using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
@@ -115,7 +115,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<GetProductDTO>>(products);
         }
 
-        public List<GetProductDTO> GetByRange(double minValue, double maxValue)
+        public List<GetProductDTO> GetByRange(decimal minValue, decimal maxValue)
         {
             if (minValue < 0 || maxValue < minValue)
             {

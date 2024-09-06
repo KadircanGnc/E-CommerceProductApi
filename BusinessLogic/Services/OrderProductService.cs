@@ -4,7 +4,7 @@ using System.Linq;
 using AutoMapper;
 using DataAccess.Interfaces;
 using Entities;
-using BusinessLogic.DTOs;
+using Common.DTOs;
 using BusinessLogic.Interfaces;
 
 namespace BusinessLogic.Services
