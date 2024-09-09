@@ -69,5 +69,18 @@ namespace E_CommerceApi.Controllers
             var cart = _cartService.GetByUserId(userId);
             return Ok(cart);
         }
-    }
+
+		[Authorize]
+		[HttpGet("get-item-count")]
+		public IActionResult GetItemCount()
+		{
+			var result = _cartService.GetItemCount();
+			if (result <= 0)
+			{
+				return NotFound("No items found.");
+			}
+
+			return Ok(result);
+		}
+	}
 }

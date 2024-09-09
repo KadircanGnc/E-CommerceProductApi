@@ -33,5 +33,13 @@ namespace DataAccess.Repositories
             return result!;
         }
 
+        public int GetItemCount()
+        {
+            var result = _context.Carts.Include(c => c.CartItems!)
+                .FirstOrDefault();            
+
+            return result!.CartItems!.Sum(ci => ci.Quantity);
+        }
+
     }
 }

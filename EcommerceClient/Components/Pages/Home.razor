@@ -1,6 +1,9 @@
-﻿@page "/"
+﻿@page "/Home"
  
 @inject ProductService ProductService
+@inject NavigationManager Navigation
+@inject CartService CartService
+@inject HttpClient Http
 
 <PageTitle>Welcome to Shop</PageTitle>
 
@@ -21,7 +24,16 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
-						<li><a class="nav-link" href="cart.html"><img src="images/cart.svg"></a></li>
+						<li class="nav-item position-relative">
+							<a class="nav-link" href="cart.html">
+								<img src="images/cart.svg" alt="Cart">
+								@if (itemCount > 0)
+								{
+							<span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
+									@itemCount
+									</span>
+								}
+						</a></li>
 					</ul>
 				</div>
 			</div>
@@ -35,15 +47,16 @@
 				  <div class="row">
 					  @foreach (var product in products!)
 					  {
-							<div class="col-12 col-md-4 col-lg-3 mb-5">
-								<a class="product-item" href="#">
-									<img src="@product.ImageUrl" class="img-fluid product-thumbnail" alt="@product.Name">
+							<div class="col-12 col-md-4 col-lg-3 mb-5" >
+								<a class="product-item">
+									<img src="@product.ImageUrl" class="img-fluid product-thumbnail" alt="@product.Name" @onclick="() => AddToCart(product.Id)">
 									<h3 class="product-title">@product.Name</h3>
 										<strong class="product-price">TRY @product.Price</strong><br/>
 										<strong class="product-stockCount">Stock: @product.StockCount</strong>
-										<span class="icon-cross">
-										<img src="images/cross.svg" class="img-fluid">
-									</span>
+										<div class="cart-icons">
+											<div class="icon">+</div>
+											<div class="icon icon-minus" @onclick="() => RemoveFromCart(product.Id)">−</div>
+										</div>										
 								</a>
 							</div>
 				
@@ -79,17 +92,78 @@
 @code
 {
 	public List<GetProductDTO>? products = new List<GetProductDTO>();
+	public int itemCount = 0;
+	[Parameter]
+	public string? Token { get; set; }
+
+	protected override void OnInitialized()
+	{
+		var uri = new Uri(Navigation.Uri);
+		var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+		if (query.TryGetValue("token", out var tokenValue))
+		{
+			Token = tokenValue;
+		}
+		else
+		{
+			Console.WriteLine("No token found!");
+		}
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
 			products = await ProductService.GetProducts();
+			itemCount = await CartService.GetItemCountAsync(Token!);
 		}
 		catch (Exception ex)
 		{
 			// Log exception or handle error
 			Console.WriteLine(ex.Message);
+		}
+	}
+
+	private async Task AddToCart(int productId)
+    {
+        if (string.IsNullOrEmpty(Token))
+        {
+            Console.WriteLine("No token available.");
+            return;
+        }
+
+        try
+        {			
+			var productIds = new List<int> { productId };
+            await CartService.AddToCartAsync(Token, productIds);
+			itemCount++; // Update item count
+            Console.WriteLine("Product added to cart.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding product to cart: {ex.Message}");
+        }
+    }
+
+	private async Task RemoveFromCart(int productId)
+	{
+		if (string.IsNullOrEmpty(Token))
+		{
+			Console.WriteLine("No token available.");
+			return;
+		}
+
+		try
+		{
+			var productIds = new List<int> { productId };
+			await CartService.RemoveFromCartAsync(Token, productIds);
+			itemCount--; // Update item count
+			Console.WriteLine("Product removed from cart.");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error removing product from cart: {ex.Message}");
 		}
 	}
 }

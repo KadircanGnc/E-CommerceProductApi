@@ -223,5 +223,10 @@ namespace BusinessLogic.Services
             return cartId;
         }
 
+        public int GetItemCount()
+        {
+            return _cartRepo.GetItemCount();
+        }
+
     }
 }

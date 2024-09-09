@@ -1,10 +1,40 @@
 using EcommerceClient.Components;
 using EcommerceClient.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+builder.Services.AddControllers();
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddAntiforgery();
+builder.Services.AddHttpContextAccessor();
+//token config
+//builder.Services.AddAuthentication(options =>
+//{
+//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(options =>
+//{
+//	options.TokenValidationParameters = new TokenValidationParameters
+//	{
+//		ValidateIssuer = true,
+//		ValidateAudience = true,
+//		ValidateLifetime = true,
+//		ValidateIssuerSigningKey = true,
+//		ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//		ValidAudience = builder.Configuration["Jwt:Audience"],
+//		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+//	};
+//});
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddHttpClient("WebApiClient", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5263/"); // Api Url
@@ -16,6 +46,7 @@ builder.Services.AddScoped(sp =>
     return clientFactory.CreateClient("WebApiClient");
 });
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CartService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -32,10 +63,27 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//jwt config
+
+
+app.MapControllers();
+
+
 app.UseStaticFiles();
-app.UseAntiforgery();
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseAntiforgery();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints?.MapControllers();
+});
 
 app.Run();

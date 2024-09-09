@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "Authentic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{3984FAF6-8E97-429A-81B7-130E5D467DB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceClient", "EcommerceClient\EcommerceClient.csproj", "{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceClient", "EcommerceClient\EcommerceClient.csproj", "{BCE35D35-42F1-4E8A-9459-07A822F6A4D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{EEA1D547-35C0-46DA-B764-2D4EA173BC54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{EEA1D547-35C0-46DA-B764-2D4EA173BC54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
