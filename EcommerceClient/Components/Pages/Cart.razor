@@ -3,8 +3,7 @@
 @inject NavigationManager Navigation
 @inject HttpClient Http
 
-<PageTitle>Your Cart</PageTitle>
-
+<h3>Cart</h3>
 <div class="container mt-5">
     <h2>Your Cart</h2>
 
@@ -19,9 +18,9 @@
             {
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.ProductName">
                         <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
+                            <h5 class="card-title">@item.ProductName</h5>
                             <p class="card-text">Price: TRY @item.Price</p>
                             <p class="card-text">Quantity: @item.Quantity</p>
                             <p class="card-text">Total: TRY @((item.Price * item.Quantity).ToString("0.00"))</p>
@@ -39,17 +38,33 @@
         </div>
     }
 </div>
-
 @code {
     private List<CartItemDTO> cartItems = new List<CartItemDTO>();
     private decimal totalPrice = 0;
+    [Parameter]
+    public string? Token { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        if (query.TryGetValue("token", out var tokenValue))
+        {
+            Token = tokenValue;
+        }
+        else
+        {
+            Console.WriteLine("No token found!");
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try
-        {
-            var token = ""; // Retrieve user token if necessary
-            cartItems = await CartService.GetCartDetailsAsync(token);
+        {            
+            cartItems = await CartService.GetCartDetailsAsync(Token!);
             totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
         }
         catch (Exception ex)
@@ -62,9 +77,8 @@
     {
         try
         {
-            var token = ""; // Retrieve user token if necessary
-            await CartService.RemoveFromCartAsync(token, new List<int> { productId });
-            cartItems = await CartService.GetCartDetailsAsync(token); // Refresh cart items
+            await CartService.RemoveFromCartAsync(Token!, new List<int> { productId });
+            cartItems = await CartService.GetCartDetailsAsync(Token!); // Refresh cart items
             totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
         }
         catch (Exception ex)

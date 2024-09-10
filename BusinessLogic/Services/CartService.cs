@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BusinessLogic.Interfaces;
+using Iyzipay.Model;
 
 namespace BusinessLogic.Services
 {
@@ -229,9 +230,13 @@ namespace BusinessLogic.Services
             return _cartRepo.GetItemCount();
         }
 
-        public List<CartItem> GetCartItems()
-        {
-            return _cartRepo.GetCartItems(cartId);
+        public List<CartItemDTO> GetCartItems()
+		{
+            var cartItem = _cartRepo.GetCartItems(cartId);
+
+			var result = _mapper.Map<List<CartItemDTO>>(cartItem);
+
+			return result;
         }
 
     }

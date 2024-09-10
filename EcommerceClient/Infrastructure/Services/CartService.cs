@@ -91,5 +91,23 @@ namespace EcommerceClient.Infrastructure.Services
 				throw new Exception("Failed to get cart items.");
 			}
 		}
-	}
+
+        public async Task<List<CartItemDTO>> GetCartDetailsAsync(string token)
+        {
+            var requestUri = "Carts/get-cart-items"; // Adjust API endpoint
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(requestMessage);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<List<CartItemDTO>>();
+                return result!;
+            }
+            else
+            {
+                throw new Exception("Failed to get cart details.");
+            }
+        }
+    }
 }

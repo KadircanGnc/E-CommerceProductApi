@@ -18,7 +18,7 @@ namespace BusinessLogic.Interfaces
         int GetUserId();
         int GetCartId();
         int GetItemCount();
-        List<CartItem> GetCartItems();
+        List<CartItemDTO> GetCartItems();
 
 	}
 }

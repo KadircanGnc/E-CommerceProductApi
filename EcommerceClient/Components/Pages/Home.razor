@@ -1,9 +1,10 @@
 ﻿@page "/Home"
 
-@inject ProductService ProductService
 @inject NavigationManager Navigation
 @inject CartService CartService
+@inject ProductService ProductService
 @inject HttpClient Http
+@rendermode InteractiveServer
 
 <PageTitle>Welcome to Shop</PageTitle>
 
@@ -24,7 +25,7 @@
 			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 				<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
 				<li class="nav-item position-relative">
-					<a class="nav-link" href="/Cart">
+					<a class="nav-link" href="/Cart?token=@Uri.EscapeDataString(Token!)">
 						<img src="images/cart.svg" alt="Cart">
 						@if (itemCount > 0)
 						{
@@ -90,7 +91,8 @@
 <!-- End Footer Section -->
 @code
 {
-	public List<GetProductDTO>? products = new List<GetProductDTO>();
+	public List<GetProductDTO> products = new List<GetProductDTO>();
+	public List<CartItemDTO> cartItems = new List<CartItemDTO>();
 	public int itemCount = 0;
 	[Parameter]
 	public string? Token { get; set; }
@@ -102,7 +104,7 @@
 
 		if (query.TryGetValue("token", out var tokenValue))
 		{
-			Token = tokenValue;
+			Token = tokenValue;					
 		}
 		else
 		{
@@ -115,15 +117,9 @@
 		try
 		{
 			products = await ProductService.GetProducts();
-			itemCount = await CartService.GetItemCountAsync(Token!);
-			var cartItems = await CartService.GetCartItemsAsync(Token!);
-			var cartItemIds = new HashSet<int>(cartItems);
-
-			foreach (var product in products!)
-			{
-				product.IsInCart = cartItemIds.Contains(product.Id);
-			}
-
+			cartItems = await CartService.GetCartDetailsAsync(Token!);
+			itemCount = cartItems.Sum(ci => ci.Quantity);
+			StateHasChanged();
 		}
 		catch (Exception ex)
 		{
@@ -134,55 +130,80 @@
 
 	private async Task AddToCart(int productId)
 	{
-		var product = products!.FirstOrDefault(p => p.Id == productId);
-		if (string.IsNullOrEmpty(Token))
+		var product = products.FirstOrDefault(p => p.Id == productId);
+
+		if (product == null || string.IsNullOrEmpty(Token))
 		{
-			Console.WriteLine("No token available.");
+			Console.WriteLine("Product not found or no token.");
 			return;
 		}
-		if (product == null || product.IsInCart)
+		List<int> productIds = new List<int>();
+		productIds.Add(productId);
+		var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
+		if (cartItem == null)
 		{
-			Console.WriteLine("Product is already in the cart.");
-			return;
+			// Item not in cart, create a new CartItemDTO
+			cartItem = new CartItemDTO
+				{
+					ProductId = productId,
+					ProductName = product.Name,
+					Price = product.Price,
+					ImageUrl = product.ImageUrl,
+					Quantity = 1, // Set initial quantity to 1
+					IsInCart = true
+				};
+			cartItems.Add(cartItem);
 		}
+		else
+		{
+			// Item is already in the cart, increment the quantity
+			cartItem.Quantity++;
+		}
+
 		try
 		{
-			var productIds = new List<int> { productId };
 			await CartService.AddToCartAsync(Token, productIds);
-
-			product.IsInCart = true;
-			itemCount++; // Update item count
+			itemCount = cartItems.Sum(ci => ci.Quantity); // Update item count based on quantities
 			StateHasChanged();
-			Console.WriteLine("Product added to cart.");
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Error adding product to cart: {ex.Message}");
 		}
+		
 	}
 
 	private async Task RemoveFromCart(int productId)
 	{
-		var product = products!.FirstOrDefault(p => p.Id == productId);
-		if (string.IsNullOrEmpty(Token))
+		List<int> productIds = new List<int>();
+		productIds.Add(productId);
+
+		var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
+		if (cartItem == null || string.IsNullOrEmpty(Token))
 		{
-			Console.WriteLine("No token available.");
+			Console.WriteLine("Cart item not found or no token.");
 			return;
 		}
-		if (product == null || !product.IsInCart)
-		{
-			Console.WriteLine("Product is not in the cart.");
-			return;
-		}
+
 		try
 		{
-			var productIds = new List<int> { productId };
-			await CartService.RemoveFromCartAsync(Token, productIds);
+			if (cartItem.Quantity > 1)
+			{
+				// Decrease the quantity if it's greater than 1
+				cartItem.Quantity--;	
+				
+			}
+			else
+			{
+				// If the quantity is 1, remove the item from the cart
+				await CartService.RemoveFromCartAsync(Token, productIds);
+				cartItems.Remove(cartItem);
+				cartItem.IsInCart = false; // Update IsInCart when the item is removed completely
+			}
 
-			product.IsInCart = false;
-			itemCount--; // Update item count
+			itemCount = cartItems.Sum(ci => ci.Quantity); // Update item count based on quantities
 			StateHasChanged();
-			Console.WriteLine("Product removed from cart.");
 		}
 		catch (Exception ex)
 		{
