@@ -11,5 +11,7 @@ namespace DataAccess.Interfaces
     {
         Cart GetByUserId(int userId);
         int GetItemCount();
-    }
+        List<CartItem> GetCartItems(int cartId);
+
+	}
 }

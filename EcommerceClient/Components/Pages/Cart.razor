@@ -1,0 +1,81 @@
+﻿@page "/Cart"
+@inject CartService CartService
+@inject NavigationManager Navigation
+@inject HttpClient Http
+
+<PageTitle>Your Cart</PageTitle>
+
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+
+    @if (cartItems.Count == 0)
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in cartItems)
+            {
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">Price: TRY @item.Price</p>
+                            <p class="card-text">Quantity: @item.Quantity</p>
+                            <p class="card-text">Total: TRY @((item.Price * item.Quantity).ToString("0.00"))</p>
+                            <button class="btn btn-danger" @onclick="() => RemoveFromCart(item.Id)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <h4>Total: TRY @totalPrice.ToString("0.00")</h4>
+                <button class="btn btn-primary" @onclick="Checkout">Checkout</button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<CartItemDTO> cartItems = new List<CartItemDTO>();
+    private decimal totalPrice = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var token = ""; // Retrieve user token if necessary
+            cartItems = await CartService.GetCartDetailsAsync(token);
+            totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error fetching cart details: " + ex.Message);
+        }
+    }
+
+    private async Task RemoveFromCart(int productId)
+    {
+        try
+        {
+            var token = ""; // Retrieve user token if necessary
+            await CartService.RemoveFromCartAsync(token, new List<int> { productId });
+            cartItems = await CartService.GetCartDetailsAsync(token); // Refresh cart items
+            totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error removing item: " + ex.Message);
+        }
+    }
+
+    private void Checkout()
+    {
+        // Implement checkout logic
+        Console.WriteLine("Proceed to checkout");
+    }
+}

@@ -99,14 +99,15 @@ namespace BusinessLogic.Services
                     {
                         ProductId = product.Id,
                         Product = product,
-                        Quantity = 1,
+                        Quantity = 1,                        
                         Price = product.Price
+                        
                     };
                     cart.CartItems.Add(cartItem);
                 }
                 else
                 {
-                    cartItem.Quantity++;
+                    cartItem.Quantity++;                    
                     cartItem.Price = product.Price; // Update price
                 }
             }
@@ -144,7 +145,7 @@ namespace BusinessLogic.Services
                 var cartItem = cart.CartItems!.FirstOrDefault(ci => ci.ProductId == productId);
                 if (cartItem != null)
                 {
-                    cart.CartItems!.Remove(cartItem);
+                    cart.CartItems!.Remove(cartItem);                    
                 }
             }
 
@@ -167,8 +168,8 @@ namespace BusinessLogic.Services
             {
                 throw new InvalidOperationException("Cart not found.");
             }
-            
-            cart.CartItems!.Clear();
+			
+			cart.CartItems!.Clear();
             
             cart.TotalPrice = 0;
             
@@ -226,6 +227,11 @@ namespace BusinessLogic.Services
         public int GetItemCount()
         {
             return _cartRepo.GetItemCount();
+        }
+
+        public List<CartItem> GetCartItems()
+        {
+            return _cartRepo.GetCartItems(cartId);
         }
 
     }

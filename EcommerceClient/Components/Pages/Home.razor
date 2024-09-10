@@ -1,5 +1,5 @@
 ﻿@page "/Home"
- 
+
 @inject ProductService ProductService
 @inject NavigationManager Navigation
 @inject CartService CartService
@@ -7,88 +7,87 @@
 
 <PageTitle>Welcome to Shop</PageTitle>
 
-		<!-- Start Header/Navigation -->
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
-			<div class="container">
-				<a class="navbar-brand" href="index.html">KADIR SHOP<span></span></a>
+	<div class="container">
+		<a class="navbar-brand" href="index.html">KADIR SHOP<span></span></a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-																	
-					</ul>
+		<div class="collapse navbar-collapse" id="navbarsFurni">
+			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+			</ul>
 
-					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
-						<li class="nav-item position-relative">
-							<a class="nav-link" href="cart.html">
-								<img src="images/cart.svg" alt="Cart">
-								@if (itemCount > 0)
-								{
+			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+				<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
+				<li class="nav-item position-relative">
+					<a class="nav-link" href="/Cart">
+						<img src="images/cart.svg" alt="Cart">
+						@if (itemCount > 0)
+						{
 							<span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
-									@itemCount
-									</span>
-								}
-						</a></li>
-					</ul>
+								@itemCount
+							</span>
+						}
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</nav>
+<!-- End Header/Navigation -->
+
+
+<div class="untree_co-section product-section before-footer-section">
+	<div class="container">
+		<div class="row">
+			@foreach (var product in products!)
+			{
+				<div class="col-12 col-md-4 col-lg-3 mb-5">
+					<a class="product-item">
+						<img src="@product.ImageUrl" class="img-fluid product-thumbnail" alt="@product.Name">
+						<h3 class="product-title">@product.Name</h3>
+						<strong class="product-price">TRY @product.Price</strong><br />
+						<strong class="product-stockCount">Stock: @product.StockCount</strong>
+						<div class="cart-icons">
+							<div class="icon" @onclick="() => AddToCart(product.Id)">+</div>
+							<div class="icon icon-minus" @onclick="() => RemoveFromCart(product.Id)">−</div>
+						</div>
+					</a>
 				</div>
-			</div>
 
-		</nav>
-		<!-- End Header/Navigation -->
+			}
+		</div>
+	</div>
+</div>
 
 
-		<div class="untree_co-section product-section before-footer-section">
-			<div class="container">
-				  <div class="row">
-					  @foreach (var product in products!)
-					  {
-							<div class="col-12 col-md-4 col-lg-3 mb-5" >
-								<a class="product-item">
-									<img src="@product.ImageUrl" class="img-fluid product-thumbnail" alt="@product.Name" @onclick="() => AddToCart(product.Id)">
-									<h3 class="product-title">@product.Name</h3>
-										<strong class="product-price">TRY @product.Price</strong><br/>
-										<strong class="product-stockCount">Stock: @product.StockCount</strong>
-										<div class="cart-icons">
-											<div class="icon">+</div>
-											<div class="icon icon-minus" @onclick="() => RemoveFromCart(product.Id)">−</div>
-										</div>										
-								</a>
-							</div>
-				
-					  }
-				  </div>
-			</div>
+<!-- Start Footer Section -->
+<footer class="footer-section">
+	<div class="container relative">
+
+		<div class="sofa-img">
+			<img src="images/sofa.png" alt="Image" class="img-fluid">
 		</div>
 
 
-		<!-- Start Footer Section -->
-		<footer class="footer-section">
-			<div class="container relative">
-
-				<div class="sofa-img">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
-				</div>
-				
-
-				<div class="row g-5 mb-5">
-					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">KADIR SHOP</a></div>
-						<p class="mb-4">Tüm hakları saklıdır</p>
-
-					</div>
-					
-
-				</div>				
+		<div class="row g-5 mb-5">
+			<div class="col-lg-4">
+				<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">KADIR SHOP</a></div>
+				<p class="mb-4">Tüm hakları saklıdır</p>
 
 			</div>
-		</footer>
-		<!-- End Footer Section -->
 
+
+		</div>
+
+	</div>
+</footer>
+<!-- End Footer Section -->
 @code
 {
 	public List<GetProductDTO>? products = new List<GetProductDTO>();
@@ -117,6 +116,14 @@
 		{
 			products = await ProductService.GetProducts();
 			itemCount = await CartService.GetItemCountAsync(Token!);
+			var cartItems = await CartService.GetCartItemsAsync(Token!);
+			var cartItemIds = new HashSet<int>(cartItems);
+
+			foreach (var product in products!)
+			{
+				product.IsInCart = cartItemIds.Contains(product.Id);
+			}
+
 		}
 		catch (Exception ex)
 		{
@@ -126,39 +133,55 @@
 	}
 
 	private async Task AddToCart(int productId)
-    {
-        if (string.IsNullOrEmpty(Token))
-        {
-            Console.WriteLine("No token available.");
-            return;
-        }
-
-        try
-        {			
-			var productIds = new List<int> { productId };
-            await CartService.AddToCartAsync(Token, productIds);
-			itemCount++; // Update item count
-            Console.WriteLine("Product added to cart.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error adding product to cart: {ex.Message}");
-        }
-    }
-
-	private async Task RemoveFromCart(int productId)
 	{
+		var product = products!.FirstOrDefault(p => p.Id == productId);
 		if (string.IsNullOrEmpty(Token))
 		{
 			Console.WriteLine("No token available.");
 			return;
 		}
+		if (product == null || product.IsInCart)
+		{
+			Console.WriteLine("Product is already in the cart.");
+			return;
+		}
+		try
+		{
+			var productIds = new List<int> { productId };
+			await CartService.AddToCartAsync(Token, productIds);
 
+			product.IsInCart = true;
+			itemCount++; // Update item count
+			StateHasChanged();
+			Console.WriteLine("Product added to cart.");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error adding product to cart: {ex.Message}");
+		}
+	}
+
+	private async Task RemoveFromCart(int productId)
+	{
+		var product = products!.FirstOrDefault(p => p.Id == productId);
+		if (string.IsNullOrEmpty(Token))
+		{
+			Console.WriteLine("No token available.");
+			return;
+		}
+		if (product == null || !product.IsInCart)
+		{
+			Console.WriteLine("Product is not in the cart.");
+			return;
+		}
 		try
 		{
 			var productIds = new List<int> { productId };
 			await CartService.RemoveFromCartAsync(Token, productIds);
+
+			product.IsInCart = false;
 			itemCount--; // Update item count
+			StateHasChanged();
 			Console.WriteLine("Product removed from cart.");
 		}
 		catch (Exception ex)

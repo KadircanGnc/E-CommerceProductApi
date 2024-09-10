@@ -62,7 +62,20 @@ namespace E_CommerceApi.Controllers
             return Ok(cart);
         }
 
-        [Authorize(Roles = "admin")]
+		[Authorize]
+		[HttpGet("get-cart-items")]
+		public IActionResult GetCartItems()
+		{
+			var cartItems = _cartService.GetCartItems();
+			if (cartItems == null)
+			{
+				return NotFound("No Cart Items found.");
+			}
+
+			return Ok(cartItems);
+		}
+
+		[Authorize(Roles = "admin")]
         [HttpGet("get-by-user-id")]
         public IActionResult GetByUserId(int userId)
         {

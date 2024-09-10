@@ -41,5 +41,15 @@ namespace DataAccess.Repositories
             return result!.CartItems!.Sum(ci => ci.Quantity);
         }
 
+        public List<CartItem> GetCartItems(int cartId)
+        {
+            var result = _context.Carts
+                .Include(c => c.CartItems!)
+                .Where(c => c.Id == cartId)
+                .SelectMany(c => c.CartItems!)
+                .ToList();
+
+            return result;
+        }
     }
 }

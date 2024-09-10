@@ -1,4 +1,5 @@
 ﻿using Common.DTOs;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace BusinessLogic.Interfaces
         int GetUserId();
         int GetCartId();
         int GetItemCount();
-    }
+        List<CartItem> GetCartItems();
+
+	}
 }

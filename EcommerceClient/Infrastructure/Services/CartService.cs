@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text;
 using System.Net.Http.Headers;
+using Common.DTOs;
 
 namespace EcommerceClient.Infrastructure.Services
 {
@@ -64,7 +65,7 @@ namespace EcommerceClient.Infrastructure.Services
 			if (response.IsSuccessStatusCode)
 			{
 				var content = await response.Content.ReadAsStringAsync();
-				return int.Parse(content); // Assuming the API returns the count as a plain integer
+				return int.Parse(content); 
 			}
 			else
 			{
@@ -72,6 +73,23 @@ namespace EcommerceClient.Infrastructure.Services
 			}
 		}
 
-		
+		public async Task<List<int>> GetCartItemsAsync(string token)
+		{
+			var requestUri = "Carts/get-cart-items"; 
+
+			var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+			requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var response = await _httpClient.SendAsync(requestMessage);
+			if (response.IsSuccessStatusCode)
+			{
+				var result = await response.Content.ReadFromJsonAsync<List<int>>();
+				return result!;
+			}
+			else
+			{
+				throw new Exception("Failed to get cart items.");
+			}
+		}
 	}
 }

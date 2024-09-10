@@ -1,5 +1,6 @@
 ﻿using Common.DTOs.Product;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace EcommerceClient.Infrastructure.Services
 {
@@ -15,18 +16,19 @@ namespace EcommerceClient.Infrastructure.Services
         {
 			var response = await _httpClient.GetAsync("Products");
 			
-				if (response.IsSuccessStatusCode)
-				{
-					var products = await response.Content.ReadFromJsonAsync<List<GetProductDTO>>();
-					return products ?? new List<GetProductDTO>();
-				}
-				else
-				{
-					// Handle unsuccessful response
-					Console.WriteLine("Failed to fetch products.");
-					return new List<GetProductDTO>();
-				}			
+			if (response.IsSuccessStatusCode)
+			{
+				var products = await response.Content.ReadFromJsonAsync<List<GetProductDTO>>();
+				return products ?? new List<GetProductDTO>();
+			}
+			else
+			{
+				// Handle unsuccessful response
+				Console.WriteLine("Failed to fetch products.");
+				return new List<GetProductDTO>();
+			}		
 			
-		}
-    }
+		}	
+
+	}
 }
