@@ -1,31 +1,7 @@
-﻿@page "/"
+﻿@page "/Deneme"
 
-@inject NavigationManager Navigation
-@inject CartService CartService
-@inject ProductService ProductService
-@inject HttpClient Http
-@rendermode InteractiveServer
 
-<PageTitle>Welcome to Shop</PageTitle>
 
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="images/breadcrumb.jpg">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<div class="breadcrumb__text">
-					<h2>Organi Shop</h2>
-					<div class="breadcrumb__option">
-						<a href="./index.html">Home</a>
-						<span>Shop</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Breadcrumb Section End -->
-<!-- Product Section Begin -->
 <section class="product spad">
     <div class="container">
         <div class="row">
@@ -136,7 +112,7 @@
                                 <div class="latest-prdouct__slider__item">
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-1.jpg" alt="">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -145,7 +121,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-2.jpg" alt="">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -154,7 +130,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-3.jpg" alt="">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -165,7 +141,7 @@
                                 <div class="latest-prdouct__slider__item">
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-1.jpg" alt="">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -174,7 +150,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-2.jpg" alt="">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -183,7 +159,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-3.jpg" alt="">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -206,7 +182,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-1.jpg">
+                                         data-setbg="img/product/discount/pd-1.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -224,7 +200,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-2.jpg">
+                                         data-setbg="img/product/discount/pd-2.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -242,7 +218,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-3.jpg">
+                                         data-setbg="img/product/discount/pd-3.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -260,7 +236,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-4.jpg">
+                                         data-setbg="img/product/discount/pd-4.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -278,7 +254,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-5.jpg">
+                                         data-setbg="img/product/discount/pd-5.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -296,7 +272,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="images/product/discount/pd-6.jpg">
+                                         data-setbg="img/product/discount/pd-6.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -341,7 +317,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-1.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -356,7 +332,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-2.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -371,7 +347,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-3.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -386,7 +362,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-4.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -401,7 +377,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-5.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -416,7 +392,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-6.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -431,7 +407,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-7.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -446,7 +422,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-8.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -461,7 +437,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-9.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-9.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -476,7 +452,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-10.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-10.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -491,7 +467,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-11.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-11.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -506,7 +482,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="images/product/product-12.jpg">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/product-12.jpg">
                                 <ul class="product__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -530,125 +506,7 @@
         </div>
     </div>
 </section>
-<!-- Product Section End -->
 
-@code
-{
-	public List<GetProductDTO> products = new List<GetProductDTO>();
-	public List<CartItemDTO> cartItems = new List<CartItemDTO>();
-	public int itemCount = 0;
-	// [Parameter]
-	// public string? Token { get; set; }
+@code {
 
-	
-
-	protected override async Task OnInitializedAsync()
-	{
-  //       var uri = new Uri(Navigation.Uri);
-  //       var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
-
-  //       if (query.TryGetValue("token", out var tokenValue))
-  //       {
-  //           Token = tokenValue;
-  //       }
-  //       else
-  //       {
-  //           Console.WriteLine("No token found!");
-  //       }
-		// try
-		// {
-		// 	products = await ProductService.GetProducts();
-		// 	cartItems = await CartService.GetCartDetailsAsync(Token!);
-		// 	itemCount = cartItems.Sum(ci => ci.Quantity);
-		// 	StateHasChanged();
-		// }
-		// catch (Exception ex)
-		// {
-		// 	// Log exception or handle error
-		// 	Console.WriteLine(ex.Message);
-		// }
-	}
-
-// 	private async Task AddToCart(int productId)
-// 	{
-// 		var product = products.FirstOrDefault(p => p.Id == productId);
-
-// 		if (product == null || string.IsNullOrEmpty(Token))
-// 		{
-// 			Console.WriteLine("Product not found or no token.");
-// 			return;
-// 		}
-// 		List<int> productIds = new List<int>();
-// 		productIds.Add(productId);
-// 		var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
-
-// 		if (cartItem == null)
-// 		{
-// 			// Item not in cart, create a new CartItemDTO
-// 			cartItem = new CartItemDTO
-// 				{
-// 					ProductId = productId,
-// 					ProductName = product.Name,
-// 					Price = product.Price,
-// 					ImageUrl = product.ImageUrl,
-// 					Quantity = 1, // Set initial quantity to 1
-// 					IsInCart = true
-// 				};
-// 			cartItems.Add(cartItem);
-// 		}
-// 		else
-// 		{
-// 			// Item is already in the cart, increment the quantity
-// 			cartItem.Quantity++;
-// 		}
-
-// 		try
-// 		{
-// 			await CartService.AddToCartAsync(Token, productIds);
-// 			itemCount = cartItems.Sum(ci => ci.Quantity); // Update item count based on quantities
-// 			StateHasChanged();
-// 		}
-// 		catch (Exception ex)
-// 		{
-// 			Console.WriteLine($"Error adding product to cart: {ex.Message}");
-// 		}
-		
-// 	}
-
-// 	private async Task RemoveFromCart(int productId)
-// 	{
-// 		List<int> productIds = new List<int>();
-// 		productIds.Add(productId);
-
-// 		var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
-// 		if (cartItem == null || string.IsNullOrEmpty(Token))
-// 		{
-// 			Console.WriteLine("Cart item not found or no token.");
-// 			return;
-// 		}
-
-// 		try
-// 		{
-// 			if (cartItem.Quantity > 1)
-// 			{
-// 				// Decrease the quantity if it's greater than 1
-// 				cartItem.Quantity--;	
-				
-// 			}
-// 			else
-// 			{
-// 				// If the quantity is 1, remove the item from the cart
-// 				await CartService.RemoveFromCartAsync(Token, productIds);
-// 				cartItems.Remove(cartItem);
-// 				cartItem.IsInCart = false; // Update IsInCart when the item is removed completely
-// 			}
-
-// 			itemCount = cartItems.Sum(ci => ci.Quantity); // Update item count based on quantities
-// 			StateHasChanged();
-// 		}
-// 		catch (Exception ex)
-// 		{
-// 			Console.WriteLine($"Error removing product from cart: {ex.Message}");
-// 		}
-// 	}
 }
