@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Components\Pages\Deneme.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
   </ItemGroup>
 
@@ -20,10 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Utility\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Pages\Deneme.razor" />
   </ItemGroup>
 
 </Project>

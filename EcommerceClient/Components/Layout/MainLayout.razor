@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
-<NavbarMenu></NavbarMenu>
+<Header></Header>
 
 <div class="page">       
     
@@ -20,3 +21,14 @@
 </div>
 
 <Footer></Footer>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // if (firstRender)
+        // {
+            await JSRuntime.InvokeVoidAsync("initializeScripts");
+
+        //}
+    }
+}

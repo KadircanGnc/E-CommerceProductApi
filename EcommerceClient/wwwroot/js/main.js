@@ -1,26 +1,10 @@
-/*  ---------------------------------------------------
-    Template Name: Ogani
-    Description:  Ogani eCommerce  HTML Template
-    Author: Colorlib
-    Author URI: https://colorlib.com
-    Version: 1.0
-    Created: Colorlib
----------------------------------------------------------  */
+window.initializeScripts = () => {
 
-'use strict';
-
-(function ($) {
-
-    /*------------------
-        Preloader
-    --------------------*/
+    /* Preloader */
     $(window).on('load', function () {
-        $(".loader").fadeOut();
-        $("#preloder").delay(200).fadeOut("slow");
 
-        /*------------------
-            Gallery filter
-        --------------------*/
+
+        /* Gallery filter */
         $('.featured__controls li').on('click', function () {
             $('.featured__controls li').removeClass('active');
             $(this).addClass('active');
@@ -31,9 +15,7 @@
         }
     });
 
-    /*------------------
-        Background Set
-    --------------------*/
+    /* Background Set */
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
         $(this).css('background-image', 'url(' + bg + ')');
@@ -41,24 +23,27 @@
 
     //Humberger Menu
     $(".humberger__open").on('click', function () {
-        $(".humberger__menu__wrapper").addClass("show__humberger__menu__wrapper");
-        $(".humberger__menu__overlay").addClass("active");
+        $(".humberger_menuwrapper").addClass("showhumbergermenu_wrapper");
+        $(".humberger_menu_overlay").addClass("active");
         $("body").addClass("over_hid");
     });
 
-    $(".humberger__menu__overlay").on('click', function () {
-        $(".humberger__menu__wrapper").removeClass("show__humberger__menu__wrapper");
-        $(".humberger__menu__overlay").removeClass("active");
+    $(".humberger_menu_overlay").on('click', function () {
+        $(".humberger_menuwrapper").removeClass("showhumbergermenu_wrapper");
+        $(".humberger_menu_overlay").removeClass("active");
         $("body").removeClass("over_hid");
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: '#mobile-menu-wrap',
         allowParentLinks: true
     });
+
+
+
 
     /*-----------------------
         Categories Slider
@@ -96,7 +81,7 @@
     });
 
 
-    $('.hero__categories__all').on('click', function(){
+    $('.hero_categories_all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
     });
 
@@ -118,7 +103,7 @@
     /*-----------------------------
         Product Discount Slider
     -------------------------------*/
-    $(".product__discount__slider").owlCarousel({
+    $(".product_discount_slider").owlCarousel({
         loop: true,
         margin: 0,
         items: 3,
@@ -149,7 +134,7 @@
     /*---------------------------------
         Product Details Pic Slider
     ----------------------------------*/
-    $(".product__details__pic__slider").owlCarousel({
+    $(".product_detailspic_slider").owlCarousel({
         loop: true,
         margin: 20,
         items: 4,
@@ -160,8 +145,8 @@
     });
 
     /*-----------------------
-		Price Range Slider
-	------------------------ */
+        Price Range Slider
+    ------------------------ */
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -186,22 +171,22 @@
     $("select").niceSelect();
 
     /*------------------
-		Single Product
-	--------------------*/
-    $('.product__details__pic__slider img').on('click', function () {
+        Single Product
+    --------------------*/
+    $('.product_detailspic_slider img').on('click', function () {
 
         var imgurl = $(this).data('imgbigurl');
-        var bigImg = $('.product__details__pic__item--large').attr('src');
+        var bigImg = $('.product_detailspic_item--large').attr('src');
         if (imgurl != bigImg) {
-            $('.product__details__pic__item--large').attr({
+            $('.product_detailspic_item--large').attr({
                 src: imgurl
             });
         }
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
@@ -221,4 +206,7 @@
         $button.parent().find('input').val(newVal);
     });
 
-})(jQuery);
+
+    $(".loader").fadeOut();
+    $("#preloder").delay(200).fadeOut("slow");
+};
