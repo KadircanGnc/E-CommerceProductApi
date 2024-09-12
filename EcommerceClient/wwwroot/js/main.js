@@ -144,6 +144,8 @@ window.initializeScripts = () => {
         autoplay: true
     });
 
+
+
     /*-----------------------
         Price Range Slider
     ------------------------ */
@@ -152,6 +154,7 @@ window.initializeScripts = () => {
         maxamount = $("#maxamount"),
         minPrice = rangeSlider.data('min'),
         maxPrice = rangeSlider.data('max');
+
     rangeSlider.slider({
         range: true,
         min: minPrice,
@@ -164,7 +167,6 @@ window.initializeScripts = () => {
     });
     minamount.val('$' + rangeSlider.slider("values", 0));
     maxamount.val('$' + rangeSlider.slider("values", 1));
-
     /*--------------------------
         Select
     ----------------------------*/

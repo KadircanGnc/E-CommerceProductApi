@@ -17,7 +17,7 @@ namespace E_CommerceApi.Controllers
             _categoryService = categoryService;            
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -58,7 +58,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {

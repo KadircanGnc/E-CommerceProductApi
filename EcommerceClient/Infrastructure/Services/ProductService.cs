@@ -1,4 +1,5 @@
-﻿using Common.DTOs.Product;
+﻿using Common.DTOs;
+using Common.DTOs.Product;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -26,9 +27,18 @@ namespace EcommerceClient.Infrastructure.Services
 				// Handle unsuccessful response
 				Console.WriteLine("Failed to fetch products.");
 				return new List<GetProductDTO>();
-			}		
-			
-		}	
+			}			
+		}
 
-	}
+        public async Task<PagedResult<GetProductDTO>> GetPagedProducts(int pageNumber, int pageSize)
+        {
+            var response = await _httpClient.GetFromJsonAsync<PagedResult<GetProductDTO>>($"Products/paged?pageNumber={pageNumber}&pageSize={pageSize}");
+            if (response == null)
+            {
+                throw new Exception("No products found.");
+            }
+            return response;
+        }
+
+    }
 }

@@ -33,7 +33,7 @@ namespace E_CommerceApi.Controllers
         [HttpGet("paged")]
         public IActionResult GetAllPaged()
         {
-            var result = _service.GetAllPaged(1, 5);
+            var result = _service.GetAllPaged(1, 10);
             if (result == null)
             {
                 return BadRequest("Invalid value!");
@@ -41,7 +41,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateProductDTO entity)
         {
@@ -49,7 +49,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpPut("update-by-id")]
         public IActionResult Update([FromBody] UpdateProductDTO entity)
         {
@@ -62,7 +62,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
