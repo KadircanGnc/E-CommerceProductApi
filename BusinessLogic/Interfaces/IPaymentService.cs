@@ -9,6 +9,6 @@ namespace BusinessLogic.Interfaces
 {
     public interface IPaymentService
     {        
-        Task<bool> IsPayCompleted(CreditCardDTO cardInfo);
+        bool IsPayCompleted(CreditCardDTO cardInfo);
     }
 }

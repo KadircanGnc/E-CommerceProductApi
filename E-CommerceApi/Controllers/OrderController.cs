@@ -35,11 +35,11 @@ namespace E_CommerceApi.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] CreditCardDTO creditCardDTO)
+        public IActionResult Create([FromBody] CreditCardDTO creditCardDTO)
         {
             var userId = _cartService.GetUserId();
             var cartId = _cartService.GetCartId();
-            var isPaymentSuccess = await _paymentService.IsPayCompleted(creditCardDTO);
+            var isPaymentSuccess = _paymentService.IsPayCompleted(creditCardDTO);
             if (isPaymentSuccess)
             {
                 return BadRequest("You need to complete payment first.");

@@ -178,14 +178,29 @@ namespace BusinessLogic.Services
         }
 
         public CartDTO Get()
-        {            
+        {
 
-            if (cartId <= 0)
+            var cart = _cartRepo.GetByUserId(userId);
+            if (cart == null)
             {
-                throw new ArgumentException("Invalid cart ID.");
+                // Create a new cart if none exists
+                cart = new Cart
+                {
+                    UserId = userId,
+                    CreatedDate = DateTime.UtcNow,
+                    CartItems = new List<CartItem>()
+                };
+
+                //_cartRepo.Create(cart);
+                //cartId = cart.Id;
             }
 
-            var cart = _cartRepo.GetById(cartId);
+            //if (cartId <= 0)
+            //{
+                
+            //}
+
+            //var cart = _cartRepo.GetById(cartId);
             if (cart == null)
             {
                 throw new InvalidOperationException("Cart not found.");
