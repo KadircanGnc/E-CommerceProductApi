@@ -39,6 +39,42 @@ namespace EcommerceClient.Infrastructure.Services
             }
             return response;
         }
+        
+        // Get products by category with pagination
+        public async Task<PagedResult<GetProductDTO>> GetPagedProductsByCategory(int categoryId, int pageNumber, int pageSize)
+        {
+            var response = await _httpClient.GetFromJsonAsync<PagedResult<GetProductDTO>>(
+                $"Products/by-category-id-paged?categoryId={categoryId}&pageNumber={pageNumber}&pageSize={pageSize}");
+            if (response == null)
+            {
+                throw new Exception("No products found for this category.");
+            }
+            return response;
+        }
+
+        // Search products with pagination
+        public async Task<PagedResult<GetProductDTO>> SearchProductsWithPagination(string searchTerm, int pageNumber, int pageSize)
+        {
+            var response = await _httpClient.GetFromJsonAsync<PagedResult<GetProductDTO>>(
+                $"Products/search-by-name-paged?name={searchTerm}&pageNumber={pageNumber}&pageSize={pageSize}");
+            if (response == null)
+            {
+                throw new Exception("No products found for the search term.");
+            }
+            return response;
+        }
+
+        public async Task<GetProductDTO> GetById(int productId)
+        {
+            var response = await _httpClient.GetFromJsonAsync<GetProductDTO>($"Products/by-id?id={productId}");
+            return response ?? new GetProductDTO();
+        }
+
+        public async Task<List<GetProductDTO>> GetProductsByCategoryId(int categoryId)
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<GetProductDTO>>($"Products/by-category-id?categoryId={categoryId}");
+            return response ?? new List<GetProductDTO>();
+        }
 
     }
 }

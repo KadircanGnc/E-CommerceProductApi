@@ -88,9 +88,23 @@ namespace BusinessLogic.Services
         }        
 
         // Example usage of pagination
-        public PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize)
+        public PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize, string sortBy = "Default")
         {
             var query = _productRepo.GetAll().AsQueryable();
+
+            // Sorting logic
+            switch (sortBy)
+            {
+                case "Price":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "CreatedDate":
+                    query = query.OrderBy(p => p.CreatedDate);
+                    break;
+                default:
+                    query = query.OrderBy(p => p.Id); // Default sorting
+                    break;
+            }
 
             return _paginationService.GetPagedResult<GetProductDTO, Product>(
                 query,
@@ -168,5 +182,60 @@ namespace BusinessLogic.Services
             return _mapper.Map<List<GetProductDTO>>(products);
         }
 
+        public List<GetProductDTO> SearchByName(string name)
+        {
+            var products = _productRepo.SearchByName(name);
+
+            if (products == null || !products.Any())
+            {
+                throw new Exception("No Products Found");
+            }
+
+            return _mapper.Map<List<GetProductDTO>>(products);
+        }
+
+        public PagedResult<GetProductDTO> GetByCategoryIdPaged(int categoryId, int pageNumber, int pageSize)
+        {
+            if (categoryId <= 0)
+            {
+                throw new ArgumentNullException(nameof(categoryId), "Invalid Value");
+            }
+
+            var query = _productRepo.GetByCategoryId(categoryId).AsQueryable();
+
+            if (!query.Any())
+            {
+                throw new Exception("No Products Found");
+            }
+
+            return _paginationService.GetPagedResult<GetProductDTO, Product>(
+                query,
+                pageNumber,
+                pageSize,
+                product => _mapper.Map<GetProductDTO>(product)
+            );
+        }
+
+        public PagedResult<GetProductDTO> SearchByNamePaged(string name, int pageNumber, int pageSize)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name), "Invalid search term");
+            }
+
+            var query = _productRepo.SearchByName(name).AsQueryable();
+
+            if (!query.Any())
+            {
+                Console.WriteLine("No Products found");
+            }
+
+            return _paginationService.GetPagedResult<GetProductDTO, Product>(
+                query,
+                pageNumber,
+                pageSize,
+                product => _mapper.Map<GetProductDTO>(product)
+            );
+        }
     }
 }

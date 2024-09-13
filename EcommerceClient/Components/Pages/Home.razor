@@ -23,94 +23,12 @@
                         <ul>
                             @foreach (var category in categories)
                             {
-                                <li><a href="#">@category.Name</a></li>
+                                <li><a href="/" @onclick="() => FilterByCategory(category.Id)">@category.Name</a></li>
                             }                           
                         </ul>
-                    </div>
-                    <div class="sidebar__item">
-                        <h4>Price</h4>
-                        <div class="price-range-wrap">
-                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                 data-min="@((products != null && products.Any()) ? products.Min(p => p.Price) : 0)"
-                                 data-max="">
-                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                            </div>
-                            <div class="range-slider">
-                                <div class="price-input">
-                                    <input type="text" id="minamount" >
-                                    <input type="text" id="maxamount" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
+                    </div>                                   
                     
-                    <div class="sidebar__item">
-                        <div class="latest-product__text">
-                            <h4>Latest Products</h4>
-                            <div class="latest-product__slider owl-carousel">
-                                <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-1.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-2.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-3.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-1.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-2.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="images/latest-product/lp-3.jpg" alt="">
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -118,9 +36,8 @@
                 <div class="align-content-lg-end">
                     <div class="hero__search">
                         <div class="hero__search__form w-100">
-                            <form action="#">
-                                
-                                <input type="text" placeholder="What are you looking for?">
+                            <form @onsubmit = "SearchProducts">                                
+                                <input type="text" placeholder="What are you looking for?" @bind = "searchTerm">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
@@ -142,7 +59,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>@products!.Count</span> Products found</h6>
+                                <h6><span>@totalProductCount</span> Products found</h6>
                             </div>
                         </div>
                         
@@ -150,32 +67,66 @@
                 </div>
                 <!-- Product Items -->
                 <div class="row">
-                    @foreach (var product in products)
+
+                    @if(products != null)
                     {
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" style="background-image: url('@product.ImageUrl')" @onclick="() => NavigateToDetails(product.Id)">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        @* <li><a href="#"><i class="fa fa-retweet"></i></a></li> *@
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">@product.Name</a></h6>
-                                    <h5>TRY @product.Price</h5>
+
+                        @foreach (var product in products!)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" style="background-image: url('@product.ImageUrl')" @onclick="() => NavigateToDetails(product.Id)">
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            @* <li><a href="#"><i class="fa fa-retweet"></i></a></li> *@
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="#">@product.Name</a></h6>
+                                        <h5>TRY @product.Price</h5>
+                                    </div>
                                 </div>
                             </div>
+                        }
+                    }
+
+                    else
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            No product found
                         </div>
                     }
+
                 </div>
 
-                @* <div class="product__pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                </div> *@
+                <!-- Pagination -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous Button -->
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <button class="page-link" @onclick="PreviousPage">Previous</button>
+                                </li>
+
+                                <!-- Page Numbers -->
+                                @for (int i = 1; i <= totalPages; i++)
+                                {
+                                    int pageNumber = i;
+                                    <li class="page-item @(currentPage == pageNumber ? "active" : "")">
+                                        <button class="page-link" @onclick="@(async () => await GoToPage(pageNumber))">@pageNumber</button>
+                                    </li>
+                                }
+
+                                <!-- Next Button -->
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <button class="page-link" @onclick="NextPage">Next</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>                
     </div>        
@@ -184,47 +135,107 @@
 
 @code
 {
-    public List<GetProductDTO> products = new List<GetProductDTO>();
     public List<CartItemDTO> cartItems = new List<CartItemDTO>();
     public List<GetCategoryDTO> categories = new List<GetCategoryDTO>();
-    public int itemCount = 0;    
-    // [Parameter]
-    // public string? Token { get; set; }
+    private List<GetProductDTO> products = new List<GetProductDTO>();
+    private int currentPage = 1;
+    private int totalPages, totalProductCount;
+    private const int pageSize = 10;    
+    public int itemCount = 0;
+    private int selectedCategoryId = 0;
+    private string searchTerm = "";
+    private bool isSearching = false;     
 
     public void NavigateToDetails(int productId)
     {
         Navigation.NavigateTo("/details");
     }
 
-
     protected override async Task OnInitializedAsync()
-    {
-        // var uri = new Uri(Navigation.Uri);
-
-        // var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
-
-        // if (query.TryGetValue("token", out var tokenValue))
-        // {
-        //     Token = tokenValue;
-        // }
-        // else
-        // {
-        //     Console.WriteLine("No token found!");
-        // }
+    {        
         try
-        {
-            products = await ProductService.GetProducts();
+        {            
             categories = await CategoryService.GetCategories();
-            // 	cartItems = await CartService.GetCartDetailsAsync(Token!);
-        // 	itemCount = cartItems.Sum(ci => ci.Quantity);
-        	StateHasChanged();            
+            await LoadProducts();            
+            StateHasChanged();            
         }
         catch (Exception ex)
         {
-        	// Log exception or handle error
-        	Console.WriteLine(ex.Message);
+            // Log exception or handle error
+            Console.WriteLine(ex.Message);
         }
-        
-    } 
 
+    }     
+
+    private async Task SearchProducts()
+    {
+        currentPage = 1; // Reset to the first page for new search
+        isSearching = true; // Indicate we're searching
+        selectedCategoryId = 0; // Clear category filter
+        await LoadProducts();// Force UI update
+    }
+
+    private async Task LoadProducts()
+    {
+        try
+        {
+            PagedResult<GetProductDTO> pagedResult;
+
+            if (isSearching && !string.IsNullOrEmpty(searchTerm)) // If searching
+            {
+                pagedResult = await ProductService.SearchProductsWithPagination(searchTerm, currentPage, pageSize);
+            }
+            else if (selectedCategoryId > 0) // If filtering by category
+            {
+                pagedResult = await ProductService.GetPagedProductsByCategory(selectedCategoryId, currentPage, pageSize);
+            }
+            else // Default product load
+            {
+                pagedResult = await ProductService.GetPagedProducts(currentPage, pageSize);
+            }
+
+            products = pagedResult.Items;
+            totalProductCount = pagedResult.TotalItems;
+            totalPages = (int)Math.Ceiling((double)pagedResult.TotalItems / pageSize);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task NextPage()
+    {
+        if (currentPage < totalPages)
+        {
+            currentPage++;
+            await LoadProducts();
+        }
+    }
+
+    private async Task PreviousPage()
+    {
+        if (currentPage > 1)
+        {
+            currentPage--;
+            await LoadProducts();
+        }
+    }
+
+    private async Task GoToPage(int page)
+    {
+        if (page >= 1 && page <= totalPages)
+        {
+            currentPage = page;
+            await LoadProducts();
+        }
+    }
+
+    private async Task FilterByCategory(int categoryId)
+    {
+        currentPage = 1; // Reset to the first page for new category filter
+        selectedCategoryId = categoryId; // Update selected category
+        isSearching = false; // Indicate we're not searching
+        await LoadProducts();
+    }
 }

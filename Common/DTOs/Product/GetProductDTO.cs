@@ -14,5 +14,7 @@ namespace Common.DTOs.Product
         public int StockCount { get; set; }
 		public string? ImageUrl { get; set; }
         public bool IsInCart { get; set; } = false;
-	}
+        public int CategoryId { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
 }

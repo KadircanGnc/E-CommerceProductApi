@@ -31,9 +31,9 @@ namespace E_CommerceApi.Controllers
 
         //[Authorize]
         [HttpGet("paged")]
-        public IActionResult GetAllPaged()
+        public IActionResult GetAllPaged(int pageNumber, int pageSize, string sortBy = "Default")
         {
-            var result = _service.GetAllPaged(1, 10);
+            var result = _service.GetAllPaged(pageNumber, pageSize, sortBy);
             if (result == null)
             {
                 return BadRequest("Invalid value!");
@@ -82,6 +82,29 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("search-by-name")]
+        public IActionResult SearchByName(string name)
+        {
+            var result = _service.SearchByName(name);
+            if (result == null)
+            {
+                return BadRequest("Invalid Value");
+            }
+            return Ok(result);
+        }
+
+        // Search products by name (paged)
+        [HttpGet("search-by-name-paged")]
+        public IActionResult SearchByNamePaged(string name, int pageNumber, int pageSize)
+        {
+            var result = _service.SearchByNamePaged(name, pageNumber, pageSize);
+            if (result == null)
+            {
+                return BadRequest("No products found for the search term.");
+            }
+            return Ok(result);
+        }
+
         //[Authorize]
         [HttpGet("by-category-id")]
         public IActionResult GetByCategoryId(int categoryId)
@@ -90,6 +113,18 @@ namespace E_CommerceApi.Controllers
             if (result == null)
             {
                 return BadRequest("Invalid Value");
+            }
+            return Ok(result);
+        }
+
+        // Get products by category (paged)
+        [HttpGet("by-category-id-paged")]
+        public IActionResult GetByCategoryIdPaged(int categoryId, int pageNumber, int pageSize)
+        {
+            var result = _service.GetByCategoryIdPaged(categoryId, pageNumber, pageSize);
+            if (result == null)
+            {
+                return BadRequest("No products found for this category.");
             }
             return Ok(result);
         }

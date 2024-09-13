@@ -72,6 +72,16 @@ namespace DataAccess.Repositories
 
             return result;
         }
+
+        public List<Product> SearchByName(string name)
+        {
+            var lowerName = name.ToLower();
+
+            var result = _context.Products
+                .Where(p => p.Name!.ToLower().Contains(lowerName))
+                .ToList();
+            return result;
+        }
     }
 }
 

@@ -15,5 +15,6 @@ namespace DataAccess.Interfaces
         List<Product> OrderByPriceAscending();
         List<Product> OrderByDate();
         List<Product> GetByRange(decimal minValue, decimal maxValue);
+        List<Product> SearchByName(string name);
     }
 }
