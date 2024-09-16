@@ -29,6 +29,8 @@ builder.Services.AddScoped(sp =>
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CommentService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

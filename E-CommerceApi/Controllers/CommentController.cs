@@ -17,7 +17,7 @@ namespace E_CommerceApi.Controllers
             _commentService = commentService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<List<GetCommentDTO>> GetAll()
         {
@@ -25,7 +25,7 @@ namespace E_CommerceApi.Controllers
             return Ok(comments);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-product-id")]
         public ActionResult<List<GetCommentDTO>> GetByProductId(int productId)
         {
@@ -37,7 +37,7 @@ namespace E_CommerceApi.Controllers
             return Ok(comments);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("by-user-id")]
         public ActionResult<List<GetCommentDTO>> GetByUserId(int userId)
         {

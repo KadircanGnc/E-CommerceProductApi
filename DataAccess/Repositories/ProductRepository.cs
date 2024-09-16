@@ -16,9 +16,20 @@ namespace DataAccess.Repositories
         {
 
         }
+        public override Product GetById(int id)
+        {
+            var result = _context.Products
+                .Where(p => p.Id == id)
+                .Include(p => p.Comments)
+                .FirstOrDefault();
+
+            return result!;
+        }
         public List<Product> GetByCategoryId(int categoryId)
         {
-            return _context.Products.Where(p => p.CategoryId == categoryId).ToList();
+            return _context.Products
+                .Where(p => p.CategoryId == categoryId)                
+                .ToList();
         }
 
         public override void Update(Product entity)
@@ -40,34 +51,34 @@ namespace DataAccess.Repositories
         public List<Product> GetByIds(List<int> productIds)
         {
             return _context.Products
-                .Where(p => productIds.Contains(p.Id))
+                .Where(p => productIds.Contains(p.Id))                
                 .ToList();
         }
 
         public List<Product> OrderByPriceDescending()
         {
             return _context.Products
-                .OrderByDescending(p => p.Price)
+                .OrderByDescending(p => p.Price)                
                 .ToList();
         }
 
         public List<Product> OrderByPriceAscending()
         {
             return _context.Products
-                .OrderBy(p => p.Price)
+                .OrderBy(p => p.Price)                
                 .ToList();
         }
         public List<Product> OrderByDate()
         {
             return _context.Products
-                .OrderByDescending(p => p.CreatedDate)
+                .OrderByDescending(p => p.CreatedDate)                
                 .ToList();
         }
 
         public List<Product> GetByRange(decimal minValue, decimal maxValue)
         {
             var result = _context.Products
-                .Where(p => p.Price >= minValue && p.Price <= maxValue)
+                .Where(p => p.Price >= minValue && p.Price <= maxValue)                
                 .ToList();
 
             return result;
@@ -78,8 +89,9 @@ namespace DataAccess.Repositories
             var lowerName = name.ToLower();
 
             var result = _context.Products
-                .Where(p => p.Name!.ToLower().Contains(lowerName))
+                .Where(p => p.Name!.ToLower().Contains(lowerName))                
                 .ToList();
+
             return result;
         }
     }

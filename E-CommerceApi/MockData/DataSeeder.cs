@@ -2,6 +2,7 @@
 using Entities;
 using Bogus;
 using Common.DTOs.User;
+using System.Linq;
 
 namespace E_CommerceApi.MockData
 {
@@ -17,17 +18,20 @@ namespace E_CommerceApi.MockData
 
         private static void InsertData(ECommerceDbContext context)
         {
-            //user data
-            var admin = new User()
+            
+            if (context.Users.FirstOrDefault(u => u.Email == "kdrcng@gmail.com") == null)
             {
-                Name = "Kadir",
-                Email = "kdrcng@gmail.com",
-                Password = "admin",
-                Address = "Antalya",
-                Role = "admin"
-            };
-            context.Users.Add(admin);
-            context.SaveChanges();
+                var admin = new User()
+                {
+                    Name = "Kadir",
+                    Email = "kdrcng@gmail.com",
+                    Password = "admin",
+                    Address = "Antalya",
+                    Role = "admin"
+                };
+                context.Users.Add(admin);
+                context.SaveChanges();
+            }            
 
             var userFaker = new Faker<User>()
                 .RuleFor(u => u.Name, f => f.Name.FirstName())
@@ -98,8 +102,25 @@ namespace E_CommerceApi.MockData
                     context.Products.Add(product);
                     context.SaveChanges();
                 }
-            }            
+            }
 
+            //comment data
+            var commentFaker = new Faker<Comment>()
+                .RuleFor(c => c.CommentText, f => f.Lorem.Text())
+                .RuleFor(c => c.RatingStar, f => f.Random.Int(1, 5))
+                .RuleFor(c => c.UserId, f => f.Random.Int(46, 55))
+                .RuleFor(c => c.ProductId, f => f.Random.Int(1, 20));
+
+            var commentCount = context.Comments.Count();
+            if (commentCount < 50)
+            {
+                List<Comment> generatedComments = commentFaker.Generate(10);
+                foreach (Comment comment in generatedComments)
+                {
+                    context.Comments.Add(comment);
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }

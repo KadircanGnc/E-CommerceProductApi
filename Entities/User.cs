@@ -13,7 +13,8 @@ namespace Entities
         public string? Email { get; set; }
         public string? Password { get; set; }
         public string? Role { get; set; }
-        public string? Address { get; set; }        
+        public string? Address { get; set; }
+        public virtual List<Comment>? Comments { get; set; } = new List<Comment>();
         public virtual List<Order> Orders { get; set; } = new List<Order>();        
 
     }

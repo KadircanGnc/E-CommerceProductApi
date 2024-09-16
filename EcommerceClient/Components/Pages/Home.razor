@@ -6,6 +6,7 @@
 @inject ProductService ProductService
 @inject HttpClient Http
 @inject CategoryService CategoryService
+@inject IJSRuntime JS
 
 
 <PageTitle>Welcome to Shop</PageTitle>
@@ -47,7 +48,7 @@
 
                 <div class="filter__item">
                     <div class="row">
-                        <div class="col-lg-4 col-md-5">
+                        @* <div class="col-lg-4 col-md-5">
                             <div class="filter__sort">
                                 <span>Sort By</span>
                                 <select>
@@ -56,7 +57,7 @@
                                     <option value="2">Name</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> *@
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
                                 <h6><span>@totalProductCount</span> Products found</h6>
@@ -77,9 +78,7 @@
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" style="background-image: url('@product.ImageUrl')" @onclick="() => NavigateToDetails(product.Id)">
                                         <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            @* <li><a href="#"><i class="fa fa-retweet"></i></a></li> *@
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="/" @onclick="() => HandleAddToCart(product.Id)"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
@@ -144,15 +143,16 @@
     public int itemCount = 0;
     private int selectedCategoryId = 0;
     private string searchTerm = "";
-    private bool isSearching = false;     
+    private bool isSearching = false;
+    string token = "";
 
     public void NavigateToDetails(int productId)
     {
-        Navigation.NavigateTo("/details");
+        Navigation.NavigateTo($"/details/{productId}");
     }
 
     protected override async Task OnInitializedAsync()
-    {        
+    {                
         try
         {            
             categories = await CategoryService.GetCategories();
@@ -237,5 +237,34 @@
         selectedCategoryId = categoryId; // Update selected category
         isSearching = false; // Indicate we're not searching
         await LoadProducts();
+    }
+
+    private async Task<string> GetAuthToken()
+    {
+        token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        return token;
+    }
+
+    private async Task HandleAddToCart(int productId)
+    {
+        var itemCountStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
+        itemCount = Convert.ToInt16(itemCountStr);
+        var IdList = new List<int>();
+        IdList.Add(productId);
+        var token = await GetAuthToken();
+        if (string.IsNullOrEmpty(token))
+        {
+            // Redirect to login page if not logged in
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            // Logic to add product to cart
+            await CartService.AddToCartAsync(token, IdList);
+            itemCount++;
+            await JS.InvokeVoidAsync("sessionStorage.setItem", "cartItemCount", itemCount);
+            // Optionally refresh cart or provide feedback
+            StateHasChanged();
+        }
     }
 }

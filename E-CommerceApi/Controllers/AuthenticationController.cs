@@ -19,18 +19,23 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Login(string email, string password)
+    public IActionResult Login([FromBody] LoginRequest loginRequest)
     {
         //Check the user credentials
-        var user = _tokenService.GetUser(email, password);
+        var user = _tokenService.GetUser(loginRequest.Email!, loginRequest.Password!);
         if (user == null)
         {
             return Unauthorized();
         }
 
-        var token = _tokenService.GenerateToken(user.Id.ToString(), email, user.Role!);
+        var token = _tokenService.GenerateToken(user.Id.ToString(), loginRequest.Email!, user.Role!);
         return Ok(new { token });        
     }
-    
+
+    public class LoginRequest
+    {
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
 }
 

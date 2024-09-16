@@ -1,5 +1,9 @@
 ﻿@page "/details/{productId:int}"
+@using Common.DTOs.Comment
+
 @inject ProductService productService;
+@inject CommentService commentService;
+@inject NavigationManager Navigation;
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad" style="margin-top: 30px;">
@@ -17,14 +21,24 @@
                 <div class="product__details__text">
                     <h3>@selectedProduct.Name</h3>
                     <div class="product__details__rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
-                        <span>(@* @selectedProduct.Reviews.Count *@ reviews)</span>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Floor(averageRating))
+                            {
+                                <i class="fa fa-star"></i> <!-- Full star -->
+                            }
+                            else if (i == Math.Ceiling(averageRating) && averageRating % 1 != 0)
+                            {
+                                <i class="fa fa-star-half-o"></i> <!-- Half star -->
+                            }
+                            else
+                            {
+                                <i class="fa fa-star-o"></i> <!-- Empty star -->
+                            }
+                        }
+                        <span>( @selectedProduct.Comments!.Count reviews)</span>
                     </div>
-                    <div class="product__details__price">$@selectedProduct.Price</div>
+                    <div class="product__details__price">TRY @selectedProduct.Price</div>
                     <p>@* @selectedProduct.Description *@</p>
                     <div class="product__details__quantity">
                         <div class="quantity">
@@ -34,6 +48,43 @@
                         </div>
                     </div>
                     <a href="#" class="primary-btn">ADD TO CART</a>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">                        
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                               aria-selected="false">Reviews <span>(@selectedProduct.Comments!.Count)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <!-- Loop through each comment -->
+                            @foreach (var comment in productComments)
+                            {
+                                <div class="review-item">
+                                    <h2>@comment.UserName</h2>
+                                    <span class="review-date">@comment.CreatedDate.ToString("MMMM dd, yyyy")</span>
+                                    <div class="review-rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= comment.RatingStar)
+                                            {
+                                                <i class="fa fa-star"></i> <!-- Filled Star -->
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-star-o"></i> <!-- Empty Star -->
+                                            }
+                                        }
+                                    </div>
+                                    <p>@comment.CommentText</p> <!-- Assuming this is the review text -->
+                                </div>
+                                <hr />
+                            }
+                        </div>                       
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,20 +102,18 @@
             </div>
         </div>
         <div class="row">
-            @foreach (var product in relatedProducts)
+            @foreach (var product in relatedProducts.Take(4))
             {
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" style="background-image:url('@product.ImageUrl')">
-                            <ul class="product__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <div class="product__item__pic set-bg" style="background-image:url('@product.ImageUrl')" @onclick="() => NavigateToDetails(product.Id)">
+                            <ul class="product__item__pic__hover">                                                               
                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
                             <h6><a href="/details/@product.Id">@product.Name</a></h6>
-                            <h5>$@product.Price</h5>
+                            <h5>TRY @product.Price</h5>
                         </div>
                     </div>
                 </div>
@@ -74,23 +123,42 @@
 </section>
 <!-- Related Product Section End -->
 @code {
-    public int productId;
+    [Parameter]
+    public int productId { get; set; }
     GetProductDTO selectedProduct = new();
-    List<GetProductDTO> relatedProducts = new();
+    List<GetProductDTO> relatedProducts { get; set; } = new();
+    List<GetCommentDTO> productComments = new();
+    private double averageRating = 0;
 
     protected override async Task OnInitializedAsync()
     {
 
         await LoadProductDetails(productId);
+
+        averageRating = selectedProduct.Comments!.Any() ? selectedProduct.Comments!.Average(c => c.RatingStar) : 0;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadProductDetails(productId);
+        averageRating = selectedProduct.Comments!.Any()
+            ? selectedProduct.Comments!.Average(c => c.RatingStar)
+            : 0; // Handle if there are no comments
     }
 
     private async Task LoadProductDetails(int productId)
     {
-        
+
         // Fetch the product details by its ID
         selectedProduct = await productService.GetById(productId);
-
+        productComments = await commentService.GetByProductId(productId);
         // Fetch related products by the category of the selected product
         relatedProducts = await productService.GetProductsByCategoryId(selectedProduct.CategoryId);
+        
+    }
+
+    public void NavigateToDetails(int pId)
+    {
+        Navigation.NavigateTo($"/details/{pId}");
     }
 }

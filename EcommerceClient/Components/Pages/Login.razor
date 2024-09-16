@@ -1,14 +1,18 @@
 ﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <PageTitle>Login</PageTitle>
 
 <section class="login-section">
     <div class="container">
         <div class="login-form m-auto">
-            <h2>Login</h2>
-            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+            <h3>Login</h3>
+            <EditForm Model="@loginModel" class="py-3" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator />
-                <ValidationSummary />
+                @* <ValidationSummary /> *@
 
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -22,8 +26,12 @@
                     <ValidationMessage For="@(() => loginModel.Password)" />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
             </EditForm>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger mt-3">@errorMessage</div>
+            }
         </div>
     </div>
 </section>
@@ -31,21 +39,46 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
+    private string? errorMessage;    
+
+    protected override void OnInitialized()
+    {
+        
+    }
 
     private async Task HandleLogin()
     {
-        // Handle login logic here
-        // Example: await AuthService.LoginAsync(loginModel);
+        try
+        {
+            var response = await AuthService.LoginAsync(loginModel.Email!, loginModel.Password!);
+            
+            if (response != null && !string.IsNullOrEmpty(response.ToString()))
+            {
+                // Save the token in session storage
+                await JS.InvokeVoidAsync("sessionStorage.setItem", "authToken", response.Token);
+                await JS.InvokeVoidAsync("sessionStorage.setItem", "email", loginModel.Email);
+                // Navigate to homepage               
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Invalid email or password.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Login failed: {ex.Message}";
+        }
     }
 
     public class LoginModel
     {
-        // [Required]
-        // [EmailAddress]
-        public string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        public string? Email { get; set; }
 
-        // [Required]
-        // [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string? Password { get; set; }
     }
 }

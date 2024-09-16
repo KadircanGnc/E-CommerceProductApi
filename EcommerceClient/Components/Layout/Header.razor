@@ -1,6 +1,7 @@
-﻿@* <div id="preloder">
-    <div class="loader"></div>
-</div> *@
+﻿
+@inject CartService CartService
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
 
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
@@ -76,13 +77,20 @@
             </div>
            
             <div class="col-lg-3 offset-lg-6">
-                <div class="header__cart">
-                    <div class="header__cart__price">Total Price: <span>TRY 150.00</span></div>
+                <div class="header__cart">                    
                     <ul>                        
-                        <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>@cartItemCount</span></a></li>
                     </ul>                    
                     <div class="header__top__right__auth">
-                        <a href="#"><i class="fa fa-user"></i> Login</a>
+                        @if (isLoggedIn)
+                        {
+                            <span>Welcome, user (@userEmail)</span>
+                            <a href="/logout" @onclick="Logout"><i class="fa fa-sign-out"></i> Logout</a>
+                        }
+                        else
+                        {
+                            <a href="/login"><i class="fa fa-user"></i> Login</a>
+                        }                        
                     </div>
                 </div>
             </div>
@@ -95,5 +103,77 @@
 <!-- Header Section End -->
 
 @code {
+    private bool isLoggedIn = false;
+    private string userName = "";
+    private string userEmail = "";
+    private string token = "";
+    private int cartItemCount;
+    // string token = "";
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {            
+            token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+            userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "email");
 
+
+            var countStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
+            cartItemCount = Convert.ToInt16(countStr);
+
+
+            isLoggedIn = !string.IsNullOrEmpty(token);
+            StateHasChanged();
+        }
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        
+        // userName = await JS.InvokeAsync<string>("sessionStorage.getItem", "userName");
+        // userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "userEmail");
+        // var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+
+        // cartItemCount = await JS.InvokeAsync<int>("sessionStorage.getItem", "cartItemCount");
+        // isLoggedIn = !string.IsNullOrEmpty(token);
+
+        
+
+        StateHasChanged();
+        if (isLoggedIn)
+        {
+            await UpdateCartItemCount();
+        }
+        
+    }
+
+    private async Task Logout()
+    {
+        await JS.InvokeVoidAsync("sessionStorage.removeItem", "authToken");        
+        await JS.InvokeVoidAsync("sessionStorage.removeItem", "cartItemCount");
+        Navigation.NavigateTo("/login");
+    }
+
+    private async Task UpdateCartItemCount()
+    {
+        if (isLoggedIn)
+        {
+            cartItemCount = await CartService.GetItemCountAsync(token);
+        }
+        
+    }
+
+    // Call this method after adding/removing items to refresh the cart item count
+    public async Task RefreshCartItemCount()
+    {
+        if (isLoggedIn)
+        {
+            await UpdateCartItemCount();
+        }        
+    }
+
+    // private async Task<string> GetAuthToken()
+    // {
+    //     token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+    //     return token;
+    // }
 }

@@ -14,5 +14,6 @@ namespace Common.DTOs.Comment
         public int RatingStar { get; set; }
         public string? UserName { get; set; }
         public string? ProductName { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

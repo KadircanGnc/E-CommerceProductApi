@@ -22,7 +22,7 @@ namespace BusinessLogic.Services
         }
 
         public void Create(CreateCommentDTO createCommentDTO)
-        {
+        {            
             if (createCommentDTO == null)
             {
                 throw new ArgumentNullException(nameof(createCommentDTO), "Invalid Value!");
@@ -83,6 +83,6 @@ namespace BusinessLogic.Services
 
             return _mapper.Map<List<GetCommentDTO>>(comments);
         }
-
+        
     }
 }
