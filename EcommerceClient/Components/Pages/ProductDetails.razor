@@ -3,7 +3,9 @@
 
 @inject ProductService productService;
 @inject CommentService commentService;
+@inject CartService cartService;
 @inject NavigationManager Navigation;
+@inject IJSRuntime JS
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad" style="margin-top: 30px;">
@@ -43,11 +45,13 @@
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1">
+                                <button class="qty-btn minus-btn" @onclick="() => DecreaseQuantity()">-</button>
+                                <input type="text" value="@quantity" readonly />
+                                <button class="qty-btn plus-btn" @onclick="() => IncreaseQuantity()">+</button>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">ADD TO CART</a>
+                    <a href="/" class="primary-btn" @onclick="() => HandleAddToCart(selectedProduct.Id)">ADD TO CART</a>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -129,6 +133,9 @@
     List<GetProductDTO> relatedProducts { get; set; } = new();
     List<GetCommentDTO> productComments = new();
     private double averageRating = 0;
+    string token = "";
+    public int itemCount = 0;
+    private int quantity = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -160,5 +167,49 @@
     public void NavigateToDetails(int pId)
     {
         Navigation.NavigateTo($"/details/{pId}");
+    }
+
+    private async Task HandleAddToCart(int productId)
+    {
+        var itemCountStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
+        itemCount = Convert.ToInt16(itemCountStr);
+        var IdList = new List<int>();
+        IdList.Add(productId);
+        token = await GetAuthToken();
+        if (string.IsNullOrEmpty(token))
+        {
+            // Redirect to login page if not logged in
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            // Logic to add product to cart
+            for (int i = 1; i <= quantity; i++)
+            {
+                await cartService.AddToCartAsync(token, IdList);
+                itemCount++;
+                await JS.InvokeVoidAsync("sessionStorage.setItem", "cartItemCount", itemCount);
+                // Optionally refresh cart or provide feedback
+                StateHasChanged();
+            }            
+        }
+    }
+
+    private async Task<string> GetAuthToken()
+    {
+        return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+    }
+
+    private void IncreaseQuantity()
+    {
+        quantity++;
+    }
+
+    private void DecreaseQuantity()
+    {
+        if (quantity > 1) // Ensure it doesn't go below 1
+        {
+            quantity--;
+        }
     }
 }

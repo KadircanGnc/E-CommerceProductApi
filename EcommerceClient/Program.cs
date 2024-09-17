@@ -31,6 +31,7 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CommentService>();
+builder.Services.AddScoped<CheckoutService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

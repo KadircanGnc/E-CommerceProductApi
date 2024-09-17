@@ -94,7 +94,7 @@ namespace EcommerceClient.Infrastructure.Services
 
         public async Task<List<CartItemDTO>> GetCartDetailsAsync(string token)
         {
-            var requestUri = "Carts/get-cart-items"; // Adjust API endpoint
+            var requestUri = "Carts/get-cart-items"; 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
