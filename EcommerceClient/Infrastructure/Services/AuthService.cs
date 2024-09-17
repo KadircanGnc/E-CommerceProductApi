@@ -1,12 +1,14 @@
-﻿namespace EcommerceClient.Infrastructure.Services
+﻿using Blazored.SessionStorage;
+
+namespace EcommerceClient.Infrastructure.Services
 {
     public class AuthService
     {
         private readonly HttpClient _httpClient;
-
+        public event Func<Task<bool>>? isLoggedIn;
         public AuthService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClient;            
         }
 
         public async Task<AuthResult> LoginAsync(string email, string password)
@@ -26,6 +28,15 @@
         public class AuthResult
         {
             public string? Token { get; set; }            
+        }
+
+        public async Task<bool> IsLoggedInAsync()
+        {
+            if (isLoggedIn != null)
+            {
+                return await isLoggedIn.Invoke();
+            }
+            return false;
         }
     }
 }

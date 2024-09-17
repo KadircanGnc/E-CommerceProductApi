@@ -1,7 +1,10 @@
 ﻿@page "/cart"
+@using Blazored.SessionStorage
 
 @inject CartService cartService;
 @inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject ISessionStorageService sessionStorage
 
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
@@ -78,6 +81,7 @@
 
     string token = "";
     List<CartItemDTO> cartItems = new();
+    bool isUserLoggedIn = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,12 +91,22 @@
     private async Task LoadCartDetails()
     {
         token = await GetAuthToken();
-        cartItems = await cartService.GetCartDetailsAsync(token);
+        if (token != null)
+        {
+            isUserLoggedIn = true;
+            cartItems = await cartService.GetCartDetailsAsync(token!);
+        }
+        else
+        {
+            Navigation.NavigateTo("/login");
+        }
+
     }
 
     private async Task<string> GetAuthToken()
     {
-        return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        return await sessionStorage.GetItemAsync<string>("authToken");
+        // return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
     }
 
     private async Task RemoveFromCart(int productId)

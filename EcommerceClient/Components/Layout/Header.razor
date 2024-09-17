@@ -1,7 +1,10 @@
-﻿
+﻿@using Blazored.SessionStorage
+
 @inject CartService CartService
 @inject IJSRuntime JS
+@inject ISessionStorageService sessionStorage
 @inject NavigationManager Navigation
+@inject AuthService authService
 
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
@@ -84,7 +87,7 @@
                     <div class="header__top__right__auth">
                         @if (isLoggedIn)
                         {
-                            <span>Welcome, user (@userEmail)</span>
+                            <span>Welcome, (@userEmail)</span>
                             <a href="/logout" @onclick="Logout"><i class="fa fa-sign-out"></i> Logout</a>
                         }
                         else
@@ -107,37 +110,50 @@
     private string userName = "";
     private string userEmail = "";
     private string token = "";
-    private int cartItemCount;
-    // string token = "";
+    private int cartItemCount = 0;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        {            
-            token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
-            userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "email");
-
-
-            var countStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
-            cartItemCount = Convert.ToInt16(countStr);
+        {
+            token = await sessionStorage.GetItemAsync<string>("authToken");
+            userEmail = await sessionStorage.GetItemAsync<string>("email");
+            // token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+            // userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "email");
+            authService.isLoggedIn += LoginHandler;
+            CartService.isCartChanged += CartChangeHandler;
+            // var countStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
+            // cartItemCount = Convert.ToInt16(countStr);
 
 
             isLoggedIn = !string.IsNullOrEmpty(token);
+            if (isLoggedIn)
+            {
+                await UpdateCartItemCount(); // Get cart count after login check
+            }
             StateHasChanged();
         }
     }
-    
-    protected override async Task OnInitializedAsync()
+
+    public async Task<bool> LoginHandler()
     {
-        
-        // userName = await JS.InvokeAsync<string>("sessionStorage.getItem", "userName");
-        // userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "userEmail");
-        // var token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        token = await sessionStorage.GetItemAsync<string>("authToken");
+        userEmail = await sessionStorage.GetItemAsync<string>("email");
+        isLoggedIn = !string.IsNullOrEmpty(token);
+        await UpdateCartItemCount();
+        StateHasChanged();
+        return isLoggedIn; // Return the login status
+    }
 
-        // cartItemCount = await JS.InvokeAsync<int>("sessionStorage.getItem", "cartItemCount");
-        // isLoggedIn = !string.IsNullOrEmpty(token);
+    public async Task<bool> CartChangeHandler()
+    {
+        await UpdateCartItemCount();
+        StateHasChanged();
+        return true;
+    }
 
-        
-
+    protected override async Task OnInitializedAsync()
+    {        
         StateHasChanged();
         if (isLoggedIn)
         {
@@ -148,9 +164,16 @@
 
     private async Task Logout()
     {
-        await JS.InvokeVoidAsync("sessionStorage.removeItem", "authToken");        
-        await JS.InvokeVoidAsync("sessionStorage.removeItem", "cartItemCount");
-        Navigation.NavigateTo("/login");
+        // Clear session storage and redirect to login page
+        await sessionStorage.RemoveItemAsync("authToken");
+        await sessionStorage.RemoveItemAsync("cartItemCount");
+        // await JS.InvokeVoidAsync("sessionStorage.removeItem", "authToken");        
+        // await JS.InvokeVoidAsync("sessionStorage.removeItem", "cartItemCount");
+        isLoggedIn = false;
+        cartItemCount = 0;
+        Navigation.NavigateTo("/");
+
+        StateHasChanged();
     }
 
     private async Task UpdateCartItemCount()
@@ -159,17 +182,21 @@
         {
             cartItemCount = await CartService.GetItemCountAsync(token);
         }
-        
+        else
+        {
+            cartItemCount = 0; // Reset count if not logged in
+        }
+
+        await sessionStorage.SetItemAsync("cartItemCount", cartItemCount.ToString());
+        StateHasChanged();
     }
 
     // Call this method after adding/removing items to refresh the cart item count
-    public async Task RefreshCartItemCount()
-    {
-        if (isLoggedIn)
-        {
-            await UpdateCartItemCount();
-        }        
-    }
+    // public async Task RefreshCartItemCount()
+    // {
+    //     await UpdateCartItemCount();
+    //     StateHasChanged();
+    // }
 
     // private async Task<string> GetAuthToken()
     // {

@@ -1,4 +1,5 @@
 ﻿@page "/details/{productId:int}"
+@using Blazored.SessionStorage
 @using Common.DTOs.Comment
 
 @inject ProductService productService;
@@ -6,6 +7,7 @@
 @inject CartService cartService;
 @inject NavigationManager Navigation;
 @inject IJSRuntime JS
+@inject ISessionStorageService sessionStorage
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad" style="margin-top: 30px;">
@@ -139,7 +141,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         await LoadProductDetails(productId);
 
         averageRating = selectedProduct.Comments!.Any() ? selectedProduct.Comments!.Average(c => c.RatingStar) : 0;
@@ -161,7 +162,7 @@
         productComments = await commentService.GetByProductId(productId);
         // Fetch related products by the category of the selected product
         relatedProducts = await productService.GetProductsByCategoryId(selectedProduct.CategoryId);
-        
+
     }
 
     public void NavigateToDetails(int pId)
@@ -171,7 +172,7 @@
 
     private async Task HandleAddToCart(int productId)
     {
-        var itemCountStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
+        var itemCountStr = await sessionStorage.GetItemAsync<string>("cartItemCount");
         itemCount = Convert.ToInt16(itemCountStr);
         var IdList = new List<int>();
         IdList.Add(productId);
@@ -188,7 +189,7 @@
             {
                 await cartService.AddToCartAsync(token, IdList);
                 itemCount++;
-                await JS.InvokeVoidAsync("sessionStorage.setItem", "cartItemCount", itemCount);
+                await sessionStorage.SetItemAsync("cartItemCount", itemCount);
                 // Optionally refresh cart or provide feedback
                 StateHasChanged();
             }            
@@ -197,7 +198,8 @@
 
     private async Task<string> GetAuthToken()
     {
-        return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        return await sessionStorage.GetItemAsync<string>("authToken");
+        // return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
     }
 
     private void IncreaseQuantity()

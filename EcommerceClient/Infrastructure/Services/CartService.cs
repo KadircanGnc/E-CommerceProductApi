@@ -8,7 +8,8 @@ namespace EcommerceClient.Infrastructure.Services
 	public class CartService
 	{
 		private HttpClient _httpClient;
-		public CartService(HttpClient httpClient) 
+        public event Func<Task<bool>>? isCartChanged;
+        public CartService(HttpClient httpClient) 
 		{
 			_httpClient = httpClient;		
 		}
@@ -26,7 +27,7 @@ namespace EcommerceClient.Infrastructure.Services
 			requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 			var response = await _httpClient.SendAsync(requestMessage);
-
+			await IsCartChangedAsync();
 			if (!response.IsSuccessStatusCode)
 			{
 				throw new Exception("Failed to add product to cart.");
@@ -108,6 +109,15 @@ namespace EcommerceClient.Infrastructure.Services
             {
                 throw new Exception("Failed to get cart details.");
             }
+        }
+
+        public async Task<bool> IsCartChangedAsync()
+        {
+            if (isCartChanged != null)
+            {
+                return await isCartChanged.Invoke();
+            }
+            return false;
         }
     }
 }

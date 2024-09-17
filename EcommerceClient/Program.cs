@@ -1,3 +1,4 @@
+using Blazored.SessionStorage;
 using EcommerceClient.Components;
 using EcommerceClient.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddAntiforgery();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddBlazoredSessionStorage();
 
 builder.Services.AddAuthorization();
 
