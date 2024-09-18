@@ -83,6 +83,18 @@ namespace E_CommerceApi.Controllers
             }                
 
             return Ok(userOrders);            
-        } 
+        }
+
+        [HttpGet("get-current-user-id")]
+        public IActionResult GetCurrentUserId()
+        {
+            var userId = _userService.GetCurrentUserId();
+            if (userId <= 0)
+            {
+                return BadRequest("No User Found");
+            }
+
+            return Ok(userId);
+        }
     }
 }

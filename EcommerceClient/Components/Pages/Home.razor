@@ -7,11 +7,17 @@
 @inject ProductService ProductService
 @inject HttpClient Http
 @inject CategoryService CategoryService
-@inject IJSRuntime JS
 @inject ISessionStorageService sessionStorage
 
 
 <PageTitle>Welcome to Shop</PageTitle>
+
+@if (orderSuccess)
+{
+    <div class="alert alert-success">
+        Your order was successfully created!
+    </div>
+}
 
 <!-- Product Section Begin -->
 <section class="product spad">
@@ -146,6 +152,7 @@
     private string searchTerm = "";
     private bool isSearching = false;
     string token = "";
+    bool orderSuccess = false;
 
     public void NavigateToDetails(int productId)
     {
@@ -156,6 +163,15 @@
     {                
         try
         {            
+            // Get the query parameters from the URL
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+            // Check if "orderSuccess" parameter is present and set the flag accordingly
+            if (query["orderSuccess"] == "true")
+            {
+                orderSuccess = true;
+            }
+
             categories = await CategoryService.GetCategories();
             await LoadProducts();            
             StateHasChanged();            
@@ -241,16 +257,19 @@
     }
 
     private async Task<string> GetAuthToken()
-    {
-        token = await sessionStorage.GetItemAsync<string>("authToken");
-        return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+    {        
+        return await sessionStorage.GetItemAsync<string>("authToken");
     }
 
     private async Task HandleAddToCart(int productId)
     {
-        var itemCount = await sessionStorage.GetItemAsync<int>("cartItemCount");
-        // var itemCountStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
-        // itemCount = Convert.ToInt16(itemCountStr);
+        var itemCountStr = await sessionStorage.GetItemAsync<string>("cartItemCount");
+        
+        if (!string.IsNullOrEmpty(itemCountStr))
+        {
+            itemCount = Convert.ToInt16(itemCountStr);
+        }
+        
         var IdList = new List<int>();
         IdList.Add(productId);
         token = await GetAuthToken();
@@ -264,7 +283,7 @@
             // Logic to add product to cart
             await CartService.AddToCartAsync(token, IdList);
             itemCount++;
-            await sessionStorage.SetItemAsync("cartItemCount", itemCount);
+            await sessionStorage.SetItemAsync("cartItemCount", itemCount.ToString());
             // await JS.InvokeVoidAsync("sessionStorage.setItem", "cartItemCount", itemCount);
             // Optionally refresh cart or provide feedback
             StateHasChanged();

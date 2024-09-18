@@ -10,7 +10,7 @@ namespace DataAccess.Interfaces
     public interface ICartRepository : IRepository<Cart>
     {
         Cart GetByUserId(int userId);
-        int GetItemCount();
+        int GetItemCount(int cartId);
         List<CartItem> GetCartItems(int cartId);
 
 	}

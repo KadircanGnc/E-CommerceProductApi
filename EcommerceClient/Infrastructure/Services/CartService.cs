@@ -9,10 +9,11 @@ namespace EcommerceClient.Infrastructure.Services
 	{
 		private HttpClient _httpClient;
         public event Func<Task<bool>>? isCartChanged;
+		private int currentUserId = 0;
         public CartService(HttpClient httpClient) 
 		{
-			_httpClient = httpClient;		
-		}
+			_httpClient = httpClient;  			
+        }
 
 		public async Task AddToCartAsync(string token, List<int> productIds)
 		{
@@ -55,7 +56,7 @@ namespace EcommerceClient.Infrastructure.Services
 		}
 
 		public async Task<int> GetItemCountAsync(string token)
-		{
+		{			
 			var requestUri = "Carts/get-item-count";
 
 			var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
@@ -119,5 +120,23 @@ namespace EcommerceClient.Infrastructure.Services
             }
             return false;
         }
+
+		public async Task<int> GetCurrentUserId()
+		{
+            var requestUri = "Users/get-current-user-id";
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            var response = await _httpClient.SendAsync(requestMessage);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<int>();
+                return result!;
+            }
+            else
+            {
+                throw new Exception("Failed to get user id.");
+            }
+        }
+
     }
 }

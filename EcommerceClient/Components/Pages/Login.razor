@@ -3,7 +3,6 @@
 @using Blazored.SessionStorage
 @inject AuthService AuthService
 @inject NavigationManager Navigation
-@inject IJSRuntime JS
 @inject ISessionStorageService sessionStorage
 
 <PageTitle>Login</PageTitle>
@@ -58,9 +57,7 @@
             {
                 // Save the token in session storage
                 await sessionStorage.SetItemAsync("authToken", response.Token);
-                await sessionStorage.SetItemAsync("email", loginModel.Email);
-                // await JS.InvokeVoidAsync("sessionStorage.setItem", "authToken", response.Token);
-                // await JS.InvokeVoidAsync("sessionStorage.setItem", "email", loginModel.Email);
+                await sessionStorage.SetItemAsync("email", loginModel.Email);                
                 // Navigate to homepage       
                 await AuthService.IsLoggedInAsync();
                 Navigation.NavigateTo("/");

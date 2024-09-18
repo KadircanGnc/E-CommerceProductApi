@@ -1,7 +1,6 @@
 ﻿@using Blazored.SessionStorage
 
 @inject CartService CartService
-@inject IJSRuntime JS
 @inject ISessionStorageService sessionStorage
 @inject NavigationManager Navigation
 @inject AuthService authService
@@ -74,8 +73,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 ">
-                <div class="header__logo">
-                    <a href="/"><img src="images/logo.png" alt=""></a>
+                <div class="header__logo">                    
+                    <a href="/"><h2>K-SHOP</h2></a>
                 </div>
             </div>
            
@@ -88,7 +87,7 @@
                         @if (isLoggedIn)
                         {
                             <span>Welcome, (@userEmail)</span>
-                            <a href="/logout" @onclick="Logout"><i class="fa fa-sign-out"></i> Logout</a>
+                            <a href="/" @onclick="Logout"><i class="fa fa-sign-out"></i> Logout</a>
                         }
                         else
                         {
@@ -118,19 +117,16 @@
         {
             token = await sessionStorage.GetItemAsync<string>("authToken");
             userEmail = await sessionStorage.GetItemAsync<string>("email");
-            // token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
-            // userEmail = await JS.InvokeAsync<string>("sessionStorage.getItem", "email");
+            //Subbing to the event
             authService.isLoggedIn += LoginHandler;
             CartService.isCartChanged += CartChangeHandler;
-            // var countStr = await JS.InvokeAsync<string>("sessionStorage.getItem", "cartItemCount");
-            // cartItemCount = Convert.ToInt16(countStr);
-
 
             isLoggedIn = !string.IsNullOrEmpty(token);
             if (isLoggedIn)
             {
+                cartItemCount = await CartService.GetItemCountAsync(token);
                 await UpdateCartItemCount(); // Get cart count after login check
-            }
+            }            
             StateHasChanged();
         }
     }
@@ -139,6 +135,8 @@
     {
         token = await sessionStorage.GetItemAsync<string>("authToken");
         userEmail = await sessionStorage.GetItemAsync<string>("email");
+        var cartItemCountStr = await sessionStorage.GetItemAsync<string>("cartItemCount");
+        cartItemCount = Convert.ToInt16(cartItemCountStr);
         isLoggedIn = !string.IsNullOrEmpty(token);
         await UpdateCartItemCount();
         StateHasChanged();
@@ -166,9 +164,8 @@
     {
         // Clear session storage and redirect to login page
         await sessionStorage.RemoveItemAsync("authToken");
-        await sessionStorage.RemoveItemAsync("cartItemCount");
-        // await JS.InvokeVoidAsync("sessionStorage.removeItem", "authToken");        
-        // await JS.InvokeVoidAsync("sessionStorage.removeItem", "cartItemCount");
+        await sessionStorage.RemoveItemAsync("cartItemCount");  
+        await sessionStorage.RemoveItemAsync("email");
         isLoggedIn = false;
         cartItemCount = 0;
         Navigation.NavigateTo("/");
@@ -190,17 +187,5 @@
         await sessionStorage.SetItemAsync("cartItemCount", cartItemCount.ToString());
         StateHasChanged();
     }
-
-    // Call this method after adding/removing items to refresh the cart item count
-    // public async Task RefreshCartItemCount()
-    // {
-    //     await UpdateCartItemCount();
-    //     StateHasChanged();
-    // }
-
-    // private async Task<string> GetAuthToken()
-    // {
-    //     token = await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
-    //     return token;
-    // }
+    
 }

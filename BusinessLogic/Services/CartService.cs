@@ -32,12 +32,27 @@ namespace BusinessLogic.Services
             _cartRepo = cartRepo;
             _productRepo = productRepo;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;            
             userId = _userService.GetCurrentUserId();
             cartId = _cartRepo.GetByUserId(userId)?.Id ?? 0;
         }
 
+        public void CreateCart()
+        {
+            var cart = _cartRepo.GetByUserId(userId);
 
+            if (cart == null)
+            {
+                // Create a new cart if none exists
+                cart = new Cart
+                {
+                    UserId = userId,
+                    CreatedDate = DateTime.UtcNow,
+                    CartItems = new List<CartItem>()
+                };
+                
+            }
+        }
 
         public void AddItems(List<int> productIds)
         {                       
@@ -242,7 +257,7 @@ namespace BusinessLogic.Services
 
         public int GetItemCount()
         {
-            return _cartRepo.GetItemCount();
+            return _cartRepo.GetItemCount(cartId);
         }
 
         public List<CartItemDTO> GetCartItems()

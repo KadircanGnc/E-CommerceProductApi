@@ -2,7 +2,6 @@
 @using Blazored.SessionStorage
 
 @inject CartService cartService;
-@inject IJSRuntime JS
 @inject NavigationManager Navigation
 @inject ISessionStorageService sessionStorage
 
@@ -105,8 +104,7 @@
 
     private async Task<string> GetAuthToken()
     {
-        return await sessionStorage.GetItemAsync<string>("authToken");
-        // return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        return await sessionStorage.GetItemAsync<string>("authToken");        
     }
 
     private async Task RemoveFromCart(int productId)

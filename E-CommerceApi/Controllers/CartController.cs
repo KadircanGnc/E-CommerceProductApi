@@ -88,7 +88,7 @@ namespace E_CommerceApi.Controllers
 		public IActionResult GetItemCount()
 		{
 			var result = _cartService.GetItemCount();
-			if (result <= 0)
+			if (result < 0)
 			{
 				return NotFound("No items found.");
 			}

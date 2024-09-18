@@ -33,10 +33,17 @@ namespace DataAccess.Repositories
             return result!;
         }
 
-        public int GetItemCount()
+        public int GetItemCount(int cartId)
         {
-            var result = _context.Carts.Include(c => c.CartItems!)
-                .FirstOrDefault();            
+            var result = _context.Carts
+                .Include(c => c.CartItems!)
+                .Where(c => c.Id == cartId)
+                .FirstOrDefault();
+
+            if (result == null || result.CartItems == null)
+            {
+                return 0; // Return 0 if the cart or CartItems is null
+            }
 
             return result!.CartItems!.Sum(ci => ci.Quantity);
         }

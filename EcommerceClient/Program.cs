@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAntiforgery();
 builder.Services.AddHttpContextAccessor();
@@ -50,14 +49,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//jwt config
-
-
 app.MapControllers();
 
-
 app.UseStaticFiles();
-
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

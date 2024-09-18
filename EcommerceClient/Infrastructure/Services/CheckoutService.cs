@@ -13,7 +13,7 @@ namespace EcommerceClient.Infrastructure.Services
             _httpClient = httpClient;
         }
 
-        public async Task PlaceOrder(string token, CreditCardDTO creditCard)
+        public async Task<bool> PlaceOrder(string token, CreditCardDTO creditCard)
         {
             var requestUri = "Orders/create";
             var content = new StringContent(JsonSerializer.Serialize(creditCard), Encoding.UTF8, "application/json");
@@ -26,11 +26,13 @@ namespace EcommerceClient.Infrastructure.Services
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(requestMessage);
+            
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to add product to cart.");
+                return false;
             }
+            return true;
         }
     }
 }

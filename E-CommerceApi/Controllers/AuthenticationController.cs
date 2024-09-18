@@ -1,4 +1,5 @@
 ﻿using Authentication.Services;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using DataAccess;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ public class AuthenticationController : ControllerBase
     private readonly TokenService _tokenService;    
     public AuthenticationController(TokenService tokenService)
     {
-        _tokenService = tokenService;        
+        _tokenService = tokenService;                
     }
 
     [HttpPost]
@@ -28,7 +29,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized();
         }
 
-        var token = _tokenService.GenerateToken(user.Id.ToString(), loginRequest.Email!, user.Role!);
+        var token = _tokenService.GenerateToken(user.Id.ToString(), loginRequest.Email!, user.Role!);        
         return Ok(new { token });        
     }
 

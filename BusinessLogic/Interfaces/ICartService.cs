@@ -19,6 +19,7 @@ namespace BusinessLogic.Interfaces
         int GetCartId();
         int GetItemCount();
         List<CartItemDTO> GetCartItems();
+        void CreateCart();
 
 	}
 }
