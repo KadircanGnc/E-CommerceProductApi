@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Crypto.Generators;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 
@@ -13,10 +14,11 @@ using System.Text;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly TokenService _tokenService;    
+    private readonly TokenService _tokenService;  
+    
     public AuthenticationController(TokenService tokenService)
     {
-        _tokenService = tokenService;                
+        _tokenService = tokenService;        
     }
 
     [HttpPost]
@@ -33,6 +35,13 @@ public class AuthenticationController : ControllerBase
         return Ok(new { token });        
     }
 
+    [HttpGet("get-user-role")]
+    public IActionResult GetUserRole(string token)
+    {
+        var result = _tokenService.GetRoleFromToken(token);
+
+        return Ok(result);
+    }
     public class LoginRequest
     {
         public string? Email { get; set; }

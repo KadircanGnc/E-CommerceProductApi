@@ -1,12 +1,12 @@
 ﻿@page "/details/{productId:int}"
 @using Blazored.SessionStorage
 @using Common.DTOs.Comment
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @inject ProductService productService;
 @inject CommentService commentService;
 @inject CartService cartService;
 @inject NavigationManager Navigation;
-@inject IJSRuntime JS
 @inject ISessionStorageService sessionStorage
 
 <!-- Product Details Section Begin -->

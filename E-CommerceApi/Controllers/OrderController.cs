@@ -21,7 +21,7 @@ namespace E_CommerceApi.Controllers
             _cartService = cartService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -33,7 +33,7 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreditCardDTO creditCardDTO)
         {
@@ -58,7 +58,7 @@ namespace E_CommerceApi.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpGet("by-id")]
         public IActionResult GetById(int id)
         {

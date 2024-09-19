@@ -1,5 +1,6 @@
 ﻿using Blazored.SessionStorage;
 
+
 namespace EcommerceClient.Infrastructure.Services
 {
     public class AuthService
@@ -25,9 +26,23 @@ namespace EcommerceClient.Infrastructure.Services
             return null!; // Or handle failure case differently
         }
 
+        public async Task<string> GetUserRole(string token)
+        {            
+            var response = await _httpClient.GetAsync($"Authentication/get-user-role?token={token}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                return result!; 
+            }
+
+            return null!;
+        }
+
         public class AuthResult
         {
-            public string? Token { get; set; }            
+            public string? Token { get; set; }  
+            
         }
 
         public async Task<bool> IsLoggedInAsync()

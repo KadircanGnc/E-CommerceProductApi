@@ -16,7 +16,7 @@ namespace BusinessLogic.Interfaces
         GetUserDTO GetById(int id);
         List<GetUserDTO> GetAll();
         List<GetProductDTO> GetOrdersByUserId(int userId);
-        int GetCurrentUserId();
+        int GetCurrentUserId();       
 
     }
 }

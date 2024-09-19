@@ -1,9 +1,11 @@
 ﻿@using Blazored.SessionStorage
+@using Microsoft.AspNetCore.Components.Authorization
 
 @inject CartService CartService
 @inject ISessionStorageService sessionStorage
 @inject NavigationManager Navigation
 @inject AuthService authService
+@inject AuthenticationStateProvider authState
 
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
@@ -81,7 +83,10 @@
             <div class="col-lg-3 offset-lg-6">
                 <div class="header__cart">                    
                     <ul>                        
-                        <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>@cartItemCount</span></a></li>
+                        <!-- AuthorizeView: Only show this for non-admin users -->
+                        <AuthorizeView Roles="user">                             
+                                <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>@cartItemCount</span></a></li>                            
+                        </AuthorizeView>
                     </ul>                    
                     <div class="header__top__right__auth">
                         @if (isLoggedIn)
@@ -139,6 +144,7 @@
         cartItemCount = Convert.ToInt16(cartItemCountStr);
         isLoggedIn = !string.IsNullOrEmpty(token);
         await UpdateCartItemCount();
+        await authState.GetAuthenticationStateAsync();
         StateHasChanged();
         return isLoggedIn; // Return the login status
     }
@@ -157,7 +163,7 @@
         {
             await UpdateCartItemCount();
         }
-        
+
     }
 
     private async Task Logout()
@@ -167,9 +173,9 @@
         await sessionStorage.RemoveItemAsync("cartItemCount");  
         await sessionStorage.RemoveItemAsync("email");
         isLoggedIn = false;
-        cartItemCount = 0;
+        cartItemCount = 0;        
         Navigation.NavigateTo("/");
-
+        await authState.GetAuthenticationStateAsync();
         StateHasChanged();
     }
 

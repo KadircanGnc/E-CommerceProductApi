@@ -54,5 +54,31 @@ namespace Authentication.Services
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
             return user!;
         }
+
+        public string GetRoleFromToken(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return string.Empty;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                // Read and parse the token
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                // Extract the role claim
+                var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+
+                return roleClaim ?? string.Empty;
+            }
+            catch (Exception)
+            {
+                // Handle any token parsing errors
+                return string.Empty;
+            }
+        }
     }
 }

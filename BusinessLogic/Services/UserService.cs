@@ -33,7 +33,7 @@ namespace BusinessLogic.Services
         public int GetCurrentUserId()
         {
             return GetUserIdFromToken()!.Value;
-        }
+        }       
 
         public void Create(CreateUserDTO createUserDTO)
         {

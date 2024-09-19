@@ -1,9 +1,11 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations
 @using Blazored.SessionStorage
+
 @inject AuthService AuthService
 @inject NavigationManager Navigation
 @inject ISessionStorageService sessionStorage
+@inject AuthenticationStateProvider authState
 
 <PageTitle>Login</PageTitle>
 
@@ -40,12 +42,7 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
-    private string? errorMessage;    
-
-    protected override void OnInitialized()
-    {
-
-    }
+    private string? errorMessage;        
 
     private async Task HandleLogin()
     {
@@ -53,14 +50,28 @@
         {
             var response = await AuthService.LoginAsync(loginModel.Email!, loginModel.Password!);
 
+
             if (response != null && !string.IsNullOrEmpty(response.ToString()))
             {
+                string userRole = "";
+                userRole = await AuthService.GetUserRole(response.Token!);
                 // Save the token in session storage
                 await sessionStorage.SetItemAsync("authToken", response.Token);
-                await sessionStorage.SetItemAsync("email", loginModel.Email);                
-                // Navigate to homepage       
+                await sessionStorage.SetItemAsync("email", loginModel.Email); 
+                await sessionStorage.SetItemAsync("role", userRole);
+                // Navigate to homepage based on user role       
                 await AuthService.IsLoggedInAsync();
-                Navigation.NavigateTo("/");
+                if (userRole.Equals("admin"))
+                {
+                    await authState.GetAuthenticationStateAsync();
+                    Navigation.NavigateTo("/HomeAdmin");
+                }
+                else
+                {
+                    await authState.GetAuthenticationStateAsync();
+                    Navigation.NavigateTo("/");
+                }
+                
             }
             else
             {

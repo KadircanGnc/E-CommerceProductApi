@@ -113,6 +113,7 @@
         itemIds.Add(productId);
         await cartService.RemoveFromCartAsync(token, itemIds);
         await LoadCartDetails(); // Refresh cart after removal
+        StateHasChanged();
     }
 
 }
