@@ -1,8 +1,9 @@
 ﻿@page "/details/{productId:int}"
+
 @using Blazored.SessionStorage
 @using Common.DTOs.Comment
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+
 @inject ProductService productService;
 @inject CommentService commentService;
 @inject CartService cartService;
@@ -198,8 +199,7 @@
 
     private async Task<string> GetAuthToken()
     {
-        return await sessionStorage.GetItemAsync<string>("authToken");
-        // return await JS.InvokeAsync<string>("sessionStorage.getItem", "authToken");
+        return await sessionStorage.GetItemAsync<string>("authToken");        
     }
 
     private void IncreaseQuantity()

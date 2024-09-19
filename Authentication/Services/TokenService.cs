@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 using BusinessLogic.Services;
 using DataAccess;
+using DataAccess.Repositories;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +23,7 @@ namespace Authentication.Services
         {
             _configuration = configuration;
             _context = context;
-        }
+        }       
 
         public string GenerateToken(string userId, string userName, string role)
         {
@@ -34,19 +37,44 @@ namespace Authentication.Services
                 new Claim(ClaimTypes.Role, role)
             };
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var claims = new Claim[]
             {
-                Subject = new ClaimsIdentity(userClaims),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = creds,
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"]
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Role, role)
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = GenerateToken(claims);            
 
-            return tokenHandler.WriteToken(securityToken);
+            return token.Item1;            
+
+        }
+
+        private (string, DateTime) GenerateToken(Claim[] claims)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // Define the expiration time
+            var expiry = DateTime.Now.AddDays(10);
+            var expiry2 = new DateTime(expiry.Year, expiry.Month, expiry.Day, expiry.Hour, expiry.Minute, expiry.Second);
+
+            // Retrieve the issuer and audience from the configuration
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
+
+            // Create the token with claims, issuer, audience, expiration, and credentials
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: expiry2,
+                signingCredentials: creds
+                
+            );
+
+            // Return the generated token and its expiration time
+            return (new JwtSecurityTokenHandler().WriteToken(token), expiry2);
         }
 
         public User GetUser(string email, string password)
@@ -70,7 +98,7 @@ namespace Authentication.Services
                 var jwtToken = tokenHandler.ReadJwtToken(token);
 
                 // Extract the role claim
-                var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+                var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
                 return roleClaim ?? string.Empty;
             }

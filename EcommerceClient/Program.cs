@@ -4,6 +4,7 @@ using EcommerceClient.Infrastructure.Auth;
 using EcommerceClient.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -20,12 +21,6 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorization();
-//builder.Services.AddAuthenticationCore();
-//builder.Services.AddAuthorizationCore(options =>
-//{
-//    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
-//    options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
-//});
 
 builder.Services.AddHttpClient("WebApiClient", client =>
 {

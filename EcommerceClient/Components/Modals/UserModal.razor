@@ -1,0 +1,68 @@
+﻿@using Common.DTOs.User
+@inject HttpClient Http
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="newUser" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <InputText id="name" class="form-control" @bind-Value="newUser.Name" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <InputText id="email" class="form-control" @bind-Value="newUser.Email" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <InputText id="password" type="password" class="form-control" @bind-Value="newUser.Password" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <InputText id="address" class="form-control" @bind-Value="newUser.Address" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <InputText id="role" class="form-control" @bind-Value="newUser.Role" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnClose { get; set; }
+    private CreateUserDTO newUser = new CreateUserDTO();
+
+    private async Task HandleValidSubmit()
+    {
+        // Post the user to the backend API
+        var response = await Http.PostAsJsonAsync("api/users", newUser);
+        if (response.IsSuccessStatusCode)
+        {
+            // Optionally, handle success (e.g., notify user, refresh data)
+        }
+        else
+        {
+            // Handle error
+        }
+
+        // Close the modal
+        await OnClose.InvokeAsync();
+    }
+}

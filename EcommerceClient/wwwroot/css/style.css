@@ -1506,7 +1506,7 @@ ol {
         }
 
 .filter__option {
-    text-align: right;
+    text-align: left;
     margin-bottom: 15px;
 }
 
@@ -3602,4 +3602,6 @@ ol {
     .page-link:focus {
         box-shadow: 0 0 0 .2rem #7fad394f;
     }
+
+
 

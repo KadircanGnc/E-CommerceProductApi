@@ -1,5 +1,6 @@
 ﻿using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace EcommerceClient.Infrastructure.Auth
@@ -26,10 +27,12 @@ namespace EcommerceClient.Infrastructure.Auth
             }
 
             // Parse JWT and create claims
-            var claims = JwtParser.ParseClaimsFromJwt(token);
-            var identity = new ClaimsIdentity(claims, "jwtAuthType");            
-            var user = new ClaimsPrincipal(identity);
-            var role = new claims
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var securityToken = tokenHandler.ReadJwtToken(token);
+            var identity = new ClaimsPrincipal(new ClaimsIdentity(securityToken.Claims, "jwtAuthType"));
+                       
+            var user = new ClaimsPrincipal(identity);            
             NotifyUserAuthentication(user);
             return new AuthenticationState(user);
         }

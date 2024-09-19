@@ -75,8 +75,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 ">
-                <div class="header__logo">                    
+                <div class="header__logo">
+                    <AuthorizeView Roles="user">
                     <a href="/"><h2>K-SHOP</h2></a>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="admin">
+                        <a href="/HomeAdmin"><h2>K-ADMIN</h2></a>
+                    </AuthorizeView>
                 </div>
             </div>
            

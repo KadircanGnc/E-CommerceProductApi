@@ -1,6 +1,5 @@
 ﻿using Blazored.SessionStorage;
 
-
 namespace EcommerceClient.Infrastructure.Services
 {
     public class AuthService
