@@ -84,7 +84,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<GetUserDTO>(user);
         }
 
-        public List<GetUserDTO> GetAll()
+        public List<UpdateUserDTO> GetAll()
         {
             var users = _userRepo.GetAll();
             if (users == null || !users.Any())
@@ -92,7 +92,7 @@ namespace BusinessLogic.Services
                 throw new KeyNotFoundException("No users found.");
             }
 
-            return _mapper.Map<List<GetUserDTO>>(users);
+            return _mapper.Map<List<UpdateUserDTO>>(users);
         }
 
         public List<GetProductDTO> GetOrdersByUserId(int userId)

@@ -235,6 +235,6 @@ window.initializeScripts = () => {
 
         return jsonPayload; // This will return the decoded token as a JSON string
     };
+    
 
 };
-

@@ -1,41 +1,52 @@
 ﻿@using Common.DTOs.User
-@inject HttpClient Http
 
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+@inject UserService userService
+
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="userModalLabel">Add New User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
+                @if (isUserCreated)
+                {
+                    <div class="alert alert-success" role="alert">
+                        User created successfully!
+                    </div>
+                }
                 <EditForm Model="newUser" OnValidSubmit="HandleValidSubmit">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
+                    <DataAnnotationsValidator />                    
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <InputText id="name" class="form-control" @bind-Value="newUser.Name" />
+                        <ValidationMessage For="@(() => newUser.Name)" />
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <InputText id="email" class="form-control" @bind-Value="newUser.Email" />
+                        <ValidationMessage For="@(() => newUser.Email)" />
                     </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <InputText id="password" type="password" class="form-control" @bind-Value="newUser.Password" />
+                        <ValidationMessage For="@(() => newUser.Password)" />
                     </div>
 
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <InputText id="address" class="form-control" @bind-Value="newUser.Address" />
+                        <ValidationMessage For="@(() => newUser.Address)" />
                     </div>
 
                     <div class="mb-3">
                         <label for="role" class="form-label">Role</label>
                         <InputText id="role" class="form-control" @bind-Value="newUser.Role" />
+                        <ValidationMessage For="@(() => newUser.Role)" />
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add User</button>
@@ -46,23 +57,21 @@
 </div>
 
 @code {
-    [Parameter] public EventCallback OnClose { get; set; }
+    
     private CreateUserDTO newUser = new CreateUserDTO();
+    private bool isUserCreated = false; // Flag to show success message
 
     private async Task HandleValidSubmit()
     {
         // Post the user to the backend API
-        var response = await Http.PostAsJsonAsync("api/users", newUser);
+        var response = await userService.Create(newUser);
         if (response.IsSuccessStatusCode)
         {
-            // Optionally, handle success (e.g., notify user, refresh data)
+            isUserCreated = true;
+            newUser = new CreateUserDTO();            
+            
+            StateHasChanged();
         }
-        else
-        {
-            // Handle error
-        }
-
-        // Close the modal
-        await OnClose.InvokeAsync();
+        StateHasChanged();        
     }
 }

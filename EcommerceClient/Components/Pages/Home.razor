@@ -30,12 +30,10 @@
                         <ul>
                             @foreach (var category in categories)
                             {
-                                <li><a href="/" @onclick="() => FilterByCategory(category.Id)">@category.Name</a></li>
+                                <li><a href="/" @onclick="() => FilterByCategory(category.Id)">@category.Name</a></li>                                
                             }                           
                         </ul>
-                    </div>                                   
-                    
-                    
+                    </div>                   
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">

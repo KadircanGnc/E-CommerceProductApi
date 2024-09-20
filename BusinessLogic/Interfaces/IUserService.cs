@@ -14,7 +14,7 @@ namespace BusinessLogic.Interfaces
         void Update(UpdateUserDTO updateUserDTO);
         void Delete(int id);
         GetUserDTO GetById(int id);
-        List<GetUserDTO> GetAll();
+        List<UpdateUserDTO> GetAll();
         List<GetProductDTO> GetOrdersByUserId(int userId);
         int GetCurrentUserId();       
 

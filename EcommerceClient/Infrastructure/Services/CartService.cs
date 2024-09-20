@@ -27,13 +27,13 @@ namespace EcommerceClient.Infrastructure.Services
 
 			requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-			var response = await _httpClient.SendAsync(requestMessage);
-			await IsCartChangedAsync();
+			var response = await _httpClient.SendAsync(requestMessage);			
 			if (!response.IsSuccessStatusCode)
 			{
 				throw new Exception("Failed to add product to cart.");
 			}
-		}
+            await IsCartChangedAsync();
+        }
 
 		public async Task RemoveFromCartAsync(string token, List<int> productIds)
 		{
@@ -53,7 +53,8 @@ namespace EcommerceClient.Infrastructure.Services
 			{
 				throw new Exception("Failed to remove product from cart.");
 			}
-		}
+            await IsCartChangedAsync();
+        }
 
 		public async Task<int> GetItemCountAsync(string token)
 		{			

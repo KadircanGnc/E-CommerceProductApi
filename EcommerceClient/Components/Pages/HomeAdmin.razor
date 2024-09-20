@@ -1,6 +1,6 @@
 ﻿@page "/HomeAdmin"
-@using Common.DTOs.User
-@using EcommerceClient.Components.Modals
+
+@using EcommerceClient.Components.Modals.User
 
 @inject ProductService productService
 
@@ -10,76 +10,85 @@
         <div class="row text-center">
             <!-- Users Card -->
             <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card text-bg-primary mb-3">
-                    <div class="card-header">Manage Users</div>
+                <div class="card text-bg-light mb-3">
+                    <div class="card-header">Users</div>
                     <div class="card-body">
-                        <h5 class="card-title">Users</h5>
+                        @* <h5 class="card-title">Manage Users</h5> *@
                         <p class="card-text">Add, update, or delete users.</p>
-                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#userModal">Add User</button>
+                        <button class="btn btn-light" data-bs-toggle="collapse" href="#collapseUsers" role="button" aria-expanded="false" aria-controls="collapseUsers">Manage Users</button>
+                        @* <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#userModal">Add User</button> *@
+                    </div>
+                    <div class="collapse mt-2" id="collapseUsers">
+                        <ul class="list-unstyled">
+                            <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createUserModal">Add User</button></li>
+                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageUserModal">Manage Users</button></li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <!-- Brands Card -->
             <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card text-bg-secondary mb-3">
-                    <div class="card-header">Manage Brands</div>
+                <div class="card text-bg-light mb-3">
+                    <div class="card-header">Brands</div>
                     <div class="card-body">
-                        <h5 class="card-title">Brands</h5>
+                        @* <h5 class="card-title">Manage Brands</h5> *@
                         <p class="card-text">Add, update, or delete brands.</p>
                         <button class="btn btn-light" data-bs-toggle="collapse" href="#collapseBrands" role="button" aria-expanded="false" aria-controls="collapseBrands">Manage Brands</button>
                     </div>
+                    <div class="collapse mt-2" id="collapseBrands">
+                        <ul class="list-unstyled">
+                            <li><button type="button" class="btn btn-outline-success">Add Brand</button></li>
+                            <li><button type="button" class="btn btn-outline-warning">Edit Brands</button></li>
+                            <li><button type="button" class="btn btn-outline-danger">Delete Brand</button></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="collapse mt-2" id="collapseBrands">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Add Brand</a></li>
-                        <li><a href="#">Update Brand</a></li>
-                        <li><a href="#">Delete Brand</a></li>
-                    </ul>
-                </div>
+                
             </div>
             <!-- Categories Card -->
             <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card text-bg-success mb-3">
-                    <div class="card-header">Manage Categories</div>
+                <div class="card text-bg-light mb-3">
+                    <div class="card-header">Categories</div>
                     <div class="card-body">
-                        <h5 class="card-title">Categories</h5>
+                        @* <h5 class="card-title">Manage Categories</h5> *@
                         <p class="card-text">Add, update, or delete categories.</p>
                         <button class="btn btn-light" data-bs-toggle="collapse" href="#collapseCategories" role="button" aria-expanded="false" aria-controls="collapseCategories">Manage Categories</button>
                     </div>
-                </div>
-                <div class="collapse mt-2" id="collapseCategories">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Add Category</a></li>
-                        <li><a href="#">Update Category</a></li>
-                        <li><a href="#">Delete Category</a></li>
-                    </ul>
-                </div>
+                    <div class="collapse mt-2" id="collapseCategories">
+                        <ul class="list-unstyled">
+                            <li><button type="button" class="btn btn-outline-success">Add Category</button></li>
+                            <li><button type="button" class="btn btn-outline-warning">Edit Categories</button></li>
+                            <li><button type="button" class="btn btn-outline-danger">Delete Category</button></li>
+                        </ul>
+                    </div>
+                </div>                
             </div>
             <!-- Products Card -->
             <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card text-bg-info mb-3">
-                    <div class="card-header">Manage Products</div>
+                <div class="card text-bg-light mb-3">
+                    <div class="card-header">Products</div>
                     <div class="card-body">
-                        <h5 class="card-title">Products</h5>
+                        @* <h5 class="card-title">Manage Products</h5> *@
                         <p class="card-text">Add, update, or delete products.</p>
                         <button class="btn btn-light" data-bs-toggle="collapse" href="#collapseProducts" role="button" aria-expanded="false" aria-controls="collapseProducts">Manage Products</button>
                     </div>
-                </div>
-                <div class="collapse mt-2" id="collapseProducts">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Add Product</a></li>
-                        <li><a href="#">Update Product</a></li>
-                        <li><a href="#">Delete Product</a></li>
-                    </ul>
-                </div>
+                    <div class="collapse mt-2" id="collapseProducts">
+                        <ul class="list-unstyled">
+                            <li><button type="button" class="btn btn-outline-success">Add Product</button></li>
+                            <li><button type="button" class="btn btn-outline-warning">Edit Products</button></li>
+                            <li><button type="button" class="btn btn-outline-danger">Delete Products</button></li>
+                        </ul>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
 </section>
 <!-- Admin Dashboard Section End -->
 
-<UserModal />
+<CreateUserModal />
+<ManageUserModal />
 @code {
-    private CreateUserDTO newUser = new CreateUserDTO();
+    
     
 }

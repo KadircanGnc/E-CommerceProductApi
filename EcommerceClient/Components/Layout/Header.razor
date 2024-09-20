@@ -1,4 +1,5 @@
 ﻿@using Blazored.SessionStorage
+@using EcommerceClient.Infrastructure.Auth
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject CartService CartService
@@ -89,8 +90,9 @@
                 <div class="header__cart">                    
                     <ul>                        
                         <!-- AuthorizeView: Only show this for non-admin users -->
-                        <AuthorizeView Roles="user">                             
-                                <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>@cartItemCount</span></a></li>                            
+                        <AuthorizeView Roles="user">
+                            <li><a href="/Orders">My Orders</a></li>
+                            <li><a href="/Cart"><i class="fa fa-shopping-bag"></i> <span>@cartItemCount</span></a></li>                            
                         </AuthorizeView>
                     </ul>                    
                     <div class="header__top__right__auth">
@@ -168,7 +170,8 @@
         {
             await UpdateCartItemCount();
         }
-
+        await authState.GetAuthenticationStateAsync();
+        StateHasChanged();
     }
 
     private async Task Logout()
@@ -177,11 +180,15 @@
         await sessionStorage.RemoveItemAsync("authToken");
         await sessionStorage.RemoveItemAsync("cartItemCount");  
         await sessionStorage.RemoveItemAsync("email");
+
         isLoggedIn = false;
-        cartItemCount = 0;        
-        Navigation.NavigateTo("/");
-        await authState.GetAuthenticationStateAsync();
+        cartItemCount = 0;       
+
+        var authProvider = (CustomAuthStateProvider)authState;
+        authProvider.NotifyUserLogout();
+        
         StateHasChanged();
+        Navigation.NavigateTo("/");        
     }
 
     private async Task UpdateCartItemCount()

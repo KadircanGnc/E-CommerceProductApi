@@ -1,0 +1,173 @@
+﻿@using Common.DTOs.User
+
+@inject UserService userService
+
+<div class="modal fade" id="manageUserModal" tabindex="-1" aria-labelledby="manageUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%; width: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageUserModalLabel">Manage Users</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            @if (isUserUpdated)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @alertMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="DismissAlert"></button>
+                </div>
+            }
+            @if (isUserDeleted)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @alertMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="DismissAlert"></button>
+                </div>
+            }
+            <div class="modal-body">
+                @if (users == null)
+                {
+                    <p>Loading users...</p>
+                }
+                else if (users.Count == 0)
+                {
+                    <p>No users found.</p>
+                }
+                else
+                {
+                    @if (isEditing)
+                    {
+                        <h5>Edit User</h5>
+                        <EditForm Model="selectedUser" OnValidSubmit="HandleEditSubmit">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label for="editName" class="form-label">Name</label>
+                                <InputText id="editName" class="form-control" @bind-Value="selectedUser.Name" />
+                                <ValidationMessage For="@(() => selectedUser.Name)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <InputText id="editEmail" class="form-control" @bind-Value="selectedUser.Email" />
+                                <ValidationMessage For="@(() => selectedUser.Email)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editPassword" class="form-label">Password</label>
+                                <InputText id="editPassword" class="form-control" @bind-Value="selectedUser.Password" />
+                                <ValidationMessage For="@(() => selectedUser.Password)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editAddress" class="form-label">Address</label>
+                                <InputText id="editAddress" class="form-control" @bind-Value="selectedUser.Address" />
+                                <ValidationMessage For="@(() => selectedUser.Address)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editRole" class="form-label">Role</label>
+                                <InputText id="editRole" class="form-control" @bind-Value="selectedUser.Role" />
+                                <ValidationMessage For="@(() => selectedUser.Role)" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Address</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in users)
+                                {
+                                    <tr>
+                                        <td>@user.Id</td>
+                                        <td>@user.Name</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.Password</td>
+                                        <td>@user.Address</td>
+                                        <td>@user.Role</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" @onclick="() => OpenEdit(user)">Edit</button>
+                                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteSelected(user.Id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<UpdateUserDTO> users = new();
+    private UpdateUserDTO selectedUser = new UpdateUserDTO();
+    private bool isEditing = false;
+    private bool isUserDeleted = false;
+    private bool isUserUpdated = false;
+    private string alertMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userService.GetAll(); // Fetch all users
+    }
+
+    private void OpenEdit(UpdateUserDTO user)
+    {
+        selectedUser = user;
+        isEditing = true; // Show the edit form
+    }
+
+    private async Task DeleteSelected(int id)
+    {        
+        var response = await userService.Delete(id);
+        if (response.IsSuccessStatusCode)
+        {           
+            isUserDeleted = true; 
+            alertMessage = "User deleted successfully!";
+
+            users = await userService.GetAll();
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleEditSubmit()
+    {        
+        var response = await userService.Update(selectedUser);
+        if (response.IsSuccessStatusCode)
+        {
+            isUserUpdated = true;
+            alertMessage = "User Updated succesfully!";
+            users = await userService.GetAll(); // Refresh the user list
+            isEditing = false; // Close the edit form
+            selectedUser = new UpdateUserDTO(); // Reset selected user
+            StateHasChanged();
+        }
+    }
+
+    private void CancelEdit()
+    {
+        isEditing = false; // Close the edit form without saving
+        selectedUser = new UpdateUserDTO(); // Reset selected user
+    }
+
+    private void DismissAlert()
+    {
+        isUserDeleted = false;
+        isUserUpdated = false;
+    }
+}

@@ -38,6 +38,7 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CommentService>();
 builder.Services.AddScoped<CheckoutService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
