@@ -9,7 +9,7 @@ namespace Entities
 {
     public class Category : BaseModel
     {
-        public string? Name { get; set; }        
+        public string Name { get; set; }        
         public virtual List<Product> Products { get; set; } = new List<Product>();
     }
 }

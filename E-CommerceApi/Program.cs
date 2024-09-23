@@ -16,6 +16,7 @@ using Authentication.Services;
 using Microsoft.OpenApi.Models;
 using E_CommerceApi.Middlewares;
 using E_CommerceApi.MockData;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

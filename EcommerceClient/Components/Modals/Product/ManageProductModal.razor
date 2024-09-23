@@ -1,0 +1,181 @@
+﻿@using Common.DTOs.Product
+
+@inject ProductService productService
+
+<div class="modal fade" id="manageProductModal" tabindex="-1" aria-labelledby="manageProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 80%; width: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageProductModalLabel">Manage Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            @if (isProductUpdated)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @alertMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="DismissAlert"></button>
+                </div>
+            }
+            @if (isProductDeleted)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @alertMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="DismissAlert"></button>
+                </div>
+            }
+            <div class="modal-body">
+                @if (products == null)
+                {
+                    <p>Loading Products...</p>
+                }
+                else if (products.Count == 0)
+                {
+                    <p>No Products found.</p>
+                }
+                else
+                {
+                    @if (isEditing)
+                    {
+                        <h5>Edit Product</h5>
+                        <EditForm Model="selectedProduct" OnValidSubmit="HandleEditSubmit">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label for="editName" class="form-label">Name</label>
+                                <InputText id="editName" class="form-control" @bind-Value="selectedProduct.Name" />
+                                <ValidationMessage For="@(() => selectedProduct.Name)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <InputNumber id="price" class="form-control" @bind-Value="selectedProduct.Price" />
+                                <ValidationMessage For="@(() => selectedProduct.Price)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Stock</label>
+                                <InputNumber id="stock" class="form-control" @bind-Value="selectedProduct.StockCount" />
+                                <ValidationMessage For="@(() => selectedProduct.StockCount)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category ID</label>
+                                <InputNumber id="category" class="form-control" @bind-Value="selectedProduct.CategoryId" />
+                                <ValidationMessage For="@(() => selectedProduct.CategoryId)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="brand" class="form-label">Brand ID</label>
+                                <InputNumber id="brand" class="form-control" @bind-Value="selectedProduct.BrandId" />
+                                <ValidationMessage For="@(() => selectedProduct.BrandId)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image Url</label>
+                                <InputText id="image" class="form-control" @bind-Value="selectedProduct.ImageUrl" />
+                                <ValidationMessage For="@(() => selectedProduct.ImageUrl)" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Category ID</th>
+                                    <th>Brand ID</th>
+                                    <th>Image Url</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in products)
+                                {
+                                    <tr>
+                                        <td>@product.Id</td>
+                                        <td>@product.Name</td>
+                                        <td>@product.Price</td>
+                                        <td>@product.StockCount</td>
+                                        <td>@product.CategoryId</td>
+                                        <td>@product.BrandId</td>
+                                        <td>@product.ImageUrl</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" @onclick="() => OpenEdit(product)">Edit</button>
+                                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteSelected(product.Id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<UpdateProductDTO> products = new();
+    private UpdateProductDTO selectedProduct = new UpdateProductDTO();
+    private bool isEditing = false;
+    private bool isProductDeleted = false;
+    private bool isProductUpdated = false;
+    private string alertMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productService.GetAllManage(); // Fetch all
+    }
+
+    private void OpenEdit(UpdateProductDTO product)
+    {
+        selectedProduct = product;
+        isEditing = true; // Show the edit form
+    }
+
+    private async Task DeleteSelected(int id)
+    {
+        var response = await productService.Delete(id);
+        if (response.IsSuccessStatusCode)
+        {
+            isProductDeleted = true;
+            alertMessage = "Product deleted successfully!";
+
+            products = await productService.GetAllManage();
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleEditSubmit()
+    {
+        var response = await productService.Update(selectedProduct);
+        if (response.IsSuccessStatusCode)
+        {
+            isProductUpdated = true;
+            alertMessage = "Product Updated succesfully!";
+            products = await productService.GetAllManage(); // Refresh the user list
+            isEditing = false; // Close the edit form
+            selectedProduct = new UpdateProductDTO(); // Reset selected user
+            StateHasChanged();
+        }
+    }
+
+    private void CancelEdit()
+    {
+        isEditing = false; // Close the edit form without saving
+        selectedProduct = new UpdateProductDTO(); // Reset selected user
+    }
+
+    private void DismissAlert()
+    {
+        isProductDeleted = false;
+        isProductUpdated = false;
+    }
+}

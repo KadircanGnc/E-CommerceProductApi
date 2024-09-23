@@ -85,7 +85,18 @@ namespace BusinessLogic.Services
             }
 
             return _mapper.Map<List<GetProductDTO>>(products);
-        }        
+        }
+
+        public List<UpdateProductDTO> GetAllManage()
+        {
+            var products = _productRepo.GetAll();
+            if (products == null || !products.Any())
+            {
+                throw new Exception("No Products Found");
+            }
+
+            return _mapper.Map<List<UpdateProductDTO>>(products);
+        }
 
         // Example usage of pagination
         public PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize, string sortBy = "Default")

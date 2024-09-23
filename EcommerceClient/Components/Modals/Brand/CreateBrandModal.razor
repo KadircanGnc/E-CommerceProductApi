@@ -1,0 +1,71 @@
+﻿@using Common.DTOs.Brand
+
+@inject BrandService brandService
+
+<div class="modal fade" id="createBrandModal" tabindex="-1" aria-labelledby="brandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="brandModalLabel">Add New Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                @if (isBrandCreated)
+                {
+                    <div class="alert alert-success" role="alert">
+                        Brand created successfully!
+                    </div>
+                }
+                <EditForm Model="newBrand" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <InputText id="name" class="form-control" @bind-Value="newBrand.Name" />
+                        <ValidationMessage For="@(() => newBrand.Name)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <InputText id="email" class="form-control" @bind-Value="newBrand.Email" />
+                        <ValidationMessage For="@(() => newBrand.Email)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <InputText id="phone" type="phone" class="form-control" @bind-Value="newBrand.PhoneNumber" />
+                        <ValidationMessage For="@(() => newBrand.PhoneNumber)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <InputText id="address" class="form-control" @bind-Value="newBrand.Address" />
+                        <ValidationMessage For="@(() => newBrand.Address)" />
+                    </div>                    
+
+                    <button type="submit" class="btn btn-primary">Add Brand</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private CreateBrandDTO newBrand = new CreateBrandDTO();
+    private bool isBrandCreated = false; // Flag to show success message
+
+    private async Task HandleValidSubmit()
+    {
+        // Post the user to the backend API
+        var response = await brandService.Create(newBrand);
+        if (response.IsSuccessStatusCode)
+        {
+            isBrandCreated = true;
+            newBrand = new CreateBrandDTO();
+
+            StateHasChanged();
+        }
+        StateHasChanged();
+    }
+}

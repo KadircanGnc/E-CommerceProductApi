@@ -1,6 +1,9 @@
 ﻿@page "/HomeAdmin"
 
 @using EcommerceClient.Components.Modals.User
+@using EcommerceClient.Components.Modals.Brand
+@using EcommerceClient.Components.Modals.Category
+@using EcommerceClient.Components.Modals.Product
 
 @inject ProductService productService
 
@@ -21,7 +24,7 @@
                     <div class="collapse mt-2" id="collapseUsers">
                         <ul class="list-unstyled">
                             <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createUserModal">Add User</button></li>
-                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageUserModal">Manage Users</button></li>
+                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageUserModal">Edit Users</button></li>
                         </ul>
                     </div>
                 </div>
@@ -37,9 +40,8 @@
                     </div>
                     <div class="collapse mt-2" id="collapseBrands">
                         <ul class="list-unstyled">
-                            <li><button type="button" class="btn btn-outline-success">Add Brand</button></li>
-                            <li><button type="button" class="btn btn-outline-warning">Edit Brands</button></li>
-                            <li><button type="button" class="btn btn-outline-danger">Delete Brand</button></li>
+                            <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createBrandModal">Add Brand</button></li>
+                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageBrandModal">Edit Brands</button></li>
                         </ul>
                     </div>
                 </div>
@@ -56,9 +58,8 @@
                     </div>
                     <div class="collapse mt-2" id="collapseCategories">
                         <ul class="list-unstyled">
-                            <li><button type="button" class="btn btn-outline-success">Add Category</button></li>
-                            <li><button type="button" class="btn btn-outline-warning">Edit Categories</button></li>
-                            <li><button type="button" class="btn btn-outline-danger">Delete Category</button></li>
+                            <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createCategoryModal">Add Category</button></li>
+                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageCategoryModal">Edit Categories</button></li>                            
                         </ul>
                     </div>
                 </div>                
@@ -74,9 +75,8 @@
                     </div>
                     <div class="collapse mt-2" id="collapseProducts">
                         <ul class="list-unstyled">
-                            <li><button type="button" class="btn btn-outline-success">Add Product</button></li>
-                            <li><button type="button" class="btn btn-outline-warning">Edit Products</button></li>
-                            <li><button type="button" class="btn btn-outline-danger">Delete Products</button></li>
+                            <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createProductModal">Add Product</button></li>
+                            <li><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#manageProductModal">Edit Products</button></li>
                         </ul>
                     </div>
                 </div>                
@@ -88,6 +88,15 @@
 
 <CreateUserModal />
 <ManageUserModal />
+
+<CreateBrandModal />
+<ManageBrandModal />
+
+<CreateCategoryModal />
+<ManageCategoryModal />
+
+<CreateProductModal />
+<ManageProductModal />
 @code {
     
     

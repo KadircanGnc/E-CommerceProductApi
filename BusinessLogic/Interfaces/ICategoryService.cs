@@ -13,6 +13,6 @@ namespace BusinessLogic.Interfaces
         void Update(UpdateCategoryDTO updateCategoryDTO);
         void Delete(int id);
         GetCategoryDTO GetById(int id);
-        List<GetCategoryDTO> GetAll();
+        List<UpdateCategoryDTO> GetAll();
     }
 }

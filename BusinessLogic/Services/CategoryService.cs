@@ -63,14 +63,14 @@ namespace BusinessLogic.Services
             return _mapper.Map<GetCategoryDTO>(category);
         }
 
-        public List<GetCategoryDTO> GetAll()
+        public List<UpdateCategoryDTO> GetAll()
         {
             var categories = _categoryRepo.GetAll();
             if (categories == null || !categories.Any())
             {
                 throw new KeyNotFoundException("No categories found.");
             }
-            return _mapper.Map<List<GetCategoryDTO>>(categories);
+            return _mapper.Map<List<UpdateCategoryDTO>>(categories);
         }
     }
 }

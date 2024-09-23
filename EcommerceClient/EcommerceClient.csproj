@@ -22,10 +22,4 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Modals\Category\" />
-    <Folder Include="Components\Modals\Brand\" />
-    <Folder Include="Components\Modals\Product\" />
-  </ItemGroup>
-
 </Project>

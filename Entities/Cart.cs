@@ -9,8 +9,8 @@ namespace Entities
     public class Cart : BaseModel
     {        
         public decimal TotalPrice { get; set; }
-        public User? User { get; set; }
+        public User User { get; set; }
         public int UserId { get; set; }        
-        public List<CartItem>? CartItems { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }

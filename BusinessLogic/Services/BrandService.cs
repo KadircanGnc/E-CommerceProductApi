@@ -66,14 +66,14 @@ namespace BusinessLogic.Services
             return _mapper.Map<GetBrandDTO>(brand);
         }
 
-        public List<GetBrandDTO> GetAll()
+        public List<UpdateBrandDTO> GetAll()
         {
             var allBrands = _brandRepo.GetAll();
             if (allBrands == null || !allBrands.Any())
             {
                 throw new KeyNotFoundException("No brands found.");
             }
-            return _mapper.Map<List<GetBrandDTO>>(allBrands);
+            return _mapper.Map<List<UpdateBrandDTO>>(allBrands);
         }
 
         public List<GetProductDTO> GetProductsByBrandId(int brandId)

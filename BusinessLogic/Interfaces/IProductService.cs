@@ -15,6 +15,7 @@ namespace BusinessLogic.Interfaces
         void Delete(int id);
         GetProductDTO GetById(int id);
         List<GetProductDTO> GetAll();
+        List<UpdateProductDTO> GetAllManage();
         PagedResult<GetProductDTO> GetAllPaged(int pageNumber, int pageSize, string sortBy);
         List<GetProductDTO> GetByCategoryId(int categoryId);
         List<GetProductDTO> GetByRange(decimal minValue, decimal maxValue);

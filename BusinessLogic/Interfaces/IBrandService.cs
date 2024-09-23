@@ -14,7 +14,7 @@ namespace BusinessLogic.Interfaces
         void Update(UpdateBrandDTO updateBrandDTO);
         void Delete(int id);
         GetBrandDTO GetById(int id);
-        List<GetBrandDTO> GetAll();
+        List<UpdateBrandDTO> GetAll();
         List<GetProductDTO> GetProductsByBrandId(int brandId);
     }
 }

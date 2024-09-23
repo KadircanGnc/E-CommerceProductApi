@@ -10,18 +10,18 @@ namespace Entities
 {
     public class Comment : BaseModel
     {
-        public string? CommentText { get; set; }
+        public string CommentText { get; set; }
 
         [Range(1, 5)]
         public int RatingStar { get; set; }
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public virtual User? User { get; set; }
+        public virtual User User { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public virtual Product? Product { get; set; }
+        public virtual Product Product { get; set; }
 
     }
 }

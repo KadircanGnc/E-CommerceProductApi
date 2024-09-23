@@ -29,6 +29,17 @@ namespace E_CommerceApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("manage")]
+        public IActionResult GetAllManage()
+        {
+            var result = _service.GetAllManage();
+            if (result == null)
+            {
+                return BadRequest("Invalid value!");
+            }
+            return Ok(result);
+        }
+
         //[Authorize]
         [HttpGet("paged")]
         public IActionResult GetAllPaged(int pageNumber, int pageSize, string sortBy = "Default")
